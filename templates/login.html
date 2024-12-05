@@ -5,13 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<!-- give styling -->
+<style>
+    body {
+        background-color: lightblue;
+        /* make it in center of page */
+        display: flex;  
+        justify-content: center;
+        align-items: center;
+        height: 100vh; 
+        margin: 0;
+    }
+    footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: black;
+        color: white;
+        text-align: left;
+    }
+</style>
 <body>
     <!-- this is a login page -->
-    <h1>Login</h1>
+    <h1><center>Login</center></h1>
     <form action="/login" method="post">
-        <input type="text" name="username" id="username" placeholder="Username"><br>
-        <input type="password" name="password" id="password" placeholder="Password">
-        <input type="submit" value="Login">
+        <center><input type="text" name="username" id="username" placeholder="Username"></center><br>
+        <center><input type="password" name="password" id="password" placeholder="Password"></center><br>
+        <center><input type="submit" value="Login"></center>
     </form>
+    <!-- give footer -->
+    <footer>
+        <!-- @copy right -->
+        &copy; 2024
+    </footer>
 </body>
 </html>
