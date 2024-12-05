@@ -1,0 +1,151 @@
+/* General Styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+
+    /* Header Section */
+    .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #004080;
+    padding: 10px 20px;
+    color: white;
+    position: relative;
+}
+
+.header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+}
+
+.logo img {
+    height: 100px;
+}
+
+.donate-button a {
+    text-decoration: none;
+    background-color: #ff9900;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.donate-button a:hover {
+    background-color: #cc7a00;
+}
+
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: center;
+    background-color: #0066cc;
+    padding: 10px 0;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: #004080;
+}
+
+    /* Main image container styling */
+.main-image-container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Main image styling */
+.main-image {
+    width: 100%; /* Makes the image stretch across the entire width */
+    height: auto; /* Maintains the aspect ratio */
+    display: block; /* Removes any inline spacing around the image */
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    background-color: #004080;
+    color: white;
+    padding: 10px 0;
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+    /* General navbar styles */
+.navbar {
+    display: flex;
+    justify-content: center;
+    background-color: #0066cc;
+    padding: 10px 0;
+    align-items: center; /* Ensures all items align vertically */
+}
+
+.navbar a {
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+/* Dropdown container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown button */
+.dropbtn {
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Dropdown content links */
+.dropdown-content a {
+    color: #004080;
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s ease;
+}
+
+/* Dropdown content links hover effect */
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Style dropdown button on hover */
+.dropdown:hover .dropbtn {
+    background-color: #004080;
+}
