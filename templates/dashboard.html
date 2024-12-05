@@ -4,8 +4,239 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+    }
+
+        /* Header Section */
+        .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #004080;
+        padding: 10px 20px;
+        color: white;
+        position: relative;
+    }
+
+    .header-title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        margin: 0;
+    }
+
+    .logo img {
+        height: 100px;
+    }
+
+    .donate-button a {
+        text-decoration: none;
+        background-color: #ff9900;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .donate-button a:hover {
+        background-color: #cc7a00;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+        display: flex;
+        justify-content: center;
+        background-color: #0066cc;
+        padding: 10px 0;
+    }
+
+    .navbar a {
+        text-decoration: none;
+        color: white;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    .navbar a:hover {
+        background-color: #004080;
+    }
+
+        /* Main image container styling */
+    .main-image-container {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Main image styling */
+    .main-image {
+        width: 100%; /* Makes the image stretch across the entire width */
+        height: auto; /* Maintains the aspect ratio */
+        display: block; /* Removes any inline spacing around the image */
+    }
+
+    /* Footer */
+    .footer {
+        text-align: center;
+        background-color: #004080;
+        color: white;
+        padding: 10px 0;
+        margin-top: 20px;
+        font-size: 0.9rem;
+        bottom: 0;
+        position: fixed;
+        width: 100%;
+    }
+        /* General navbar styles */
+    .navbar {
+        display: flex;
+        justify-content: center;
+        background-color: #0066cc;
+        padding: 10px 0;
+        align-items: center; /* Ensures all items align vertically */
+    }
+
+    .navbar a {
+        text-decoration: none;
+        color: white;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Dropdown container */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Dropdown button */
+    .dropbtn {
+        text-decoration: none;
+        color: white;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Dropdown content (hidden by default) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #ffffff;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    /* Dropdown content links */
+    .dropdown-content a {
+        color: #004080;
+        padding: 10px;
+        text-decoration: none;
+        display: block;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Dropdown content links hover effect */
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Show dropdown on hover */
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    /* Style dropdown button on hover */
+    .dropdown:hover .dropbtn {
+        background-color: #004080;
+    }
+    </style>
 </head>
 <body>
-    Just a simple page that is access controled and displays all transactions
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <a href="/">
+                <img src="static/images/sea logo.jpg" alt="SEA Logo">
+            </a>
+        </div>
+        <h1 class="header-title">SEA Organization</h1>
+        <div class="donate-button">
+            <a href="/donate">Donate Now</a>
+        </div>
+    </div>
+
+    <body>
+        <div class="form-container">
+            <label for="data-select">Choose a category:</label>
+            <select id="data-select">
+                <option value="monetary">Monetary Donations</option>
+                <option value="special">Special Occasions</option>
+                <option value="joiners">People Who've Joined</option>
+            </select>
+        </div>
+        <div class="table-container" id="table-container">
+            <!-- Table will be dynamically generated here -->
+             
+        </div>
+
+        <script>
+            document.getElementById('data-select').addEventListener('change', async function () {
+                const category = this.value;
+
+                // Fetch data from the server
+                const response = await fetch(`/get_data/${category}`);
+                const data = await response.json();
+
+                // Clear the previous table
+                const tableContainer = document.getElementById('table-container');
+                tableContainer.innerHTML = '';
+
+                // Generate the table
+                if (data.length > 0) {
+                    const table = document.createElement('div');
+                    table.className = 'table';
+
+                    // Add headers
+                    const headers = Object.keys(data[0]);
+                    headers.forEach(header => {
+                        const headerDiv = document.createElement('div');
+                        headerDiv.className = 'table-header';
+                        headerDiv.textContent = header;
+                        table.appendChild(headerDiv);
+                    });
+
+                    // Add rows
+                    data.forEach(row => {
+                        headers.forEach(header => {
+                            const cell = document.createElement('div');
+                            cell.textContent = row[header];
+                            table.appendChild(cell);
+                        });
+                    });
+
+                    tableContainer.appendChild(table);
+                } else {
+                    tableContainer.textContent = 'No data available.';
+                }
+            });
+
+            // Trigger the change event on page load to display the first option's data
+            document.getElementById('data-select').dispatchEvent(new Event('change'));
+        </script>
+    
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2024. SEA private ltd. All rights reserved.
+    </div>
 </body>
 </html>
