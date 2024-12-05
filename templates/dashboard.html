@@ -158,6 +158,47 @@
     .dropdown:hover .dropbtn {
         background-color: #004080;
     }
+    /* Table Styling */
+    .table-container {
+            width: 90%;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .table-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #004080;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #004080;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
@@ -175,63 +216,79 @@
     </div>
 
     <body>
-        <div class="form-container">
-            <label for="data-select">Choose a category:</label>
-            <select id="data-select">
-                <option value="monetary">Monetary Donations</option>
-                <option value="special">Special Occasions</option>
-                <option value="joiners">People Who've Joined</option>
-            </select>
-        </div>
-        <div class="table-container" id="table-container">
-            <!-- Table will be dynamically generated here -->
-             
-        </div>
+        
 
-        <script>
-            document.getElementById('data-select').addEventListener('change', async function () {
-                const category = this.value;
+    <!-- Tables -->
+    <div class="table-container">
+        <div class="table-title">Monetary Donations</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="monetary-table">
+                {% for row in monetary_data %}
+                <tr>
+                    {% for i in range(0,5) %}
+                    <td>{{ row[i] }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-                // Fetch data from the server
-                const response = await fetch(`/get_data/${category}`);
-                const data = await response.json();
+    <div class="table-container">
+        <div class="table-title">Special Occasions</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Individual</th>
+                    <th>Occasion</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody id="special-table">
+                {% for row in special_data %}
+                <tr>
+                    {% for i in range(0,5) %}
+                    <td>{{ row[i] }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-                // Clear the previous table
-                const tableContainer = document.getElementById('table-container');
-                tableContainer.innerHTML = '';
-
-                // Generate the table
-                if (data.length > 0) {
-                    const table = document.createElement('div');
-                    table.className = 'table';
-
-                    // Add headers
-                    const headers = Object.keys(data[0]);
-                    headers.forEach(header => {
-                        const headerDiv = document.createElement('div');
-                        headerDiv.className = 'table-header';
-                        headerDiv.textContent = header;
-                        table.appendChild(headerDiv);
-                    });
-
-                    // Add rows
-                    data.forEach(row => {
-                        headers.forEach(header => {
-                            const cell = document.createElement('div');
-                            cell.textContent = row[header];
-                            table.appendChild(cell);
-                        });
-                    });
-
-                    tableContainer.appendChild(table);
-                } else {
-                    tableContainer.textContent = 'No data available.';
-                }
-            });
-
-            // Trigger the change event on page load to display the first option's data
-            document.getElementById('data-select').dispatchEvent(new Event('change'));
-        </script>
+    <div class="table-container">
+        <div class="table-title">People Who've Joined</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody id="joiners-table">
+                {% for row in joiners_data %}
+                <tr>
+                    {% for i in range(0,5) %}
+                    <td>{{ row[i] }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>    
     
 
     <!-- Footer -->

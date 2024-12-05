@@ -20,35 +20,35 @@ def home():
 def locateus():
     return render_template('locateus.html')
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET'])
 def dashboard():
-    return render_template('dashboard2.html')
-
-@app.route('/get_data/<category>', methods=['GET'])
-def get_data(category):
-    # Map categories to table names
-    table_mapping = {
-        "monetary": "monetary",
-        "special": "special",
-        "joiners": "joiners"
-    }
-    table_name = table_mapping.get(category)
-    if not table_name:
-        return jsonify([])
-
-    # Query the database
+    # Fetch data from all tables
     cur = mysql.connection.cursor()
-    query = f"SELECT * FROM {table_name}"
-    cur.execute(query)
-    rows = cur.fetchall()
 
-    # Get column names
-    column_names = [desc[0] for desc in cur.description]
+    # Monetary donations
+    cur.execute("SELECT * FROM monetary")
+    monetary_data = cur.fetchall()
+    # monetary_columns = [desc[0] for desc in cur.description]
 
-    # Convert the result to a list of dictionaries
-    results = [dict(zip(column_names, row)) for row in rows]
+    # Special occasions
+    cur.execute("SELECT * FROM special")
+    special_data = cur.fetchall()
+    # special_columns = [desc[0] for desc in cur.description]
+
+    # People who've joined
+    cur.execute("SELECT * FROM joiners")
+    joiners_data = cur.fetchall()
+    # joiners_columns = [desc[0] for desc in cur.description]
+
     cur.close()
-    return jsonify(results)
+
+    # Render data into the HTML template
+    return render_template(
+        'dashboard.html',
+        monetary_data=monetary_data,
+        special_data=special_data,
+        joiners_data=joiners_data,
+    )
 
 app.run(debug=True)
 
