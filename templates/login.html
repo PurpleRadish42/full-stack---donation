@@ -3,41 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: lightblue;
+        }
+        .container {
+            display: flex;
+            gap: 20px; /* Space between the boxes */
+            padding: 20px;
+        }
+        .login-section {
+            flex: 1;
+            background-color: white;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center; /* Center the content inside */
+        }
+        .login-section h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .login-section form {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the form elements horizontally */
+        }
+        .login-section form input[type="text"],
+        .login-section form input[type="password"] {
+            width: 80%; /* Make input fields consistent in size */
+            padding: 10px;
+            margin-bottom: 10px;
+            border:1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .login-section form input[type="submit"] {
+            width: 80%; /* Match the width of input fields */
+            padding: 10px;
+            background-color: darkblue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .login-section form input[type="submit"]:hover {
+            background-color: lightgray;
+        }
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: black;
+            color: white;
+            text-align: left;
+            padding: 10px;
+        }
+    </style>
 </head>
-<!-- give styling -->
-<style>
-    body {
-        background-color: lightblue;
-        /* make it in center of page */
-        display: flex;  
-        justify-content: center;
-        align-items: center;
-        height: 100vh; 
-        margin: 0;
-    }
-    footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: black;
-        color: white;
-        text-align: left;
-    }
-</style>
 <body>
-    <!-- this is a login page -->
-    <h1><center>Login</center></h1>
-    <form action="/login" method="post">
-        <center><input type="text" name="username" id="username" placeholder="Username"></center><br>
-        <center><input type="password" name="password" id="password" placeholder="Password"></center><br>
-        <center><input type="submit" value="Login"></center>
-    </form>
-    <!-- give footer -->
+
+    <div class="container">
+        <!-- User Login Section -->
+        <div class="login-section">
+            <h2>User Login</h2>
+            <form action="/userlogin">
+                <input type="text" placeholder="Username" required>
+                <input type="password" placeholder="Password" required>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+        
+        <!-- Employee Login Section -->
+        <div class="login-section">
+            <h2>Employee Login</h2>
+            <form action="/employeelogin">
+                <input type="text" placeholder="Employee ID" required>
+                <input type="password" placeholder="Password" required>
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </div>
     <footer>
-        <!-- @copy right -->
         &copy; 2024
     </footer>
 </body>
 </html>
+
+
