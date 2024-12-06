@@ -5,6 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/styles/index.css">
     <title>Document</title>
+    <style>
+        .map {
+            margin: 20px;
+            text-align: center;
+        }
+
+        .map img {
+            width: 80%;
+        }
+
+        .centers {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+        .center {
+            border: 1px solid black;
+            padding: 10px;
+            width: 20%;
+        }
+        .center a{
+            text-decoration: none;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -25,7 +57,7 @@
         <div class="dropdown">
             <a href="#centers" class="dropbtn">Centers</a>
             <div class="dropdown-content">
-                <a href="/city_result">Bangalore</a>
+                <a href="/city_result?city_id=1">Bangalore</a>
                 <a href="/city_result">Chennai</a>
                 <a href="/city_result">Hyderabad</a>
                 <a href="/city_result">Cochin</a>
@@ -37,7 +69,41 @@
         <a href="/login">Login</a>
     </div>
 
-    
+    <!-- a small map that showcases 4 different points -->
+    <div class="map">
+        <img src="static/images/map.jpg" alt="Map">
+    </div>
+
+    <!-- a div table that has the 4 centers one after another -->
+    <div class="centers">
+        <div class="center">
+            <h2>
+                <a href="/bangalore">Bangalore</a>
+            </h2>
+            <p>Address: 123, 4th Cross, 5th Main, Bangalore</p>
+            <p>Phone: 1234567890</p>
+        </div>
+        <div class="center">
+            <h2>
+                <a href="/chennai">Chennai</a>
+            </h2>
+            <p>Address: 456, 5th Cross, 6th Main, Chennai</p>
+            <p>Phone: 2345678901</p>
+        </div>
+        <div class="center">
+            <h2>
+                <a href="/hyderabad">Hyderabad</a>
+            </h2>
+            <p>Address: 789, 6th Cross, 7th Main, Hyderabad</p>
+            <p>Phone: 3456789012</p>
+        </div>
+        <div class="center">
+            <h2>
+                <a href="/cochin">Cochin</a>
+            </h2>
+            <p>Address: 890, 7th Cross, 8th Main, Cochin</p>
+            <p>Phone: 4567890123</p>
+        </div>
 
     <!-- Footer -->
     <div class="footer">
