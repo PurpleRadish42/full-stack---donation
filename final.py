@@ -71,5 +71,39 @@ def donate():
     except Exception as e:
         print(f"Error: {e}")
         return render_template('message.html', message="Some error occurred, please try again later.")
+    
+@app.route('/dashboard', methods=['GET'])
+def dashboard():
+    # Fetch data from all tables
+    cur = mysql.connection.cursor()
+
+    # Monetary donations
+    cur.execute("SELECT * FROM monetary")
+    monetary_data = cur.fetchall()
+    # monetary_columns = [desc[0] for desc in cur.description]
+
+    # Special occasions
+    cur.execute("SELECT * FROM special")
+    special_data = cur.fetchall()
+    # special_columns = [desc[0] for desc in cur.description]
+
+    # People who've joined
+    cur.execute("SELECT * FROM joiners")
+    joiners_data = cur.fetchall()
+    # joiners_columns = [desc[0] for desc in cur.description]
+
+    cur.execute("SELECT * FROM donations")
+    donations_data = cur.fetchall()
+
+    cur.close()
+
+    # Render data into the HTML template
+    return render_template(
+        'dashboard.html',
+        monetary_data=monetary_data,
+        special_data=special_data,
+        joiners_data=joiners_data,
+        donations_data=donations_data
+    )
 
 app.run(debug=True)
