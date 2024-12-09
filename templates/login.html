@@ -1,11 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dropdown with Checkboxes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    /* Dropdown Container */
+    .dropdown {
+      position: relative;
+      width: 300px;
+    }
+
+    /* Dropdown Button */
+    .dropdown-button {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    /* Dropdown Menu */
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      border: 1px solid #ccc;
+      background-color: white;
+      max-height: 200px;
+      overflow-y: auto;
+      display: none; /* Initially hidden */
+      z-index: 1000;
+    }
+
+    /* Dropdown Items */
+    .dropdown-menu label {
+      display: flex;
+      align-items: center;
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+
+    .dropdown-menu label:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown-menu input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    /* Show Dropdown */
+    .dropdown.open .dropdown-menu {
+      display: block;
+    }
+  </style>
 </head>
 <body>
-    this is login page
+  <form>
+    <label for="donation">Items you want to donate:</label>
+    <div class="dropdown" id="dropdown">
+      <div class="dropdown-button" onclick="toggleDropdown()">Select Items</div>
+      <div class="dropdown-menu">
+        <label>
+          <input type="checkbox" name="categories[]" value="clothes"> Clothes
+        </label>
+        <label>
+          <input type="checkbox" name="categories[]" value="necessary items"> Necessary Items
+        </label>
+        <label>
+          <input type="checkbox" name="categories[]" value="healthcare"> Healthcare Products
+        </label>
+        <label>
+          <input type="checkbox" name="categories[]" value="food"> Food
+        </label>
+      </div>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    // Toggle the dropdown menu
+    function toggleDropdown() {
+      const dropdown = document.getElementById('dropdown');
+      dropdown.classList.toggle('open');
+    }
+
+    // Close the dropdown if clicked outside
+    document.addEventListener('click', function(event) {
+      const dropdown = document.getElementById('dropdown');
+      if (!dropdown.contains(event.target)) {
+        dropdown.classList.remove('open');
+      }
+    });
+  </script>
 </body>
 </html>
+
+  
+  
