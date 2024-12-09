@@ -1,11 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donation Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #e0f7fa;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .image-section {
+      flex: 0 0 75%; /* Image section takes up 3/4th (75%) of the page */
+      position: relative;
+      background-image: url('static/images/center.jpeg'); /* Replace with your image URL */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .fade-overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.5); /* Optional: fade overlay */
+    }
+
+    .donation-form {
+      position: absolute;
+      top: 67%; /* Push the form higher on the screen */
+      right: 10%;
+      transform: translateY(-50%);
+      width: 300px;
+      background: rgb(11, 11, 11);
+      padding: 17px; /* Reduced padding */
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+      ;
+    }
+
+    .donation-form h2 {
+      margin-top: 0;
+      color: #01579b;
+      font-size: 18px; /* Smaller font size */
+      text-align: center;
+    }
+
+    .donation-form label {
+      display: block;
+      margin: 8px 0 5px; /* Reduced margin */
+      color: #0277bd;
+      font-weight: bold;
+      font-size: 14px; /* Smaller label size */
+    }
+
+    .donation-form input,
+    .donation-form select {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 8px; /* Reduced spacing between fields */
+      border: 1px solid #81d4fa;
+      border-radius: 5px;
+      outline: none;
+      background-color: #e1f5fe;
+      font-size: 14px; /* Reduced font size */
+    }
+
+    .donation-form button {
+      width: 100%;
+      padding: 8px; /* Reduced button height */
+      border: none;
+      border-radius: 5px;
+      background-color: #0288d1;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .donation-form button:hover {
+      background-color: #0277bd;
+    }
+
+    /* Checkbox Styling */
+    .checkbox-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px; /* Reduced gap between checkboxes */
+      margin-bottom: 10px; /* Reduced margin */
+    }
+
+    .checkbox-container label {
+      display: flex;
+      align-items: center;
+      gap: 8px; /* Reduced gap between checkbox and label */
+      background-color: #f1f8e9;
+      padding: 8px; /* Reduced padding */
+      border: 1px solid #c5e1a5;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 13px; /* Reduced font size */
+    }
+
+    .quantity-input {
+      margin-left: auto;
+      width: 50px; /* Adjusted input width */
+      border: 1px solid #81d4fa;
+      border-radius: 5px;
+      padding: 2px;
+      text-align: center;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .donation-form {
+        width: 90%;
+        right: 5%;
+        top: 50%;
+      }
+    }
+  </style>
 </head>
 <body>
-    
+  <div class="container">
+    <!-- Image Section -->
+    <div class="image-section">
+      <div class="fade-overlay"></div>
+      <form class="donation-form">
+        <h2>Donate Now</h2>
+        
+        <label for="donor-type">Who are you:</label>
+        <select id="donor-type" name="donor-type">
+          <option value="individual">Individual</option>
+          <option value="company">Company</option>
+        </select>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+        <!-- Improved Checkboxes with Quantity -->
+        <label for="categories">Items you want to donate:</label>
+        <div class="checkbox-container">
+          <label>
+            <input type="checkbox" name="categories[]" value="clothes">
+            Clothes
+            <input type="number" class="quantity-input" name="quantity_clothes" placeholder="Qty">
+          </label>
+          <label>
+            <input type="checkbox" name="categories[]" value="necessary items">
+            Necessary Items
+            <input type="number" class="quantity-input" name="quantity_items" placeholder="Qty">
+          </label>
+          <label>
+            <input type="checkbox" name="categories[]" value="food">
+            Food
+            <input type="number" class="quantity-input" name="quantity_food" placeholder="Qty">
+          </label>
+          <label>
+            <input type="checkbox" name="categories[]" value="healthcare products">
+            Healthcare Products
+            <input type="number" class="quantity-input" name="quantity_healthcare" placeholder="Qty">
+          </label>
+        </div>
+
+        <label for="delivery-type">Type of Delivery:</label>
+        <select id="delivery-type" name="delivery-type">
+          <option value="doorstep pick">Doorstep Pick</option>
+          <option value="courier service">Courier Service</option>
+        </select>
+
+        <button type="submit">submit</button>
+      </form>
+    </div>
+
+    <!-- Remaining Section -->
+    <div class="remaining-section"></div>
+  </div>
 </body>
 </html>
