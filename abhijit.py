@@ -40,6 +40,9 @@ def dashboard():
     joiners_data = cur.fetchall()
     # joiners_columns = [desc[0] for desc in cur.description]
 
+    cur.execute("SELECT * FROM donations")
+    donations_data = cur.fetchall()
+
     cur.close()
 
     # Render data into the HTML template
@@ -48,6 +51,7 @@ def dashboard():
         monetary_data=monetary_data,
         special_data=special_data,
         joiners_data=joiners_data,
+        donations_data=donations_data
     )
 
 app.run(debug=True)
