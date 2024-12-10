@@ -16,4 +16,8 @@ def home():
 def center1():
     return render_template('center1.html')
 
+@app.route('/donation')
+def donation():
+    return render_template('donation.html')
+
 app.run(debug=True)

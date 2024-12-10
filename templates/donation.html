@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff; /* Light blue background */
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            height: 100vh;
+        }
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 40%;
+            padding: 20px;
+        }
+        .form-container:first-child {
+            margin-top: 50px; /* Push "Donate to Our Cause" form lower */
+        }
+        .form-container:last-child {
+            margin-top: 80px; /* Push "Donate Items" form further down */
+        }
+        .box {
+            background-color: #e6f7ff; /* Soft blue */
+            border: 2px solid #add8e6; /* Light blue border */
+            border-radius: 10px;
+            padding: 20px;
+            width: 80%;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px; /* Adds gap above the box */
+        }
+        .box h2 {
+            color: #00509e; /* Darker blue for headings */
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #00509e;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            border: 1px solid #add8e6;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background-color: #00509e;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background-color: #003f7f;
+        }
+        .image-container {
+            width: 80%;
+            margin-top: 40px; /* Increased margin to push the image down */
+            margin-bottom: 20px; /* Adds gap below the image */
+            position: relative;
+        }
+        .image-container img {
+            width: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .image-caption-above {
+            margin-top: 20px; /* Added more space above this caption */
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            font-style: italic;
+            color: #00509e;
+            text-align: center;
+        }
+        .text-caption {
+            margin-top: 40px; /* Increased margin to push the text further down */
+            font-size: 18px;
+            font-weight: bold;
+            font-style: italic;
+            color: #00509e;
+            text-align: center;
+        }
+        footer {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            background-color: #00509e;
+            color: white;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Left Side: Donate to Our Cause -->
+    <div class="form-container">
+        <div class="box">
+            <h2>Donate to Our Cause</h2>
+            <form>
+                <div class="form-group">
+                    <label for="donor-type">I am:</label>
+                    <select id="donor-type" name="donor-type">
+                        <option value="individual">Individual</option>
+                        <option value="company">Company</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email ID:</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+                </div>
+                <button type="submit">Pay Now</button>
+            </form>
+        </div>
+        <div class="text-caption">Make a Difference Today!</div>
+        <div class="image-container">
+            <img src="static/images/kid.jpeg" alt="Donate to Our Cause">
+        </div>
+    </div>
+
+    <!-- Right Side: Donate Items -->
+    <div class="form-container">
+        <div class="image-caption-above">Your Generosity Changes Lives</div>
+        <div class="image-container">
+            <img src="static/images/morehands.jpeg" alt="Donate Items">
+        </div>
+        <div class="box">
+            <h2>Donate Items</h2>
+            <form>
+                <div class="form-group">
+                    <label for="location">Select Location:</label>
+                    <select id="location" name="location">
+                        <option value="bangalore">Bangalore</option>
+                        <option value="chennai">Chennai</option>
+                        <option value="cochin">Cochin</option>
+                        <option value="hyderabad">Hyderabad</option>
+                    </select>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
