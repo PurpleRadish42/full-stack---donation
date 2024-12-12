@@ -13,9 +13,9 @@ def login():
 @app.route('/success')
 def success():
     return 'Logged in successfully'
-from flask import Flask, url_for
+# from flask import Flask, url_for
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
 @app.route('/logo')
 def logo():
