@@ -24,24 +24,30 @@ def login():
         password = request.form['password']
         role = request.form['role']
 
+        # Database query to fetch user information
         cur = mysql.connection.cursor()
         cur.execute("SELECT id, password, role FROM login WHERE username=%s", [username])
         user = cur.fetchone()
         cur.close()
 
-        if user and check_password_hash(user[1], password):
-            session['id'] = user[0]
-            session['username'] = username
-            session['role'] = user[2]
-            if role == user[2]:
-                if role == 'admin':
-                    return redirect(url_for('dashboard'))
-                elif role == 'user':
-                    return redirect(url_for('home'))
+        if user:
+            # Check if the entered password matches the stored hash
+            if check_password_hash(user[1], password):
+                session['id'] = user[0]
+                session['username'] = username
+                session['role'] = user[2]
+                if role == user[2]:
+                    if role == 'admin':
+                        return redirect(url_for('dashboard'))
+                    elif role == 'user':
+                        return redirect(url_for('home'))
+                else:
+                    flash('Invalid role selection.')
             else:
-                flash('Invalid role selection.')
+                flash('Invalid username or password.')
         else:
-            flash('Invalid username or password.')
+            # If user doesn't exist, show message to register as a new user
+            flash('User not found. Please register as a new user.')
 
     return render_template('login.html')
 
@@ -80,4 +86,7 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
 

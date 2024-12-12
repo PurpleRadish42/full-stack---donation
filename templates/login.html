@@ -23,12 +23,8 @@
         button:hover { background: #ff8c69; }
         a { color: rgb(5, 5, 107); text-decoration: none; font-size: 14px; display: block; margin-top: 10px; }
         a:hover { color: #ff8c69; }
+        .flash-message { color: red; font-size: 14px; margin-top: 10px; }
     </style>
-    <script>
-        function showLoginSuccess(role) {
-            alert(role + " login successful!");
-        }
-    </script>
 </head>
 <body>
     <nav>
@@ -37,9 +33,22 @@
         </div>
     </nav>
     <div class="container">
+        <!-- Flash message display -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-message">
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+
         <div class="login-box">
             <h2>User Login</h2>
-            <form method="POST" action="{{ url_for('login') }}" onsubmit="showLoginSuccess('User'); return true;">
+            <form method="POST" action="{{ url_for('login') }}">
                 <input type="hidden" name="role" value="user">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -49,9 +58,10 @@
             </form>
             <a href="{{ url_for('register') }}">New user? Register here</a>
         </div>
+
         <div class="login-box">
             <h2>Employee Login</h2>
-            <form method="POST" action="{{ url_for('login') }}" onsubmit="showLoginSuccess('Employee'); return true;">
+            <form method="POST" action="{{ url_for('login') }}">
                 <input type="hidden" name="role" value="admin">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -63,6 +73,7 @@
     </div>
 </body>
 </html>
+
 
 
 
