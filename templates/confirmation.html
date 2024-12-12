@@ -3,18 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Successful</title>
+    <title>Payment Successful - SEA Organization</title>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #f9f9f9; color: #333; text-align: center; }
+        .container { max-width: 600px; margin: 50px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; }
+        p { font-size: 18px; margin-bottom: 10px; }
+        .success { color: green; font-size: 20px; font-weight: bold; }
+    </style>
 </head>
 <body>
-
     <div class="container">
-        <h1>Payment Successful!</h1>
+        <h1>Payment Successful</h1>
+        <p class="success">Thank you for your donation!</p>
         <p><strong>Name:</strong> {{ name }}</p>
         <p><strong>Email:</strong> {{ email }}</p>
         <p><strong>Amount:</strong> {{ amount }}</p>
         <p><strong>Payment Method:</strong> {{ method }}</p>
     </div>
-
 </body>
 </html>
 

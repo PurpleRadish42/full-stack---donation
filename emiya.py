@@ -83,6 +83,35 @@ def logout():
     session.clear()
     flash('You have been logged out.')
     return redirect(url_for('login'))
+@app.route('/payment', methods=['GET', 'POST'])
+def payment():
+    return render_template('payments.html')
+
+@app.route('/payment-success', methods=['POST'])
+def payment_success():
+    # Fetching the data from the form
+    name = request.form['name']
+    email = request.form['email']
+    amount = request.form['amount']
+    payment_method = request.form['paymentMethod']
+
+    # Store payment details in the database
+    cursor = mysql.connection.cursor()
+    cursor.execute('INSERT INTO payments (name, email, amount, payment_method) VALUES (%s, %s, %s, %s)', 
+                   (name, email, amount, payment_method))
+    mysql.connection.commit()
+
+    return 'Success', 200
+
+@app.route('/confirmation')
+def confirmation():
+    # Fetching the payment details from the URL parameters
+    name = request.args.get('name')
+    email = request.args.get('email')
+    amount = request.args.get('amount')
+    method = request.args.get('method')
+    return render_template('confirmation.html', name=name, email=email, amount=amount, method=method)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

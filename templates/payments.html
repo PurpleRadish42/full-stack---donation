@@ -15,11 +15,14 @@
         nav li a { font-size: 14px; text-transform: uppercase; padding: 0 15px; color: white; text-decoration: none; }
         nav li a:hover { color: #ff8c69; }
         .container { margin: 100px auto; padding: 20px; max-width: 600px; text-align: center; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; }
+        h2 { font-size: 20px; margin-bottom: 15px; color: rgb(5, 5, 107); }
         form label { display: block; margin: 10px 0 5px; font-weight: bold; text-align: left; }
         form input, button { width: 100%; padding: 10px; margin-bottom: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; }
         button { background: rgb(5, 5, 107); color: white; border: none; cursor: pointer; }
         button:hover { background: #ff8c69; }
-        .error { color: red; font-size: 12px; text-align: left; margin-bottom: -10px; }
+        .payment-options { display: flex; justify-content: space-around; margin-bottom: 20px; }
+        .payment-options input { margin-right: 5px; }
     </style>
 </head>
 <body>
@@ -31,20 +34,19 @@
             <p><strong>Amount:</strong> <span id="amount"></span></p>
         </div>
         <h2>Choose Payment Method</h2>
-        <form id="paymentForm" action="/payment-success" method="POST">
-            <input type="radio" id="creditCard" name="paymentMethod" value="Credit Card" required>
-            <label for="creditCard">Credit Card</label><br>
-            <input type="radio" id="debitCard" name="paymentMethod" value="Debit Card">
-            <label for="debitCard">Debit Card</label><br>
-            <input type="radio" id="upi" name="paymentMethod" value="UPI">
-            <label for="upi">UPI</label><br><br>
-
+        <form id="paymentForm">
+            <div class="payment-options">
+                <label for="creditCard"><input type="radio" id="creditCard" name="paymentMethod" value="Credit Card" required> Credit Card</label>
+                <label for="debitCard"><input type="radio" id="debitCard" name="paymentMethod" value="Debit Card"> Debit Card</label>
+                <label for="upi"><input type="radio" id="upi" name="paymentMethod" value="UPI"> UPI</label>
+            </div>
             <div id="paymentFields"></div>
             <button type="button" onclick="validateAndSubmit()">Pay Now</button>
         </form>
     </div>
 
     <script>
+        // Function to fetch URL parameters
         function getQueryParams() {
             const urlParams = new URLSearchParams(window.location.search);
             return {
@@ -54,6 +56,7 @@
             };
         }
 
+        // Display user details on the page
         function displayUserDetails() {
             const { name, email, amount } = getQueryParams();
             document.getElementById('name').textContent = name;
@@ -61,17 +64,20 @@
             document.getElementById('amount').textContent = amount;
         }
 
-        displayUserDetails();
+        displayUserDetails();  // Call function to display details
 
         const paymentFields = document.getElementById('paymentFields');
+        
+        // Add event listener to render payment fields when a payment method is selected
         document.querySelectorAll('input[name="paymentMethod"]').forEach((radio) => {
             radio.addEventListener('change', () => {
                 renderFields(radio.value);
             });
         });
 
+        // Function to render the specific payment fields based on selected method
         function renderFields(method) {
-            paymentFields.innerHTML = '';
+            paymentFields.innerHTML = ''; // Clear the payment fields first
             if (method === 'Credit Card' || method === 'Debit Card') {
                 paymentFields.innerHTML = `
                     <label for="cardNumber">Card Number:</label>
@@ -91,11 +97,12 @@
             }
         }
 
+        // Validate form and submit payment details
         function validateAndSubmit() {
             const method = document.querySelector('input[name="paymentMethod"]:checked').value;
             const { name, email, amount } = getQueryParams();
 
-            // Send data to the backend (POST request)
+            // Send payment data to backend via POST request
             const form = document.getElementById("paymentForm");
             const data = new FormData(form);
             data.append("name", name);
@@ -106,17 +113,20 @@
                 method: 'POST',
                 body: data
             })
-            .then(response => response.json())
-            .then(data => {
-                // After payment is processed, redirect to confirmation page
+            .then(() => {
+                // Redirect to confirmation page
                 window.location.href = `/confirmation?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&amount=${encodeURIComponent(amount)}&method=${encodeURIComponent(method)}`;
             })
-            .catch((error) => {
+            .catch(error => {
                 console.error('Error:', error);
             });
         }
     </script>
 </body>
 </html>
+
+
+
+
 
 
