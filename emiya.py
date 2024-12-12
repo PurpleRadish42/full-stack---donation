@@ -28,6 +28,7 @@ def login():
         cur = mysql.connection.cursor()
         cur.execute("SELECT id, password, role FROM login WHERE username=%s", [username])
         user = cur.fetchone()
+        print(user)
         cur.close()
 
         if user:
