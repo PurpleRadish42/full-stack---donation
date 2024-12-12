@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #f9f9f9; color: #333; }
+        nav { width: 100%; top: 0; height: 65px; line-height: 75px; position: fixed; background: rgb(5, 5, 107); color: white; z-index: 100; }
+        nav .logo p { float: left; padding: 0 20px; font-size: 22px; font-weight: bold; }
+        nav ul { float: right; margin-right: 20px; }
+        nav li { display: inline-block; list-style: none; }
+        nav li a { font-size: 14px; text-transform: uppercase; padding: 0 15px; color: white; text-decoration: none; }
+        nav li a:hover { color: #ff8c69; }
+        .container { margin: 100px auto; padding: 20px; max-width: 600px; text-align: center; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h2 { margin-bottom: 20px; color: rgb(5, 5, 107); }
+        form label { display: block; margin: 10px 0 5px; font-weight: bold; text-align: left; }
+        form input, button { width: 100%; padding: 10px; margin-bottom: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; }
+        button { background: rgb(5, 5, 107); color: white; border: none; cursor: pointer; }
+        button:hover { background: #ff8c69; }
+        a { color: rgb(5, 5, 107); text-decoration: none; font-size: 14px; display: block; margin-top: 10px; }
+        a:hover { color: #ff8c69; }
+        .error { color: red; font-size: 12px; margin-top: 5px; }
+    </style>
+    <script>
+        function validatePassword() {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirm_password").value;
+            var errorMessage = "";
+
+            // Check if password is at least 6 characters long and no more than 10 characters
+            if (password.length < 6) {
+                errorMessage = "Password must be at least 6 characters long.";
+            }
+            else if (password.length > 10) {
+                errorMessage = "Password must not exceed 10 characters.";
+            }
+            // Check if password contains at least one special character
+            else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                errorMessage = "Password must contain at least one special character.";
+            }
+            // Check if password and confirm password match
+            else if (password !== confirmPassword) {
+                errorMessage = "Passwords do not match.";
+            }
+
+            // Display error message or allow form submission
+            if (errorMessage) {
+                document.getElementById("passwordError").innerText = errorMessage;
+                return false; // Prevent form submission
+            } else {
+                document.getElementById("passwordError").innerText = "";
+                return true; // Allow form submission
+            }
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <p>Donation Website</p>
+        </div>
+    </nav>
+    <div class="container">
+        <h2>Register</h2>
+        <form method="POST" action="{{ url_for('register') }}" onsubmit="return validatePassword();">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Re-enter your password" required>
+            
+            <!-- Error message container -->
+            <div id="passwordError" class="error"></div>
+            
+            <button type="submit">Register</button>
+        </form>
+        <a href="{{ url_for('login') }}">Already have an account? Login here</a>
+    </div>
+</body>
+</html>
+
+
+
