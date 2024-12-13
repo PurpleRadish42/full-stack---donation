@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, session, url_for, flash
+from flask import *
 from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
+import datetime
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
@@ -84,6 +85,7 @@ def logout():
     session.clear()
     flash('You have been logged out.')
     return redirect(url_for('login'))
+
 @app.route('/payment', methods=['GET', 'POST'])
 def payment():
     return render_template('payments.html')
@@ -112,6 +114,52 @@ def confirmation():
     amount = request.args.get('amount')
     method = request.args.get('method')
     return render_template('confirmation.html', name=name, email=email, amount=amount, method=method)
+
+@app.route('/donation',methods=['GET','POST'])
+def donation():
+    return render_template('donation.html')
+
+
+@app.route('/special')
+def special():
+    return render_template('special.html')
+
+@app.route('/book-slot', methods=['POST'])
+def book_slot():
+    center = request.form['center']
+    type_ = request.form['type']
+    name = request.form['name']
+    date = request.form['date']
+    time = request.form['time']
+    occasion = request.form['occasion']
+
+    # Check if the slot is already booked
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM bookings WHERE date = %s AND time = %s AND center = %s", (date, time, center))
+    existing_booking = cur.fetchone()
+
+    if existing_booking:
+        cur.close()
+        return "<script>alert('Sorry, the slot is already booked.'); window.location.href = '/';</script>"
+
+    # Insert booking into the database
+    cur.execute("INSERT INTO bookings (center, type, name, date, time, occasion) VALUES (%s, %s, %s, %s, %s, %s)",
+                (center, type_, name, date, time, occasion))
+    mysql.connection.commit()
+    cur.close()
+
+    return "<script>alert('Booking successful!'); window.location.href = '/';</script>"
+
+@app.route('/available-slots', methods=['GET'])
+def available_slots():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT date, time FROM bookings")
+    booked_slots = cur.fetchall()
+    cur.close()
+
+    # Convert booked slots to a list of dictionaries
+    booked_slots_list = [{'date': slot[0].strftime('%Y-%m-%d'), 'time': slot[1]} for slot in booked_slots]
+    return jsonify(booked_slots_list)
 
 
 if __name__ == '__main__':
