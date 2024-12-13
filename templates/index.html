@@ -50,14 +50,14 @@
 
     <div class="city-tables">
         {% for center in centers %}
-        <a href="/center1?id={{ center[0]}}">
             <div class="city-table">
-                <div class="city-name">{{ center[1] }}</div>
+                <a href="/center?id={{center[0]}}" target="_blank">
+                    <div class="city-name">{{ center[1] }}</div>
+                </a>
                 <div class="city-image">
                     <img src="{{ center.image_url }}" alt="{{ center.city_name }}">
                 </div>
             </div>
-        </a>
         {% endfor %}
     </div>
 
