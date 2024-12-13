@@ -38,13 +38,38 @@
     </div>
 
     <!-- Main Content -->
-    <div class="main-image">
-        <img src="static/images/main image.jpeg" alt="Main Image" class="main-image">
+    <div class="main-image-container">
+        <button class="arrow left-arrow" onclick="showPreviousImage()">&#10094;</button>
+        <div class="image-slider">
+            <img src="static/images/main image.jpeg" alt="Main Image" class="main-image">
+            <img src="static/images/main image.jpeg" alt="Image 1" class="main-image">
+            <img src="static/images/main image.jpeg" alt="Image 2" class="main-image">
+        </div>
+        <button class="arrow right-arrow" onclick="showNextImage()">&#10095;</button>
     </div>
-
     <!-- Footer -->
     <div class="footer">
         &copy; 2024. SEA private ltd. All rights reserved.
     </div>
+    <script>
+        const images = document.querySelectorAll('.main-image');
+        const slider = document.querySelector('.image-slider');
+        let currentIndex = 0;
+
+        function showNextImage() {
+            currentIndex = (currentIndex + 1) % images.length;
+            updateSliderPosition();
+        }
+
+        function showPreviousImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateSliderPosition();
+        }
+
+        function updateSliderPosition() {
+            const offset = -currentIndex * 100;
+            slider.style.transform = `translateX(${offset}%)`;
+        }
+    </script>
 </body>
 </html>

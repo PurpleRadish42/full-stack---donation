@@ -63,28 +63,44 @@ body {
     background-color: #004080;
 }
 
-    /* Main image container styling */
+/* Main Image Slider */
 .main-image-container {
+    position: relative;
     width: 100%;
-    margin: 0;
-    padding: 0;
+    height: 400px; /* Adjust height as needed */
+    overflow: hidden;
 }
 
-/* Main image styling */
+.image-slider {
+    display: flex;
+    transition: transform 0.8s ease-in-out; /* Smoother transition */
+    width: 300%; /* Adjust based on the number of images */
+}
+
 .main-image {
-    width: 100%; /* Makes the image stretch across the entire width */
-    height: auto; /* Maintains the aspect ratio */
-    display: block; /* Removes any inline spacing around the image */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Maintain aspect ratio and fill container */
 }
 
-/* Footer */
-.footer {
-    text-align: center;
-    background-color: #004080;
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
     color: white;
-    padding: 10px 0;
-    margin-top: 20px;
-    font-size: 0.9rem;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.left-arrow {
+    left: 10px;
+}
+
+.right-arrow {
+    right: 10px;
 }
     /* General navbar styles */
 .navbar {
