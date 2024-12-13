@@ -108,8 +108,8 @@ def dashboard():
         donations_data=donations_data
     )
 
-@app.route('/center1')
-def center1():
+@app.route('/center')
+def center():
     center_id = request.args.get('id')
 
     # Validate if center_id exists and is numeric
@@ -125,7 +125,7 @@ def center1():
     cursor.close()
 
     if center:
-        return render_template('center1.html', center=center)  # Pass a single center object
+        return render_template('center.html', center=center)  # Pass a single center object
     else:
         return render_template('message.html', message="Center not found.")
 
