@@ -40,4 +40,16 @@ CREATE TABLE payments (
 
 select*from payments;
 
+CREATE TABLE bookings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    center VARCHAR(50),
+    type VARCHAR(20),
+    name VARCHAR(100),
+    date DATE,
+    time VARCHAR(20),
+    occasion VARCHAR(100)
+);
+select*from bookings;
+
+
 
