@@ -16,9 +16,7 @@ mysql = MySQL(app)
 def home():
     return render_template('index.html')
 
-@app.route('/center1')
-def center1():
-    return render_template('center1.html')
+
 
 @app.route('/donate', methods=['POST'])
 def donate():
@@ -105,5 +103,26 @@ def dashboard():
         joiners_data=joiners_data,
         donations_data=donations_data
     )
+
+@app.route('/center1')
+def center1():
+    center_id = request.args.get('id')
+
+    # Validate if center_id exists and is numeric
+    if not center_id or not center_id.isdigit():
+        return render_template('message.html', message="Invalid center ID.")
+
+    center_id = int(center_id)
+
+    # Fetch the center's details from the database
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM centers WHERE id = %s", (center_id,))
+    center = cursor.fetchone()  # Fetch one center
+    cursor.close()
+
+    if center:
+        return render_template('center1.html', center=center)  # Pass a single center object
+    else:
+        return render_template('message.html', message="Center not found.")
 
 app.run(debug=True)
