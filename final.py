@@ -14,7 +14,11 @@ mysql = MySQL(app)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM centers")
+    centers = cur.fetchall()
+    cur.close()
+    return render_template('index.html', centers=centers)
 
 
 

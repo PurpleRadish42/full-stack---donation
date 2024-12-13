@@ -47,6 +47,20 @@
         </div>
         <button class="arrow right-arrow" onclick="showNextImage()">&#10095;</button>
     </div>
+
+    <div class="city-tables">
+        {% for center in centers %}
+        <a href="/center1?id={{ center[0]}}">
+            <div class="city-table">
+                <div class="city-name">{{ center[1] }}</div>
+                <div class="city-image">
+                    <img src="{{ center.image_url }}" alt="{{ center.city_name }}">
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
     <!-- Footer -->
     <div class="footer">
         &copy; 2024. SEA private ltd. All rights reserved.

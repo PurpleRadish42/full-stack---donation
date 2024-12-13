@@ -165,3 +165,35 @@ body {
 .dropdown:hover .dropbtn {
     background-color: #004080;
 }
+/* ...existing code... */
+
+.city-tables {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.city-table {
+    width: 22%;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.city-name {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.city-image img {
+    width: 100%;
+    height: auto;
+}
