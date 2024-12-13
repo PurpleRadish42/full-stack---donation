@@ -6,6 +6,51 @@
     <title>Document</title>
 </head>
 <body>
-    Hello and welcome to our website
+    <style>
+        .image-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.image-box {
+  position: relative;
+  width: 300px; /* Adjust size as needed */
+}
+
+.image-box img {
+  width: 100%;
+  border-radius: 8px; /* Optional for rounded corners */
+}
+
+.overlay-text {
+  position: absolute;
+  bottom: 10px; /* Adjust position */
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 18px;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+    </style>
+    <div class="image-container">
+        <div class="image-box">
+          <img src="image1.jpg" alt="Donation Box">
+          <div class="overlay-text">Donate Clothes</div>
+        </div>
+        <div class="image-box">
+          <img src="image2.jpg" alt="Healthcare Supplies">
+          <div class="overlay-text">Healthcare Supplies</div>
+        </div>
+        <div class="image-box">
+          <img src="image3.jpg" alt="Education Support">
+          <div class="overlay-text">Support Education</div>
+        </div>
+      </div>
+      
 </body>
 </html>

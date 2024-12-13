@@ -14,16 +14,16 @@
     .container {
       display: flex;
       flex-direction: column;
-      height: 100vh;
+      min-height: 100vh; /* Allow content to extend beyond the viewport height */
     }
 
     .image-section {
-      flex: 0 0 75%; /* Image section takes up 3/4th (75%) of the page */
       position: relative;
-      background-image: url('static/images/center.jpeg'); /* Replace with your image URL */
+      background-image: url('static/images/circle.jpeg'); /* Replace with your image URL */
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+      height: 75vh; /* Adjust height for the image section */
     }
 
     .fade-overlay {
@@ -37,48 +37,47 @@
 
     .donation-form {
       position: absolute;
-      top: 67%; /* Push the form higher on the screen */
+      top: 85%;
       right: 10%;
       transform: translateY(-50%);
       width: 300px;
-      background: rgb(11, 11, 11);
-      padding: 17px; /* Reduced padding */
+      background-color: #e6f7ff;
+      padding: 17px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       z-index: 2;
-      ;
     }
 
     .donation-form h2 {
       margin-top: 0;
       color: #01579b;
-      font-size: 18px; /* Smaller font size */
+      font-size: 18px;
       text-align: center;
     }
 
     .donation-form label {
       display: block;
-      margin: 8px 0 5px; /* Reduced margin */
+      margin: 8px 0 5px;
       color: #0277bd;
       font-weight: bold;
-      font-size: 14px; /* Smaller label size */
+      font-size: 14px;
     }
 
     .donation-form input,
     .donation-form select {
       width: 100%;
       padding: 5px;
-      margin-bottom: 8px; /* Reduced spacing between fields */
+      margin-bottom: 8px;
       border: 1px solid #81d4fa;
       border-radius: 5px;
       outline: none;
-      background-color: #e1f5fe;
-      font-size: 14px; /* Reduced font size */
+      background-color: white;
+      font-size: 14px;
     }
 
     .donation-form button {
       width: 100%;
-      padding: 8px; /* Reduced button height */
+      padding: 8px;
       border: none;
       border-radius: 5px;
       background-color: #0288d1;
@@ -91,41 +90,99 @@
       background-color: #0277bd;
     }
 
-    /* Checkbox Styling */
     .checkbox-container {
       display: flex;
       flex-direction: column;
-      gap: 8px; /* Reduced gap between checkboxes */
-      margin-bottom: 10px; /* Reduced margin */
+      gap: 8px;
+      margin-bottom: 10px;
     }
 
     .checkbox-container label {
       display: flex;
       align-items: center;
-      gap: 8px; /* Reduced gap between checkbox and label */
-      background-color: #f1f8e9;
-      padding: 8px; /* Reduced padding */
-      border: 1px solid #c5e1a5;
+      gap: 8px;
+      background-color: #d9dbd7;
+      padding: 8px;
+      border: 1px solid #82bdd1;
       border-radius: 5px;
       cursor: pointer;
-      font-size: 13px; /* Reduced font size */
+      font-size: 13px;
     }
 
     .quantity-input {
       margin-left: auto;
-      width: 50px; /* Adjusted input width */
+      width: 50px;
       border: 1px solid #81d4fa;
       border-radius: 5px;
       padding: 2px;
       text-align: center;
     }
 
-    /* Responsive Design */
+    .text-section {
+      padding: 20px;
+      text-align: left;
+      background-color: #ffffff;
+      font-size: 16px;
+      color: #01579b;
+    }
+
+    .text-section h2 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .text-section p {
+      font-size: 16px;
+      margin-top: 0;
+    }
+
+    .image-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 20px;
+    }
+
+    .image-row img {
+      width: 30%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+   
+
+    .text-above-images {
+      text-align: center;
+      padding: 20px;
+      background-color: #e6f7ff; /* Optional: background to differentiate this section */
+      color: #01579b; /* Matching the color theme */
+    }
+
+    .text-above-images h2 {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .text-above-images p {
+      font-size: 16px;
+      margin: 0;
+    }
+
     @media (max-width: 768px) {
       .donation-form {
         width: 90%;
         right: 5%;
         top: 50%;
+      }
+
+      .image-row {
+        flex-direction: column;
+      }
+
+      .image-row img {
+        width: 100%;
       }
     }
   </style>
@@ -137,7 +194,7 @@
       <div class="fade-overlay"></div>
       <form class="donation-form" method="post" action="/donate" enctype="multipart/form-data">
         <h2>Donate Now</h2>
-        
+
         <label for="donor-type">Who are you:</label>
         <select id="donor-type" name="donor-type">
           <option value="individual">Individual</option>
@@ -181,15 +238,57 @@
           <option value="courier service">Courier Service</option>
         </select>
 
-        <button type="submit">submit</button>
+        <button type="submit">Submit</button>
       </form>
     </div>
 
-    <!-- Remaining Section -->
-    <div class="remaining-section"></div>
+    <!-- Text Section Below Image -->
+    <div class="text-section">
+      <h1>What we do at SEA Organisation Bangalore</h1>
+      <p>
+        At [Your Organization's Name], we are dedicated to making a meaningful difference in the lives of those in need.<br>
+        Our mission is to create a compassionate community where resources are shared generously and no one is left behind.<br> 
+        Through our network of donation centers, we collect and distribute essential items such as food, clothing, books,<br> 
+        and healthcare supplies to underprivileged individuals and families. We also host regular events, including food drives,<br> 
+        educational workshops, and health camps, to empower communities and inspire change. Together with our volunteers, donors,<br> 
+        and partners, we strive to build a better future—one act of kindness at a time. Join us in our journey to spread hope and positivity!
+      </p><br>
+      <h1>Latest events</h1>
+    </div>
+
+   <!-- Updated Image Row with Titles -->
+   <!-- Text Above Images -->
+<!-- Text Above Images -->
+<div class="text-above-images" style="display: flex; justify-content: space-between; padding: 0 20px; margin-bottom: -10px;">
+  <h3 style="font-size: 16px; color: #01579b; text-align: center; flex: 1; text-align: center;">Cloth Donation</h3>
+  <h3 style="font-size: 16px; color: #01579b; text-align: center; flex: 1; text-align: center;">Medical Camp</h3>
+  <h3 style="font-size: 16px; color: #01579b; text-align: center; flex: 1; text-align: center;">Education Drive</h3>
+</div>
+
+<!-- Image Row -->
+<div class="image-row">
+  <img src="static/images/cloth.jpeg" alt="Cloth Donation">
+  <img src="static/images/health.jpeg" alt="Medical Camp">
+  <img src="static/images/smtg.jpeg" alt="Education Drive">
+</div>
+
+
+
+      
+    </div>
   </div>
 </body>
 </html>
+
+
+
+                                                                 
+
+
+
+
+
+
 
 
 
