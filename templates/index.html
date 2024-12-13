@@ -3,54 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SEA</title>
+    <link rel="stylesheet" href="/static/styles/index.css">
 </head>
 <body>
-    <style>
-        .image-container {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-}
-
-.image-box {
-  position: relative;
-  width: 300px; /* Adjust size as needed */
-}
-
-.image-box img {
-  width: 100%;
-  border-radius: 8px; /* Optional for rounded corners */
-}
-
-.overlay-text {
-  position: absolute;
-  bottom: 10px; /* Adjust position */
-  left: 50%;
-  transform: translateX(-50%);
-  color: white;
-  font-size: 18px;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  padding: 5px 10px;
-  border-radius: 5px;
-  text-align: center;
-}
-
-    </style>
-    <div class="image-container">
-        <div class="image-box">
-          <img src="image1.jpg" alt="Donation Box">
-          <div class="overlay-text">Donate Clothes</div>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <a href="/">
+                <img src="static/images/sea logo.jpg" alt="SEA Logo">
+            </a>
         </div>
-        <div class="image-box">
-          <img src="image2.jpg" alt="Healthcare Supplies">
-          <div class="overlay-text">Healthcare Supplies</div>
+        <h1 class="header-title">SEA Organization</h1>
+        <div class="donate-button">
+            <a href="/donate">Donate Now</a>
         </div>
-        <div class="image-box">
-          <img src="image3.jpg" alt="Education Support">
-          <div class="overlay-text">Support Education</div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="dropdown">
+            <a href="#centers" class="dropbtn">Centers</a>
+            <div class="dropdown-content">
+                <a href="/city_result">Bangalore</a>
+                <a href="/city_result">Chennai</a>
+                <a href="/city_result">Hyderabad</a>
+                <a href="/city_result">Cochin</a>
+            </div>
         </div>
-      </div>
-      
+        <a href="#special-occasions">Special Occasions</a>
+        <a href="/locateus">Locate Us</a>
+        <a href="#about-us">About Us</a>
+        <a href="/login">Login</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-image-container">
+        <button class="arrow left-arrow" onclick="showPreviousImage()">&#10094;</button>
+        <div class="image-slider">
+            <img src="static/images/main image.jpeg" alt="Main Image" class="main-image">
+            <img src="static/images/main image.jpeg" alt="Image 1" class="main-image">
+            <img src="static/images/main image.jpeg" alt="Image 2" class="main-image">
+        </div>
+        <button class="arrow right-arrow" onclick="showNextImage()">&#10095;</button>
+    </div>
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2024. SEA private ltd. All rights reserved.
+    </div>
+    <script>
+        const images = document.querySelectorAll('.main-image');
+        const slider = document.querySelector('.image-slider');
+        let currentIndex = 0;
+
+        function showNextImage() {
+            currentIndex = (currentIndex + 1) % images.length;
+            updateSliderPosition();
+        }
+
+        function showPreviousImage() {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateSliderPosition();
+        }
+
+        function updateSliderPosition() {
+            const offset = -currentIndex * 100;
+            slider.style.transform = `translateX(${offset}%)`;
+        }
+    </script>
 </body>
 </html>
