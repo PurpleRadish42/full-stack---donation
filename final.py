@@ -1,6 +1,12 @@
 from flask import *
 from flask_mysqldb import MySQL
 from flask_mail import Mail, Message
+from flask_mysqldb import MySQL
+import matplotlib
+matplotlib.use('Agg')  # Set backend to Agg (non-interactive)
+import matplotlib.pyplot as plt
+import io
+import base64
 
 
 app=Flask(__name__)
@@ -75,6 +81,47 @@ def donate():
     except Exception as e:
         print(f"Error: {e}")
         return render_template('message.html', message="Some error occurred, please try again later.")
+    
+@app.route('/submit_donation', methods=['POST'])
+def submit_donation():
+    if request.method == 'POST':
+        # Retrieve form data
+        donor_type = request.form['donor-type']
+        name = request.form['name']
+        email = request.form['email']
+        delivery_type = request.form['delivery-type']
+        city = request.form['city']
+        
+        # Quantities for each item (default to 0 if input is empty)
+        clothes = int(request.form.get('quantity_clothes', '0') or '0')
+        necessary_items = int(request.form.get('quantity_items', '0') or '0')
+        food = int(request.form.get('quantity_food', '0') or '0')
+        healthcare_products = int(request.form.get('quantity_healthcare', '0') or '0')
+        
+        # Validate at least one quantity is non-zero
+        if not (clothes > 0 or necessary_items > 0 or food > 0 or healthcare_products > 0):
+            message = "Error: You must donate at least one item."
+            return render_template('message.html', message=message)
+
+        try:
+            # Database Insert Query
+            cur = mysql.connection.cursor()
+            query = """
+                INSERT INTO donations (donor_type, name, email, delivery_type, city, clothes, necessary_items, food, healthcare_products)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """
+            values = (donor_type, name, email, delivery_type, city, clothes, necessary_items, food, healthcare_products)
+            cur.execute(query, values)
+            mysql.connection.commit()
+            cur.close()
+            
+            # Success message
+            message = f"Thank you {name}! Your donation has been received successfully. We SEA your kindness :)"
+            return render_template('message.html', message=message)
+        except Exception as e:
+            # Error handling
+            message = f"Error: {str(e)}"
+            return render_template('message.html', message=message)
 
     
 @app.route('/dashboard', methods=['GET'])
@@ -133,5 +180,165 @@ def center():
         return render_template('center.html', city=city,center=center)  # Pass a single center object
     else:
         return render_template('message.html', message="Center not found.")
+    
+
+
+@app.route('/charts')
+def show_charts():
+    try:
+        cur = mysql.connection.cursor()
+
+        # Fetch data for pie charts: Total donations grouped by city
+        pie_query = """
+            SELECT city, SUM(clothes), SUM(necessary_items), SUM(food), SUM(healthcare_products)
+            FROM donations
+            GROUP BY city
+        """
+        cur.execute(pie_query)
+        pie_rows = cur.fetchall()
+
+        # Fetch data for bar charts: Count of delivery types (doorstep pick & courier service)
+        bar_delivery_query = """
+            SELECT city,
+                   SUM(CASE WHEN delivery_type = 'doorstep pick' THEN 1 ELSE 0 END) AS doorstep_pick_count,
+                   SUM(CASE WHEN delivery_type = 'courier service' THEN 1 ELSE 0 END) AS courier_service_count
+            FROM donations
+            GROUP BY city
+        """
+        cur.execute(bar_delivery_query)
+        bar_delivery_rows = cur.fetchall()
+
+        # Fetch data for bar charts: Count of Individual vs Company donors
+        bar_donor_query = """
+            SELECT city,
+                   SUM(CASE WHEN donor_type = 'Individual' THEN 1 ELSE 0 END) AS individual_count,
+                   SUM(CASE WHEN donor_type = 'Company' THEN 1 ELSE 0 END) AS company_count
+            FROM donations
+            GROUP BY city
+        """
+        cur.execute(bar_donor_query)
+        bar_donor_rows = cur.fetchall()
+
+        # Map delivery and donor data for quick access
+        delivery_data = {row[0]: {'doorstep_pick': row[1], 'courier_service': row[2]} for row in bar_delivery_rows}
+        donor_data = {row[0]: {'individual': row[1], 'company': row[2]} for row in bar_donor_rows}
+
+        charts = []
+        for row in pie_rows:
+            city, clothes, necessary_items, food, healthcare = row
+
+            # Data for the pie chart
+            pie_labels = ['Clothes', 'Necessary Items', 'Food', 'Healthcare']
+            pie_values = [clothes, necessary_items, food, healthcare]
+            pie_colors = ['#FF9999', '#66B3FF', '#99FF99', '#FFCC99']
+
+            # Generate the pie chart
+            plt.figure(figsize=(5, 5))
+            plt.pie(pie_values, labels=pie_labels, autopct='%1.1f%%', startangle=140, colors=pie_colors)
+            plt.title(f"{city} Donations Breakdown")
+            buffer = io.BytesIO()
+            plt.savefig(buffer, format='png')
+            buffer.seek(0)
+            pie_chart_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+            buffer.close()
+            plt.close()
+
+            # Generate bar chart for delivery methods
+            doorstep = delivery_data[city]['doorstep_pick']
+            courier = delivery_data[city]['courier_service']
+            bar_labels_delivery = ['Doorstep Pick', 'Courier Service']
+            bar_values_delivery = [doorstep, courier]
+            bar_colors_delivery = ['#FF5733', '#33FF57']
+
+            plt.figure(figsize=(5, 5))
+            plt.bar(bar_labels_delivery, bar_values_delivery, color=bar_colors_delivery)
+            plt.title(f"{city} Delivery Methods")
+            plt.ylabel("Total Count")
+            buffer = io.BytesIO()
+            plt.savefig(buffer, format='png')
+            buffer.seek(0)
+            bar_delivery_chart_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+            buffer.close()
+            plt.close()
+
+            # Generate bar chart for donor type
+            individual = donor_data[city]['individual']
+            company = donor_data[city]['company']
+            bar_labels_donor = ['Individual', 'Company']
+            bar_values_donor = [individual, company]
+            bar_colors_donor = ['#FFC300', '#581845']
+
+            plt.figure(figsize=(5, 5))
+            plt.bar(bar_labels_donor, bar_values_donor, color=bar_colors_donor)
+            plt.title(f"{city} Donor Types")
+            plt.ylabel("Total Count")
+            buffer = io.BytesIO()
+            plt.savefig(buffer, format='png')
+            buffer.seek(0)
+            bar_donor_chart_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+            buffer.close()
+            plt.close()
+
+            # Append chart data
+            charts.append({
+                'city': city,
+                'pie_chart_base64': f"data:image/png;base64,{pie_chart_base64}",
+                'bar_delivery_chart_base64': f"data:image/png;base64,{bar_delivery_chart_base64}",
+                'bar_donor_chart_base64': f"data:image/png;base64,{bar_donor_chart_base64}"
+            })
+
+        cur.close()
+        return render_template('charts.html', charts=charts)
+
+    except Exception as e:
+        # Error handling
+        message = f"Error: {str(e)}"
+        return render_template('message.html', message=message)
+
+@app.route('/halloffame')
+def top_donors():
+    try:
+        cur = mysql.connection.cursor()
+
+        # Query for Top 3 Individual Donors (Include City)
+        query_individual = """
+            SELECT name, city, SUM(clothes + necessary_items + food + healthcare_products) AS total_donation
+            FROM donations
+            WHERE donor_type = 'Individual'
+            GROUP BY email, name, city
+            ORDER BY total_donation DESC
+            LIMIT 3
+        """
+        cur.execute(query_individual)
+        individual_donors = cur.fetchall()
+
+        # Query for Top 3 Company Donors (Include City)
+        query_company = """
+            SELECT name, city, SUM(clothes + necessary_items + food + healthcare_products) AS total_donation
+            FROM donations
+            WHERE donor_type = 'Company'
+            GROUP BY email, name, city
+            ORDER BY total_donation DESC
+            LIMIT 3
+        """
+        cur.execute(query_company)
+        company_donors = cur.fetchall()
+
+        # Format data for the template
+        top_individuals = [{'name': row[0], 'city': row[1], 'total_donation': row[2]} for row in individual_donors]
+        top_companies = [{'name': row[0], 'city': row[1], 'total_donation': row[2]} for row in company_donors]
+
+        cur.close()
+
+        return render_template('top_donors.html', top_individuals=top_individuals, top_companies=top_companies)
+
+    except Exception as e:
+        # Error handling
+        message = f"Error: {str(e)}"
+        return render_template('message.html', message=message)
+
+
+
+
 
 app.run(debug=True)

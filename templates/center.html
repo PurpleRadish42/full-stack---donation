@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Donation Page</title>
+  <link rel="icon" type="image/x-icon" href="static/images/sea logo.jpg">
+  <title>{{ center[1]}} Center</title>
   <style>
     body {
       margin: 0;
@@ -14,7 +15,7 @@
     .container {
       display: flex;
       flex-direction: column;
-      min-height: 100vh; /* Allow content to extend beyond the viewport height */
+      min-height: 100vh;
     }
 
     .image-section {
@@ -32,7 +33,7 @@
       right: 0;
       bottom: 0;
       left: 0;
-      background: rgba(0, 0, 0, 0.5); /* Optional: fade overlay */
+      background: rgba(0, 0, 0, 0.5);
     }
 
     .donation-form {
@@ -90,31 +91,11 @@
       background-color: #0277bd;
     }
 
-    .checkbox-container {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .checkbox-container label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background-color: #d9dbd7;
-      padding: 8px;
-      border: 1px solid #82bdd1;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 13px;
-    }
-
     .quantity-input {
-      margin-left: auto;
-      width: 50px;
+      width: 100%;
       border: 1px solid #81d4fa;
       border-radius: 5px;
-      padding: 2px;
+      padding: 5px;
       text-align: center;
     }
 
@@ -124,17 +105,6 @@
       background-color: #ffffff;
       font-size: 16px;
       color: #01579b;
-    }
-
-    .text-section h2 {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .text-section p {
-      font-size: 16px;
-      margin-top: 0;
     }
 
     .image-row {
@@ -150,24 +120,16 @@
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-   
-
-    .text-above-images {
-      text-align: center;
-      padding: 20px;
-      background-color: #e6f7ff; /* Optional: background to differentiate this section */
-      color: #01579b; /* Matching the color theme */
-    }
-
-    .text-above-images h2 {
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .text-above-images p {
-      font-size: 16px;
-      margin: 0;
+    /* Footer */
+.footer {
+    text-align: center;
+    background-color: #004080;
+    color: white;
+    padding: 10px 0;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    bottom: 0;
+    width: 100%;
     }
 
     @media (max-width: 768px) {
@@ -192,7 +154,7 @@
     <!-- Image Section -->
     <div class="image-section">
       <div class="fade-overlay"></div>
-      <form class="donation-form" action="/donate" method="POST">
+      <form class="donation-form" action="/submit_donation" method="POST" onsubmit="return validateForm()">
         <h2>Donate Now</h2>
 
         <label for="donor-type">Who are you:</label>
@@ -207,45 +169,33 @@
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
-        <!-- Improved Checkboxes with Quantity -->
-        <label for="categories">Items you want to donate:</label>
-        <div class="checkbox-container">
-          <label>
-            <input type="checkbox" name="categories[]" value="clothes">
-            Clothes
-            <input type="number" class="quantity-input" name="quantity_clothes" placeholder="Qty">
-          </label>
-          <label>
-            <input type="checkbox" name="categories[]" value="necessary items">
-            Necessary Items
-            <input type="number" class="quantity-input" name="quantity_items" placeholder="Qty">
-          </label>
-          <label>
-            <input type="checkbox" name="categories[]" value="food">
-            Food
-            <input type="number" class="quantity-input" name="quantity_food" placeholder="Qty">
-          </label>
-          <label>
-            <input type="checkbox" name="categories[]" value="healthcare products">
-            Healthcare Products
-            <input type="number" class="quantity-input" name="quantity_healthcare" placeholder="Qty">
-          </label>
-        </div>
+        <!-- Quantity Inputs -->
+        <label for="quantities">Items you want to donate</label>
+        <label>Clothes:
+          <input type="number" class="quantity-input" name="quantity_clothes" placeholder="Qty">
+        </label>
+        <label>Necessary Items:
+          <input type="number" class="quantity-input" name="quantity_items" placeholder="Qty">
+        </label>
+        <label>Food:
+          <input type="number" class="quantity-input" name="quantity_food" placeholder="Qty">
+        </label>
+        <label>Healthcare Products:
+          <input type="number" class="quantity-input" name="quantity_healthcare" placeholder="Qty">
+        </label>
 
         <label for="delivery-type">Type of Delivery:</label>
         <select id="delivery-type" name="delivery-type">
           <option value="doorstep pick">Doorstep Pick</option>
           <option value="courier service">Courier Service</option>
         </select>
-        <!-- Hidden input fields for city and center_id -->
-    <input type="hidden" name="city" value="{{ city }}">
-    <input type="hidden" name="center_id" value="{{ center_id }}">
+        <input type="hidden" name="city" value="{{ city }}">
 
         <button type="submit">Submit</button>
       </form>
     </div>
 
-    <!-- Text Section Below Image -->
+    <!-- Text Section -->
     <div class="text-section">
       <h1>What we do at SEA Organisation {{center[1]}}</h1>
       <p>
@@ -259,51 +209,33 @@
       <h1>Latest events</h1>
     </div>
 
-   <!-- Updated Image Row with Titles -->
-   <!-- Text Above Images -->
-<!-- Text Above Images -->
-<div class="text-above-images" style="display: flex; justify-content: space-between; padding: 0 20px; margin-bottom: -10px;">
-  <h3 style="font-size: 16px; color: #01579b; text-align: center; flex: 1; text-align: center;">{{center[2]}}</h3>
-  <h3 style="font-size: 16px; color: #01579b; text-align: center; flex: 1; text-align: center;">{{center[3]}}</h3>
-  <h3 style="font-size: 16px; color: #01579b; text-align: center; flex: 1; text-align: center;">{{center[4]}}</h3>
-</div>
-
-<!-- Image Row -->
-<div class="image-row">
-  <img src="{{center[5]}}" alt="Cloth Donation">
-  <img src="{{center[6]}}" alt="Medical Camp">
-  <img src="{{center[7]}}" alt="Education Drive">
-</div>
-
-
-
-      
+    <!-- Image Section -->
+    <div class="image-row">
+      <img src="{{center[5]}}" alt="Cloth Donation">
+      <img src="{{center[6]}}" alt="Medical Camp">
+      <img src="{{center[7]}}" alt="Education Drive">
     </div>
   </div>
+  <div class="footer">
+    &copy; 2024. SEA private ltd. All rights reserved.
+  </div>
+
+  <script>
+    function validateForm() {
+      const clothes = document.getElementsByName('quantity_clothes')[0].value;
+      const items = document.getElementsByName('quantity_items')[0].value;
+      const food = document.getElementsByName('quantity_food')[0].value;
+      const healthcare = document.getElementsByName('quantity_healthcare')[0].value;
+      
+      if ((clothes == '' || clothes == 0) &&
+          (items == '' || items == 0) &&
+          (food == '' || food == 0) &&
+          (healthcare == '' || healthcare == 0)) {
+        alert("Please enter at any one quantity to donate.");
+        return false; // Prevent submission
+      }
+      return true;
+    }
+  </script>
 </body>
 </html>
-
-
-
-                                                                 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

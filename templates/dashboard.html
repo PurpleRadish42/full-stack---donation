@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="static/images/sea logo.jpg">
     <link rel="stylesheet" href="static/styles/dashboard.css">
     <title>Dashboard</title>
 </head>
@@ -101,16 +102,20 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Phone</th>
-                    <th>Donations</th>
                     <th>Delivery Type</th>
                     <th>City</th>
+                    <th>Clothes</th>
+                    <th>Necessary items</th>
+                    <th>Food</th>
+                    <th>Healthcare products</th>
+                    <th>Timestamp</th>
+                    <th>Donor Type</th>
                 </tr>
             </thead>
             <tbody id="joiners-table">
                 {% for row in donations_data %}
                 <tr>
-                    {% for i in range(0,7) %}
+                    {% for i in range(0,11) %}
                     <td>{{ row[i] }}</td>
                     {% endfor %}
                 </tr>
