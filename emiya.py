@@ -221,6 +221,7 @@ def register():
 
 
 
+
 @app.route('/dashboard')
 def dashboard():
     if 'username' in session:
@@ -236,6 +237,7 @@ def logout():
     session.clear()
     flash('You have been logged out.')
     return redirect(url_for('login'))
+
 
 @app.route('/payment', methods=['GET', 'POST'])
 def payment():
@@ -269,6 +271,7 @@ def confirmation():
 @app.route('/donation',methods=['GET','POST'])
 def donation():
     return render_template('donation.html')
+
 
 
 @app.route('/special')
@@ -312,7 +315,36 @@ def available_slots():
     booked_slots_list = [{'date': slot[0].strftime('%Y-%m-%d'), 'time': slot[1]} for slot in booked_slots]
     return jsonify(booked_slots_list)
 
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        message = request.form['message']
 
+        # Insert data into the database
+        try:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO contact (name, email, message) VALUES (%s, %s, %s)", (name, email, message))
+            mysql.connection.commit()
+            cur.close()
+
+            # Pass the success message to the message.html template
+            success_message = "We have received your message. Thank you for reaching out!"
+            return render_template('message.html', 
+                                   title="Message Status", 
+                                   message=success_message, 
+                                   back_url=url_for('contact'))
+
+        except Exception as e:
+            # Log the error and return an error message
+            print("Error: ", e)
+            error_message = "Something went wrong. Please try again later."
+            return render_template('message.html', 
+                                   title="Error", 
+                                   message=error_message, 
+                                   back_url=url_for('contact'))
+    return render_template('contactus.html')
 
 
 if __name__ == '__main__':
