@@ -1,5 +1,6 @@
 from flask import *
 from flask_mysqldb import MySQL
+from flask_mail import Mail, Message
 
 
 app=Flask(__name__)
@@ -10,7 +11,6 @@ app.config['MYSQL_PASSWORD'] = '@Bhijit6151'
 app.config['MYSQL_DB'] = 'donation'
 
 mysql = MySQL(app)
-
 
 @app.route('/')
 def home():
@@ -30,6 +30,8 @@ def donate():
         name = request.form.get('name')
         email = request.form.get('email')
         delivery_type = request.form.get('delivery-type')
+        city = request.form.get('city')  # Fetch city from hidden input
+        center_id = request.form.get('center_id')  # Optional
 
         # Combine categories and quantities into a single string
         categories = request.form.getlist('categories[]')
@@ -47,32 +49,33 @@ def donate():
                 if quantity > 0:
                     donation_details.append(f"{category}: {quantity}")
 
-        donation_summary = "; ".join(donation_details)  # Combine details into a single string
+        donation_summary = "; ".join(donation_details)
 
-        # Insert the single entry into the database if not already present
+        # Insert the entry into the database
         cur = mysql.connection.cursor()
         query = """
-            INSERT INTO donations (donor_type, name, email, donation_details, delivery_type)
-            SELECT %s, %s, %s, %s, %s
+            INSERT INTO donations (donor_type, name, email, donation_details, delivery_type, city)
+            SELECT %s, %s, %s, %s, %s, %s
             WHERE NOT EXISTS (
                 SELECT 1 FROM donations
-                WHERE name = %s AND email = %s AND donation_details = %s AND delivery_type = %s
+                WHERE name = %s AND email = %s AND donation_details = %s AND delivery_type = %s AND city = %s
             )
         """
         cur.execute(query, (
-            donor_type, name, email, donation_summary, delivery_type,
-            name, email, donation_summary, delivery_type
+            donor_type, name, email, donation_summary, delivery_type, city,
+            name, email, donation_summary, delivery_type, city
         ))
 
         mysql.connection.commit()
         cur.close()
 
-        # Redirect to message.html with success message
-        return render_template('message.html', message="Thank you for your donation!")
+        # Redirect to success message
+        return render_template('message.html', message=f"Thank you for your donation, {name} !")
 
     except Exception as e:
         print(f"Error: {e}")
         return render_template('message.html', message="Some error occurred, please try again later.")
+
     
 @app.route('/dashboard', methods=['GET'])
 def dashboard():
@@ -125,7 +128,9 @@ def center():
     cursor.close()
 
     if center:
-        return render_template('center.html', center=center)  # Pass a single center object
+        city = center[1]
+        print(city)
+        return render_template('center.html', city=city,center=center)  # Pass a single center object
     else:
         return render_template('message.html', message="Center not found.")
 

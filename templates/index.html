@@ -25,14 +25,13 @@
         <div class="dropdown">
             <a href="#centers" class="dropbtn">Centers</a>
             <div class="dropdown-content">
-                <a href="/city_result">Bangalore</a>
-                <a href="/city_result">Chennai</a>
-                <a href="/city_result">Hyderabad</a>
-                <a href="/city_result">Cochin</a>
+                <a href="/center?id=1">Bangalore</a>
+                <a href="/center?id=2">Chennai</a>
+                <a href="/center?id=3">Hyderabad</a>
+                <a href="/center?id=4">Cochin</a>
             </div>
         </div>
         <a href="#special-occasions">Special Occasions</a>
-        <a href="/locateus">Locate Us</a>
         <a href="#about-us">About Us</a>
         <a href="/login">Login</a>
     </div>
@@ -47,19 +46,37 @@
         </div>
         <button class="arrow right-arrow" onclick="showNextImage()">&#10095;</button>
     </div>
-
     <div class="city-tables">
         {% for center in centers %}
             <div class="city-table">
+                <!-- City Name -->
                 <a href="/center?id={{center[0]}}" target="_blank">
                     <div class="city-name">{{ center[1] }}</div>
                 </a>
-                <div class="city-image">
-                    <img src="{{ center.image_url }}" alt="{{ center.city_name }}">
-                </div>
             </div>
         {% endfor %}
     </div>
+    
+    <!-- Static Maps Table -->
+    <div class="maps-table">
+        <div class="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d124381.43955375381!2d77.59375157934574!3d13.040764939895569!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2spl!4v1734177426010!5m2!1sen!2spl" 
+            width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d260429.09583918337!2d80.24833859297757!3d13.107943723220943!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2spl!4v1734177716771!5m2!1sen!2spl" 
+            width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d243647.34241488852!2d78.24288623107343!3d17.412280731008362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb99daeaebd2c7%3A0xae93b78392bafbc2!2sHyderabad%2C%20Telangana%2C%20India!5e0!3m2!1sen!2spl!4v1734177775419!5m2!1sen!2spl" 
+            width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d251482.5760967004!2d76.13577381773078!3d9.98251586020546!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b080d514abec6bf%3A0xbd582caa5844192!2sKochi%2C%20Kerala%2C%20India!5e0!3m2!1sen!2spl!4v1734177818397!5m2!1sen!2spl" 
+            width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+    
 
     <!-- Footer -->
     <div class="footer">

@@ -104,12 +104,13 @@
                     <th>Phone</th>
                     <th>Donations</th>
                     <th>Delivery Type</th>
+                    <th>City</th>
                 </tr>
             </thead>
             <tbody id="joiners-table">
                 {% for row in donations_data %}
                 <tr>
-                    {% for i in range(0,6) %}
+                    {% for i in range(0,7) %}
                     <td>{{ row[i] }}</td>
                     {% endfor %}
                 </tr>
