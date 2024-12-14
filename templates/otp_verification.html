@@ -1,0 +1,17 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OTP Verification</title>
+</head>
+<body>
+    <h2>OTP Verification</h2>
+    <p>Enter the OTP sent to your email: {{ email }}</p>
+    <form method="POST" action="/otp-verification/<email>">
+        <label for="otp">OTP:</label>
+        <input type="number" id="otp" name="otp" placeholder="Enter OTP" required>
+        <button type="submit">Verify OTP</button>
+    </form>
+</body>
+</html>

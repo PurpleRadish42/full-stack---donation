@@ -2,6 +2,8 @@ from flask import *
 from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
+from flask_mail import Mail, Message
+import random
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
@@ -14,9 +16,151 @@ app.config['MYSQL_DB'] = 'emiya_db'
 
 mysql = MySQL(app)
 
+# # Mail configuration
+# app.config['MAIL_SERVER'] = 'smtp.mailgun.org'  # Replace with your email provider
+# app.config['MAIL_PORT'] = 587
+# app.config['MAIL_USE_TLS'] = True
+# app.config['MAIL_USERNAME'] = 'postmaster@emiyasusan.me'
+# app.config['MAIL_PASSWORD'] = 'dc6954c76690ddc07dca25af1ca634ca-da554c25-47e4a873'
+
+# mail = Mail(app)
+
+# # Temporary storage for OTP and user data
+# temp_user_data = {}
+
+# import requests
+
+# def send_otp_email(email, otp):
+#     # Mailgun API URL for sending messages
+#     api_url = "https://api.mailgun.net/v3/sandboxc66dd56c4838437ab4f70881c111aaf7.mailgun.org/messages"
+    
+#     # Mailgun credentials (API key)
+#     api_key = "834f80bc3a8fc0e72160a5dbe9b4073f-da554c25-ac74d598"
+    
+#     # Sender's email (Mailgun)
+#     from_email = "Excited User <mailgun@sandboxc66dd56c4838437ab4f70881c111aaf7.mailgun.org>"
+    
+#     # Recipient email
+#     to_email = email
+    
+#     # Subject and body of the email
+#     subject = "OTP for Registration"
+#     body = f"Your OTP for registration is: {otp}"
+
+#     # Sending the request to Mailgun
+#     response = requests.post(
+#         api_url,
+#         auth=("api", api_key),
+#         data={
+#             "from": from_email,
+#             "to": [to_email],
+#             "subject": subject,
+#             "text": body
+#         }
+#     )
+
+#     # You can log the response or handle it based on success/failure
+#     if response.status_code == 200:
+#         print("OTP sent successfully!")
+#     else:
+#         print("Failed to send OTP:", response.text)
+
+
+# @app.route('/register', methods=['GET', 'POST'])
+# def register():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password = request.form['password']
+#         confirm_password = request.form['confirm_password']
+#         email = request.form['email']
+
+#         if password != confirm_password:
+#             flash("Passwords do not match.")
+#             return redirect(url_for('register'))
+
+#         # Generate OTP and store user data temporarily
+#         otp = random.randint(100000, 999999)
+#         temp_user_data[email] = {
+#             'username': username,
+#             'password': generate_password_hash(password),
+#             'role': 'user',
+#             'otp': otp
+#         }
+
+#         # Send OTP to the user's email
+#         try:
+#             msg = Message('OTP Verification', sender='postmaster@emiyasusan.me', recipients=[email])
+#             msg.body = f'Your OTP for registration is: {otp}'
+#             mail.send(msg)
+#             flash('OTP sent to your email. Please verify.')
+#             return redirect(url_for('otp_verification', email=email))
+#         except Exception as e:
+#             print(f"Error: {str(e)}")
+#             flash(f"Error sending email: {str(e)}")
+#             return redirect(url_for('register'))
+
+#     return render_template('register.html')
+
+# @app.route('/register', methods=['GET', 'POST'])
+# def register():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password = request.form['password']
+#         confirm_password = request.form['confirm_password']
+#         email = request.form['email']
+
+#         if password != confirm_password:
+#             flash("Passwords do not match.")
+#             return redirect(url_for('register'))
+
+#         # Generate OTP and store user data temporarily
+#         otp = random.randint(100000, 999999)
+#         temp_user_data[email] = {
+#             'username': username,
+#             'password': generate_password_hash(password),
+#             'role': 'user',
+#             'otp': otp
+#         }
+
+#         # Send OTP to the user's email using Mailgun
+#         try:
+#             send_otp_email(email, otp)  # Send OTP via Mailgun
+#             flash('OTP sent to your email. Please verify.')
+#             return redirect(url_for('otp_verification', email=email))
+#         except Exception as e:
+#             flash(f"Error sending email: {str(e)}")
+#             return redirect(url_for('register'))
+
+#     return render_template('register.html')
+
+
+# @app.route('/otp-verification/<email>', methods=['GET', 'POST'])
+# def otp_verification(email):
+#     if request.method == 'POST':
+#         entered_otp = request.form['otp']
+
+#         # Validate OTP
+#         if email in temp_user_data and temp_user_data[email]['otp'] == int(entered_otp):
+#             user_data = temp_user_data.pop(email)
+#             cur = mysql.connection.cursor()
+#             cur.execute("INSERT INTO login (username, password, role, email) VALUES (%s, %s, %s, %s)",
+#                         (user_data['username'], user_data['password'], user_data['role'], email))
+#             mysql.connection.commit()
+#             cur.close()
+#             flash('Registration successful. Please log in.')
+#             return redirect(url_for('login'))
+#         else:
+#             flash('Invalid OTP. Please try again.')
+#             return redirect(url_for('otp_verification', email=email))
+
+#     return render_template('otp_verification.html', email=email)
+
 @app.route('/')
 def home():
     return redirect(url_for('login'))
+@app.route('/logo')
+def logo():
+    return render_template('logo.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -29,29 +173,34 @@ def login():
         cur = mysql.connection.cursor()
         cur.execute("SELECT id, password, role FROM login WHERE username=%s", [username])
         user = cur.fetchone()
-        print(user)
         cur.close()
 
         if user:
+            user_id, hashed_password, user_role = user
+
             # Check if the entered password matches the stored hash
-            if check_password_hash(user[1], password):
-                session['id'] = user[0]
-                session['username'] = username
-                session['role'] = user[2]
-                if role == user[2]:
+            if check_password_hash(hashed_password, password):
+                if role == user_role:  # Validate the role selected
+                    session['id'] = user_id
+                    session['username'] = username
+                    session['role'] = user_role
+
+                    flash('Login successful!', 'success')
+
+                    # Redirect based on role
                     if role == 'admin':
                         return redirect(url_for('dashboard'))
                     elif role == 'user':
                         return redirect(url_for('home'))
                 else:
-                    flash('Invalid role selection.')
+                    flash('Invalid role selection.', 'error')
             else:
-                flash('Invalid username or password.')
+                flash('Invalid username or password.', 'error')
         else:
-            # If user doesn't exist, show message to register as a new user
-            flash('User not found. Please register as a new user.')
+            flash('User not found. Please register as a new user.', 'error')
 
     return render_template('login.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -65,10 +214,12 @@ def register():
         mysql.connection.commit()
         cur.close()
 
-        flash('Registration successful. Please log in.')
+        flash('Registration successful. Please log in.', 'success')
         return redirect(url_for('login'))
 
     return render_template('register.html')
+
+
 
 @app.route('/dashboard')
 def dashboard():
@@ -160,6 +311,8 @@ def available_slots():
     # Convert booked slots to a list of dictionaries
     booked_slots_list = [{'date': slot[0].strftime('%Y-%m-%d'), 'time': slot[1]} for slot in booked_slots]
     return jsonify(booked_slots_list)
+
+
 
 
 if __name__ == '__main__':
