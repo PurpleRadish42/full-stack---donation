@@ -114,7 +114,15 @@
     <div class="form-container">
         <div class="box">
             <h2>Donate to Our Cause</h2>
-            <form>
+            <form action="/payment" method="GET">
+                <div class="form-group">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Donation Amount:</label>
+                    <input type="number" id="amount" name="amount" placeholder="Enter donation amount" required>
+                </div>
                 <div class="form-group">
                     <label for="donor-type">I am:</label>
                     <select id="donor-type" name="donor-type">
@@ -130,8 +138,8 @@
                     <label for="phone">Phone Number:</label>
                     <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
                 </div>
-                <button type="submit">Pay Now</button>
-            </form>
+                <button type="submit">Proceed to Payment</button>
+            </form>            
         </div>
         <div class="text-caption">Make a Difference Today!</div>
         <div class="image-container">
@@ -147,14 +155,14 @@
         </div>
         <div class="box">
             <h2>Donate Items</h2>
-            <form>
+            <form id="locationForm" method="GET">
                 <div class="form-group">
                     <label for="location">Select Location:</label>
                     <select id="location" name="location">
-                        <option value="bangalore">Bangalore</option>
-                        <option value="chennai">Chennai</option>
-                        <option value="cochin">Cochin</option>
-                        <option value="hyderabad">Hyderabad</option>
+                        <option value="1">Bangalore</option>
+                        <option value="2">Chennai</option>
+                        <option value="3">Cochin</option>
+                        <option value="4">Hyderabad</option>
                     </select>
                 </div>
                 <button type="submit">Submit</button>
@@ -162,6 +170,17 @@
         </div>
     </div>
 </body>
+<script>
+    document.getElementById('locationForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the form from submitting immediately
+
+        // Get the selected location id
+        const locationId = document.getElementById('location').value;
+
+        // Redirect to /center?id=<locationId>
+        window.location.href = `/center?id=${locationId}`;
+    });
+</script>
 </html>
 
 

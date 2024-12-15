@@ -18,8 +18,8 @@ app.secret_key = 'Dustbin'
 # Database configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
-app.config['MYSQL_DB'] = 'emiya_db'
+app.config['MYSQL_PASSWORD'] = '@Bhijit6151'
+app.config['MYSQL_DB'] = 'finaldb'
 
 mysql = MySQL(app)
 
@@ -37,6 +37,18 @@ app.secret_key = 'Dustbin'
 
 # Temporary storage for OTP and user data
 temp_user_data = {}
+
+@app.route('/')
+def home():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM centers")
+    centers = cur.fetchall()
+    cur.close()
+    return render_template('index.html', centers=centers)
+
+@app.route('/donation')
+def donation():
+    return render_template('donation.html')
 
 # Decorators for role-based access control
 def admin_required(f):
@@ -193,21 +205,30 @@ def logout():
 def payment():
     return render_template('payments.html')
 
+
 @app.route('/payment-success', methods=['POST'])
 def payment_success():
-    # Fetch data from the form
-    name = request.form.get['name']
-    email = request.form.get['email']
-    amount = request.form.get['amount']
-    payment_method = request.form.get['paymentMethod']
+    # Fetch data from the POST form
+    name = request.form.get('name')
+    email = request.form.get('email')
+    amount = request.form.get('amount')
+    payment_method = request.form.get('paymentMethod')
 
-    # Store payment details in the database
-    cursor = mysql.connection.cursor()
-    cursor.execute('INSERT INTO payments (name, email, amount, payment_method) VALUES (%s, %s, %s, %s)', 
-                   (name, email, amount, payment_method))
-    mysql.connection.commit()
+    try:
+        # Store payment details in the database
+        cursor = mysql.connection.cursor()
+        cursor.execute('INSERT INTO payments (name, email, amount, payment_method) VALUES (%s, %s, %s, %s)', 
+                       (name, email, amount, payment_method))
+        mysql.connection.commit()
 
-    return 'Success', 200
+        # Redirect to the message page on success with a custom message
+        message = f"Thank you {name}, We appre-sea-ite your kindness"
+        return redirect(url_for('message', message=message))
+    
+    except Exception as e:
+        # If there's a failure, flash a failure message and stay on the same page
+        flash('Payment failure')
+        return redirect(url_for('payment'))
 
 @app.route('/message')
 def message():
@@ -434,7 +455,7 @@ def center():
 
     if center:
         city = center[1]
-        address = center[9]
+        address = center[8]
         print(city)
         return render_template('center.html', city=city,address=address,center=center)  # Pass a single center object
     else:

@@ -29,19 +29,24 @@
     <div class="container">
         <h1>Payment Portal</h1>
         <div id="userDetails">
-            <p><strong>Name:</strong> <span id="name"></span></p>
-            <p><strong>Email:</strong> <span id="email"></span></p>
-            <p><strong>Amount:</strong> <span id="amount"></span></p>
+            <p><strong>Name:</strong> <span id="name-display"></span></p>
+            <p><strong>Email:</strong> <span id="email-display"></span></p>
+            <p><strong>Amount:</strong> <span id="amount-display"></span></p>
         </div>
         <h2>Choose Payment Method</h2>
-        <form id="paymentForm">
+        <form id="paymentForm" action="/payment-success" method="POST">
+            <!-- Hidden Fields to Pass User Details -->
+            <input type="hidden" name="name" id="name" value="">
+            <input type="hidden" name="email" id="email" value="">
+            <input type="hidden" name="amount" id="amount" value="">
+            
             <div class="payment-options">
                 <label for="creditCard"><input type="radio" id="creditCard" name="paymentMethod" value="Credit Card" required> Credit Card</label>
                 <label for="debitCard"><input type="radio" id="debitCard" name="paymentMethod" value="Debit Card"> Debit Card</label>
                 <label for="upi"><input type="radio" id="upi" name="paymentMethod" value="UPI"> UPI</label>
             </div>
             <div id="paymentFields"></div>
-            <button type="button" onclick="validateAndSubmit()">Pay Now</button>
+            <button type="submit">Pay Now</button>
         </form>
     </div>
 
@@ -57,9 +62,16 @@
 
         function displayUserDetails() {
             const { name, email, amount } = getQueryParams();
-            document.getElementById('name').textContent = name;
-            document.getElementById('email').textContent = email;
-            document.getElementById('amount').textContent = amount;
+
+            // Fill the hidden inputs
+            document.getElementById('name').value = name;
+            document.getElementById('email').value = email;
+            document.getElementById('amount').value = amount;
+
+            // Display the values
+            document.getElementById('name-display').textContent = name;
+            document.getElementById('email-display').textContent = email;
+            document.getElementById('amount-display').textContent = amount;
         }
 
         displayUserDetails();
@@ -75,7 +87,7 @@
         function renderFields(method) {
             paymentFields.innerHTML = '';
             if (method === 'Credit Card' || method === 'Debit Card') {
-                paymentFields.innerHTML = `
+                paymentFields.innerHTML = ` 
                     <label for="cardNumber">Card Number:</label>
                     <input type="text" id="cardNumber" maxlength="16">
                     <label for="cardName">Name on Card:</label>
@@ -92,54 +104,6 @@
                 `;
             }
         }
-
-        function validateAndSubmit() {
-            const method = document.querySelector('input[name="paymentMethod"]:checked').value;
-            const { name, email, amount } = getQueryParams();
-
-            const form = document.getElementById("paymentForm");
-            const data = new FormData(form);
-            data.append("name", name);
-            data.append("email", email);
-            data.append("amount", amount);
-
-            fetch('/payment-success', {
-                method: 'POST',
-                body: data
-            })
-            .then(() => {
-                const message = `Thank you for your donation of ${amount}.`;
-                window.location.href = `/message?message=${encodeURIComponent(message)}`;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }
     </script>
 </body>
-
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
