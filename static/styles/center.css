@@ -1,0 +1,132 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #e0f7fa;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .fade-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .donation-form {
+    position: absolute;
+    top: 85%;
+    right: 10%;
+    transform: translateY(-50%);
+    width: 300px;
+    background-color: #e6f7ff;
+    padding: 17px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+  }
+
+  .donation-form h2 {
+    margin-top: 0;
+    color: #01579b;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .donation-form label {
+    display: block;
+    margin: 8px 0 5px;
+    color: #0277bd;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .donation-form input,
+  .donation-form select {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 8px;
+    border: 1px solid #81d4fa;
+    border-radius: 5px;
+    outline: none;
+    background-color: white;
+    font-size: 14px;
+  }
+
+  .donation-form button {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0288d1;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .donation-form button:hover {
+    background-color: #0277bd;
+  }
+
+  .quantity-input {
+    width: 100%;
+    border: 1px solid #81d4fa;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+  }
+
+  .text-section {
+    padding: 20px;
+    text-align: left;
+    background-color: #ffffff;
+    font-size: 16px;
+    color: #01579b;
+  }
+
+  .image-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 20px;
+  }
+
+  .image-row img {
+    width: 30%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  /* Footer */
+.footer {
+  text-align: center;
+  background-color: #004080;
+  color: white;
+  padding: 10px 0;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  bottom: 0;
+  width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .donation-form {
+      width: 90%;
+      right: 5%;
+      top: 50%;
+    }
+
+    .image-row {
+      flex-direction: column;
+    }
+
+    .image-row img {
+      width: 100%;
+    }
+  }

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="static/images/sea logo.jpg">
+    <link rel="stylesheet" href="static/styles/dashboard.css">
+    <title>Dashboard</title>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <a href="/">
+                <img src="static/images/sea logo.jpg" alt="SEA Logo">
+            </a>
+        </div>
+        <h1 class="header-title">SEA Organization</h1>
+        <div class="donate-button">
+            <a href="/donate">Donate Now</a>
+        </div>
+    </div>
+
+    <body>
+    <!-- Tables -->
+    <div class="table-container">
+        <div class="table-title">Monetary Donations</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="monetary-table">
+                {% for row in monetary_data %}
+                <tr>
+                    {% for i in range(0,5) %}
+                    <td>{{ row[i] }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-container">
+        <div class="table-title">Special Occasions</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Individual</th>
+                    <th>Occasion</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody id="special-table">
+                {% for row in special_data %}
+                <tr>
+                    {% for i in range(0,5) %}
+                    <td>{{ row[i] }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-container">
+        <div class="table-title">People Who've Joined</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody id="joiners-table">
+                {% for row in joiners_data %}
+                <tr>
+                    {% for i in range(0,5) %}
+                    <td>{{ row[i] }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="table-container">
+        <div class="table-title">Donations</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Delivery Type</th>
+                    <th>City</th>
+                    <th>Clothes</th>
+                    <th>Necessary items</th>
+                    <th>Food</th>
+                    <th>Healthcare products</th>
+                    <th>Timestamp</th>
+                    <th>Donor Type</th>
+                    <th>Pickup Address</th>
+                </tr>
+            </thead>
+            <tbody id="joiners-table">
+                {% for row in donations_data %}
+                <tr>
+                    {% for i in range(0,12) %}
+                    <td>{{ row[i] }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div> 
+    
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2024. SEA private ltd. All rights reserved.
+    </div>
+</body>
+</html>

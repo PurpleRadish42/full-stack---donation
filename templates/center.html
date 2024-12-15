@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="static/images/sea logo.jpg">
+  <link rel="stylesheet" href="static/styles/center.css">
+  <style>
+      .image-section {
+    position: relative;
+    background-image: url('static/images/Circle.jpeg'); /* Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 75vh; /* Adjust height for the image section */
+  }
+  #additional-comments-container textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #81d4fa;
+  border-radius: 5px;
+  outline: none;
+  background-color: white;
+  font-size: 14px;
+  resize: vertical;
+}
+  </style>
+  <title>{{ center[1]}} Center</title>
+</head>
+<body>
+  <div class="container">
+    <!-- Image Section -->
+    <div class="image-section">
+      <div class="fade-overlay"></div>
+      <form class="donation-form" action="/submit_donation" method="POST" onsubmit="return validateForm()">
+        <h2>Donate Now</h2>
+      
+        <label for="donor-type">Who are you:</label>
+        <select id="donor-type" name="donor-type">
+          <option value="individual">Individual</option>
+          <option value="company">Company</option>
+        </select>
+      
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+      
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      
+        <!-- Quantity Inputs -->
+        <label for="quantities">Items you want to donate</label>
+        <label>Clothes:
+          <input type="number" class="quantity-input" name="quantity_clothes" placeholder="Qty">
+        </label>
+        <label>Necessary Items:
+          <input type="number" class="quantity-input" name="quantity_items" placeholder="Qty">
+        </label>
+        <label>Food:
+          <input type="number" class="quantity-input" name="quantity_food" placeholder="Qty">
+        </label>
+        <label>Healthcare Products:
+          <input type="number" class="quantity-input" name="quantity_healthcare" placeholder="Qty">
+        </label>
+      
+        <label for="delivery-type">Type of Delivery:</label>
+        <select id="delivery-type" name="delivery-type" onchange="toggleTextarea(this)">
+          <option value="courier service">Courier Service</option>
+          <option value="doorstep pick">Doorstep Pickup</option>
+        </select>
+      
+        <!-- Textarea (Hidden by Default) -->
+        <div id="additional-comments-container" style="display: none;">
+          <label for="pickup_address">Pickup Address:</label>
+          <textarea id="pickup_address" name="pickup_address" placeholder="Enter pickup instructions or address"></textarea>
+        </div>
+      
+        <input type="hidden" name="city" value="{{ city }}">
+        <input type="hidden" name="address" value="{{ address }}">
+      
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+
+    <!-- Text Section -->
+    <div class="text-section">
+      <h1>What we do at SEA Organisation {{center[1]}}</h1>
+      <p>
+        At SEA, we are dedicated to making a meaningful difference in the lives of those in need.<br>
+        Our mission is to create a compassionate community where resources are shared generously and no one is left behind.<br> 
+        Through our network of donation centers, we collect and distribute essential items such as food, clothing, books,<br> 
+        and healthcare supplies to underprivileged individuals and families. We also host regular events, including food drives,<br> 
+        educational workshops, and health camps, to empower communities and inspire change. Together with our volunteers, donors,<br> 
+        and partners, we strive to build a better future—one act of kindness at a time. Join us in our journey to spread hope and positivity!
+      </p><br>
+      <h1>Latest events</h1>
+    </div>
+
+    <!-- Image Section -->
+    <div class="image-row">
+      <img src="{{center[5]}}" alt="Cloth Donation">
+      <img src="{{center[6]}}" alt="Medical Camp">
+      <img src="{{center[7]}}" alt="Education Drive">
+    </div>
+  </div>
+  <div class="footer">
+    &copy; 2024. SEA private ltd. All rights reserved.
+  </div>
+
+  <script>
+    function validateForm() {
+      const clothes = document.getElementsByName('quantity_clothes')[0].value;
+      const items = document.getElementsByName('quantity_items')[0].value;
+      const food = document.getElementsByName('quantity_food')[0].value;
+      const healthcare = document.getElementsByName('quantity_healthcare')[0].value;
+      
+      if ((clothes == '' || clothes == 0) &&
+          (items == '' || items == 0) &&
+          (food == '' || food == 0) &&
+          (healthcare == '' || healthcare == 0)) {
+        alert("Please enter at any one quantity to donate.");
+        return false; // Prevent submission
+      }
+      return true;
+    }
+    function toggleTextarea(selectElement) {
+    const textareaContainer = document.getElementById('additional-comments-container');
+    if (selectElement.value === 'doorstep pick') {
+      textareaContainer.style.display = 'block'; // Show the textarea
+    } else {
+      textareaContainer.style.display = 'none'; // Hide the textarea
+    }
+  }
+  </script>
+</body>
+</html>

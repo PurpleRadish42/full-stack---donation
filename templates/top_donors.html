@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="static/images/sea logo.jpg">
+    <title>Top Donors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+                /* Header Section */
+        .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #004080;
+        padding: 10px 20px;
+        color: white;
+        position: relative;
+    }
+
+    .header-title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        margin: 0;
+    }
+
+    .logo img {
+        height: 100px;
+    }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 2.5em;
+            color: #444;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 40px auto;
+            flex-wrap: wrap;
+        }
+
+        .table-container {
+            width: 45%;
+            min-width: 350px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #0073e6;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #0073e6;
+            color: #fff;
+        }
+
+        tr:nth-child(1) {
+            background-color: #fdf7e3; /* Subtle gold */
+        }
+
+        tr:nth-child(2) {
+            background-color: #f4f4f4; /* Subtle silver */
+        }
+
+        tr:nth-child(3) {
+            background-color: #f8e0d0; /* Subtle bronze */
+        }
+
+        tr:nth-child(even):not(:nth-child(1), :nth-child(2), :nth-child(3)) {
+            background-color: #f9f9f9;
+        }
+
+        .no-data {
+            text-align: center;
+            font-size: 1.2em;
+            color: #777;
+        }
+                /* Footer */
+        .footer {
+            text-align: center;
+            background-color: #004080;
+            color: white;
+            padding: 10px 0;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            bottom: 0;
+            position: fixed;
+            width: 100%;
+            }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <a href="/">
+                <img src="static/images/sea logo.jpg" alt="SEA Logo">
+            </a>
+        </div>
+        <h1 class="header-title">SEA Organization</h1>
+    </div>
+    <h1>Top Donors</h1>
+    <div class="container">
+        <!-- Top Individual Donors -->
+        <div class="table-container">
+            <h2>Top Individual Donors</h2>
+            {% if top_individuals %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>City</th>
+                            <th>Total Donations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for donor in top_individuals %}
+                            <tr>
+                                <td>{{ donor.name }}</td>
+                                <td>{{ donor.city }}</td>
+                                <td>{{ donor.total_donation }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="no-data">No individual donation data available.</p>
+            {% endif %}
+        </div>
+
+        <!-- Top Company Donors -->
+        <div class="table-container">
+            <h2>Top Company Donors</h2>
+            {% if top_companies %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>City</th>
+                            <th>Total Donations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for donor in top_companies %}
+                            <tr>
+                                <td>{{ donor.name }}</td>
+                                <td>{{ donor.city }}</td>
+                                <td>{{ donor.total_donation }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="no-data">No company donation data available.</p>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2024. SEA private ltd. All rights reserved.
+    </div>
+</body>
+</html>
