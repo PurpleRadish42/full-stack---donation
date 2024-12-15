@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+        }
+        p {
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #999;
+        }
+        .footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <h1>Welcome, {{ username }}!</h1>
+        <p>
+            Congratulations on successfully registering with SEA. We are thrilled to have you onboard.
+            You can now log in and explore the features we offer.
+        </p>
+        <p>
+            If you have any questions or need assistance, feel free to contact us.
+        </p>
+        <p>
+            <strong>Thank you for joining us!</strong><br>
+            The SEA Team
+        </p>
+        <div class="footer">
+            <p>
+                Need help? <a href="mailto:support@sea.org">Contact Support</a><br>
+                &copy; 2024 SEA. All rights reserved.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

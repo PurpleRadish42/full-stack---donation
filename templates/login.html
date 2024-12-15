@@ -123,6 +123,13 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+        .logout {
+            float: right;
+            padding: 0 20px;
+        }
+        .logout a {
+            color: white;
+        }
 
     </style>
 </head>
@@ -130,6 +137,9 @@
     <nav>
         <div class="logo">
             <p>Donation Website</p>
+        </div>
+        <div class="logout">
+            <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </nav>
     <div class="container">
