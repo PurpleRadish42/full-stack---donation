@@ -18,7 +18,7 @@ app.secret_key = 'Dustbin'
 # Database configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_PASSWORD'] = '@Bhijit6151'
 app.config['MYSQL_DB'] = 'finaldb'
 
 mysql = MySQL(app)
@@ -159,6 +159,7 @@ def otp_verification(email):
     return render_template('otp-verification.html', email=email)
 
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -173,10 +174,18 @@ def login():
         cur.close()
 
         if user:
-            user_id, hashed_password, user_role = user
+            user_id, stored_password, user_role = user
 
-            # Check if the entered password matches the stored hash
-            if check_password_hash(hashed_password, password):
+            # Check if the entered password matches the stored password (supports plain-text and hashed)
+            password_matches = False
+            if stored_password.startswith('scrypt:') or stored_password.startswith('pbkdf2:'):
+                # Validate using check_password_hash for hashed passwords
+                password_matches = check_password_hash(stored_password, password)
+            else:
+                # Directly compare for plain-text passwords
+                password_matches = (password == stored_password)
+
+            if password_matches:
                 if role == user_role:  # Validate the role selected
                     session['id'] = user_id
                     session['username'] = username
@@ -690,6 +699,64 @@ def top_donors():
 @app.route('/aboutus')
 def aboutus():
     return render_template('aboutus.html')
+
+@app.route('/get-details', methods=['GET', 'POST'])
+def get_details():
+    if request.method == 'GET':
+        # Render the form for the user to input their email
+        return render_template('get-details.html')
+    
+    if request.method == 'POST':
+        email = request.form['email']
+        action = request.form['action']
+
+        try:
+            cur = mysql.connection.cursor()
+
+            # Check if the email exists in either table
+            cur.execute("SELECT COUNT(*) FROM donations WHERE email = %s", (email,))
+            email_in_donations = cur.fetchone()[0]
+
+            cur.execute("SELECT COUNT(*) FROM payments WHERE email = %s", (email,))
+            email_in_payments = cur.fetchone()[0]
+
+            if not email_in_donations and not email_in_payments:
+                flash("Invalid email, please input the correct email and try again.")
+                return redirect(url_for('get_details'))
+
+            # Handle the action
+            if action == 'item':  # Item donation details
+                cur.execute("SELECT * FROM donations WHERE email = %s", (email,))
+                donation_data = cur.fetchall()
+
+                # Render the email_donation_details template
+                rendered_html = render_template('email_donation_details.html', donations=donation_data)
+                send_email(email, "Your Item Donation Details", rendered_html)
+
+            elif action == 'monetary':  # Monetary donation details
+                cur.execute("SELECT * FROM payments WHERE email = %s", (email,))
+                payment_data = cur.fetchall()
+
+                # Render the email_monetary_details template
+                rendered_html = render_template('email_monetary_details.html', payments=payment_data)
+                send_email(email, "Your Monetary Donation Details", rendered_html)
+
+            cur.close()
+
+            # Redirect to message.html with success message
+            success_message = f"Your donation details have been securely sent to {email}."
+            return render_template('message.html', title="Success", message=success_message, back_url=url_for('get_details'))
+
+        except Exception as e:
+            print("Error:", e)
+            flash("Something went wrong. Please try again later.")
+            return redirect(url_for('get_details'))
+        
+def send_email(to, subject, body):
+    """Sends an email using Flask-Mail or another SMTP service."""
+    from flask_mail import Message
+    msg = Message(subject=subject, recipients=[to], html=body, sender="admin@sea.org")
+    mail.send(msg)
 
 
 if __name__ == '__main__':
