@@ -18,6 +18,30 @@ app.config['MYSQL_DB'] = 'donation'
 
 mysql = MySQL(app)
 
+# Mailgun SMTP Configuration
+app.config['MAIL_SERVER'] = 'smtp.mailgun.org'  # Mailgun SMTP server
+app.config['MAIL_PORT'] = 587                   # SMTP port
+app.config['MAIL_USERNAME'] = 'postmaster@mg.emiyasusan.me'  # Your Mailgun SMTP username
+app.config['MAIL_PASSWORD'] = '3a30746c967057d0d41781a842653921-da554c25-373e8430'  # Your Mailgun SMTP password
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+
+mail = Mail(app)
+
+@app.route('/send-email')
+def send_email():
+    try:
+        msg = Message(
+            'Hello',                  # Subject
+            sender='admin@emiyasusan.me', # Replace with your Mailgun verified sender email
+            recipients=['abhijit.7472@gmail.com']  # Replace with the recipient's email
+        )
+        msg.body = 'Hello World!'  # Email body
+        mail.send(msg)
+        return 'Email sent successfully!'
+    except Exception as e:
+        return f'Error: {str(e)}'
+
 @app.route('/')
 def home():
     cur = mysql.connection.cursor()
