@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - SEA Organization</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            /* give light gradient blue background */
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: darkblue;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav .logo {
+            color: #fff;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h2 {
+            color: #343a40;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Success Message Styling */
+        .success-message {
+            color: #155724;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0 20px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        /* Contact Information */
+        .contact-info {
+            margin-top: 30px;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .contact-info h3 {
+            color: #343a40;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">SEA Organization</div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <h2>Contact Us</h2>
+        
+        <!-- Success Message -->
+        {% if message %}
+        <div class="success-message">{{ message }}</div>
+        {% endif %}
+
+        <!-- Contact Form -->
+        <form method="POST" action="{{ url_for('contact') }}">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            
+            <label for="email">Your Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            
+            <label for="message">Your Message:</label>
+            <textarea id="message" name="message" placeholder="Type your message here" required></textarea>
+            
+            <button type="submit">Submit</button>
+        </form>
+
+        <!-- Contact Information -->
+        <div class="contact-info">
+            <h3>Our Contact Information</h3>
+            <p><strong>Email:</strong> support@seaorganization.com</p>
+            <p><strong>Phone:</strong> +91 97258 17390</p>
+            
+            <p><strong>Bengaluru Office:</strong><br>
+                23, HAL Old Airport Rd, HAL 2nd Stage, Kodihalli,<br>
+                Bengaluru, Karnataka 560008, India</p>
+
+            <p><strong>Chennai Office:</strong><br>
+                No. 109, Periyar Pathai West, Arumbakkam,<br>
+                Chennai, Tamil Nadu 600026, India</p>
+
+            <p><strong>Hyderabad Office:</strong><br>
+                Rd Number 1, Mada Manzil, Banjara Hills,<br>
+                Hyderabad, Telangana 500034, India</p>
+
+            <p><strong>Kochi Office:</strong><br>
+                Edappally Junction, Nethaji Nagar, Edappally,<br>
+                Kochi, Kerala 682024, India</p>
+        </div>
+    </div>
+</body>
+</html>

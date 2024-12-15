@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Occasion Booking</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: white;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column; /* Stack the main content and memories vertically */
+            align-items: center;
+        }
+    
+        .main-content {
+            display: flex;
+            flex-direction: row; /* Align slots and booking form side by side */
+            gap: 20px; /* Add spacing between the slots and form */
+            width: 100%; /* Ensure the content spans the full width */
+            max-width: 1200px; /* Optional: Limit maximum width for better readability */
+            justify-content: center; /* Center align the slots and form container */
+        }
+    
+        .slots-container {
+            width: 45%;
+            background: linear-gradient(to right, #e6f7ff, #cfe8f7);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    
+        .slots-container h2 {
+            margin: 0;
+            padding: 10px;
+            background-color: darkblue;
+            color: white;
+            border-radius: 8px 8px 0 0; /* Rounded top corners */
+            position: sticky; /* Keep this header visible */
+            top: 0; /* Stick to the top of the container */
+            z-index: 1; /* Ensure it stays above the scrolling content */
+            text-align: center;
+        }
+        .slot {
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+.slot.available {
+    background-color: #28a745;
+    color: white;
+}
+
+.slot.unavailable {
+    background-color: #dc3545;
+    color: white;
+    text-decoration: line-through;
+}
+
+    
+        /* Styling the slots displayed for each day */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7,1fr);
+            grid-gap: 10px;
+            margin-top: 20px;
+        }
+    
+        .calendar span {
+            display: inline-block;
+            padding: 10px;
+            background: #d4edda; /* Green for available slots */
+            border-radius: 4px;
+            margin-bottom: 5px;
+            width: 100%; /* Ensure each slot takes up full width */
+            box-sizing: border-box;
+        }
+    
+        .calendar span {
+            width: calc(33.33% - 10px); /* 3 slots per row */
+            text-align: center;
+        }
+    
+        .calendar .unavailable {
+            background: #f8d7da; /* Red for booked slots */
+            color: #721c24;
+        }
+    
+        /* Ensuring the form and slots have distinct, well-spaced sections */
+        .container {
+            background: linear-gradient(to right, #e6f7ff, #cfe8f7);
+            border: 1px solid #ddd;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+    
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+        .day-container {
+    text-align: center;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+}
+
+.day-container:hover {
+    background-color: #e9ecef;
+}
+
+.day-label {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+    
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+    
+        label {
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+    
+        select, input[type="text"], input[type="date"], button {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+    
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+    
+        .past-celebrations {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            width: 100%; /* Make it span the full width */
+            max-width: 1200px; /* Optional: Limit maximum width */
+        }
+    
+        .past-celebrations h2 {
+            margin-bottom: 20px;
+            color: lightseagreen;
+            font-size: 1.8em;
+            background: linear-gradient(to right, #2b7ea5, #2686c2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; /* Gradient text */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+        }
+    
+        .gallery {
+            display: flex; 
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+    
+        .gallery-item {
+            width: 250px; /* Ensure all images have the same size */
+            text-align: center;
+        }
+    
+        .gallery-item img {
+            width: 100%;
+            height: 250px; /* Fix height for consistent layout */
+            object-fit: cover; /* Maintain aspect ratio and fill space */
+            border-radius: 0; /* Make the edges sharp */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+    
+        .gallery-item img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+    
+        .gallery-item p {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+    
+    
+</head>
+<body>
+    <div class="main-content">
+        <div class="slots-container">
+            <h2>Available Slots</h2>
+            <div id="calendarSlots" class="calendar"></div>
+        </div>
+
+        <div class="container">
+            <h1>Book Your Special Occasion</h1>
+            <form id="bookingForm" action="/book-slot" method="POST">
+                <label for="center">Select Center:</label>
+                <select id="center" name="center" required>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Cochin">Cochin</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                </select>
+
+                <label for="type">I am:</label>
+                <select id="type" name="type" required>
+                    <option value="Individual">Individual</option>
+                    <option value="Company">Company</option>
+                </select>
+
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="date">Select Date:</label>
+                <input type="date" id="date" name="date" required>
+
+                <label for="time">Select Time:</label>
+                <select id="time" name="time" required>
+                    <option value="9-11">9-11 AM</option>
+                    <option value="1-3">1-3 PM</option>
+                    <option value="6-8">6-8 PM</option>
+                </select>
+
+                <label for="occasion">Occasion:</label>
+                <input type="text" id="occasion" name="occasion" required>
+
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="past-celebrations">
+        <h2>Memories from Past Celebrations</h2>
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="static/images/cel1.jpg" alt="Celebration 1">
+            </div>
+            <div class="gallery-item">
+                <img src="static/images/cel2.jpg" alt="Celebration 2">
+            </div>
+            <div class="gallery-item">
+                <img src="static/images/cel3.jpg" alt="Celebration 3">
+            </div>
+            <div class="gallery-item">
+                <img src="static/images/cel4.jpg" alt="Celebration 4">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dateInput = document.getElementById('date');
+        const calendarSlots = document.getElementById('calendarSlots');
+
+        function updateCalendar(selectedDate) {
+            const [year, month] = selectedDate.split('-');
+
+            // Fetch available slots for the entire month
+            fetch(`/available-slots?year=${year}&month=${month}`)
+                .then(response => response.json())
+                .then(data => {
+                    calendarSlots.innerHTML = ''; // Clear previous slots
+
+                    // Generate all days of the selected month
+                    const daysInMonth = new Date(year, month, 0).getDate();
+
+                    const slotTimes = ['9-11', '1-3', '6-8'];
+
+                    // Loop through each day and slot
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        const dateString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+                        const dayContainer = document.createElement('div');
+                        dayContainer.className = 'day-container';
+
+                        // Add day number to the calendar
+                        const dayLabel = document.createElement('div');
+                        dayLabel.className = 'day-label';
+                        dayLabel.textContent = `${String(day).padStart(2, '0')}`;
+                        dayContainer.appendChild(dayLabel);
+
+                        // Loop through slots (9-11, 1-3, 6-8)
+                        slotTimes.forEach(slot => {
+                            const isBooked = data.some(booking => booking.date === dateString && booking.time === slot);
+                            const slotElement = document.createElement('div');
+                            slotElement.className = `slot ${isBooked ? 'unavailable' : 'available'}`;
+                            slotElement.textContent = `${slot}`;
+                            dayContainer.appendChild(slotElement);
+                        });
+
+                        // Append the day container to the calendar
+                        calendarSlots.appendChild(dayContainer);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching slots:', error);
+                });
+        }
+
+        // Update the calendar when a date is selected
+        dateInput.addEventListener('change', event => {
+            const selectedDate = event.target.value;
+            const [year, month] = selectedDate.split('-');
+            updateCalendar(`${year}-${month}`);
+        });
+
+        // Initialize with the current month
+        const today = new Date();
+        const currentDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        dateInput.value = currentDate;
+        updateCalendar(currentDate);
+    </script>
+</body>
+
+</html>
+
+
+
+

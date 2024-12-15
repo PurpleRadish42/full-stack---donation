@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Portal - SEA Organization</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #f9f9f9; color: #333; }
+        nav { width: 100%; top: 0; height: 65px; line-height: 75px; position: fixed; background: rgb(5, 5, 107); color: white; z-index: 100; }
+        nav .logo p { float: left; padding: 0 20px; font-size: 22px; font-weight: bold; }
+        nav ul { float: right; margin-right: 20px; }
+        nav li { display: inline-block; list-style: none; }
+        nav li a { font-size: 14px; text-transform: uppercase; padding: 0 15px; color: white; text-decoration: none; }
+        nav li a:hover { color: #ff8c69; }
+        .container { margin: 100px auto; padding: 20px; max-width: 600px; text-align: center; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { font-size: 24px; margin-bottom: 20px; }
+        h2 { font-size: 20px; margin-bottom: 15px; color: rgb(5, 5, 107); }
+        form label { display: block; margin: 10px 0 5px; font-weight: bold; text-align: left; }
+        form input, button { width: 100%; padding: 10px; margin-bottom: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; }
+        button { background: rgb(5, 5, 107); color: white; border: none; cursor: pointer; }
+        button:hover { background: #ff8c69; }
+        .payment-options { display: flex; justify-content: space-around; margin-bottom: 20px; }
+        .payment-options input { margin-right: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Portal</h1>
+        <div id="userDetails">
+            <p><strong>Name:</strong> <span id="name"></span></p>
+            <p><strong>Email:</strong> <span id="email"></span></p>
+            <p><strong>Amount:</strong> <span id="amount"></span></p>
+        </div>
+        <h2>Choose Payment Method</h2>
+        <form id="paymentForm">
+            <div class="payment-options">
+                <label for="creditCard"><input type="radio" id="creditCard" name="paymentMethod" value="Credit Card" required> Credit Card</label>
+                <label for="debitCard"><input type="radio" id="debitCard" name="paymentMethod" value="Debit Card"> Debit Card</label>
+                <label for="upi"><input type="radio" id="upi" name="paymentMethod" value="UPI"> UPI</label>
+            </div>
+            <div id="paymentFields"></div>
+            <button type="button" onclick="validateAndSubmit()">Pay Now</button>
+        </form>
+    </div>
+
+    <script>
+        function getQueryParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return {
+                name: urlParams.get('name'),
+                email: urlParams.get('email'),
+                amount: urlParams.get('amount')
+            };
+        }
+
+        function displayUserDetails() {
+            const { name, email, amount } = getQueryParams();
+            document.getElementById('name').textContent = name;
+            document.getElementById('email').textContent = email;
+            document.getElementById('amount').textContent = amount;
+        }
+
+        displayUserDetails();
+
+        const paymentFields = document.getElementById('paymentFields');
+
+        document.querySelectorAll('input[name="paymentMethod"]').forEach((radio) => {
+            radio.addEventListener('change', () => {
+                renderFields(radio.value);
+            });
+        });
+
+        function renderFields(method) {
+            paymentFields.innerHTML = '';
+            if (method === 'Credit Card' || method === 'Debit Card') {
+                paymentFields.innerHTML = `
+                    <label for="cardNumber">Card Number:</label>
+                    <input type="text" id="cardNumber" maxlength="16">
+                    <label for="cardName">Name on Card:</label>
+                    <input type="text" id="cardName">
+                    <label for="expiryDate">Expiry Date:</label>
+                    <input type="text" id="expiryDate" placeholder="MM/YY">
+                    <label for="cvv">CVV:</label>
+                    <input type="text" id="cvv" maxlength="3">
+                `;
+            } else if (method === 'UPI') {
+                paymentFields.innerHTML = `
+                    <label for="upiId">UPI ID:</label>
+                    <input type="text" id="upiId">
+                `;
+            }
+        }
+
+        function validateAndSubmit() {
+            const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const { name, email, amount } = getQueryParams();
+
+            const form = document.getElementById("paymentForm");
+            const data = new FormData(form);
+            data.append("name", name);
+            data.append("email", email);
+            data.append("amount", amount);
+
+            fetch('/payment-success', {
+                method: 'POST',
+                body: data
+            })
+            .then(() => {
+                const message = `Thank you for your donation of ${amount}.`;
+                window.location.href = `/message?message=${encodeURIComponent(message)}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

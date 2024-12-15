@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - SEA Organization</title>
+    <style>
+        /* Full-page background */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('static/images/thankyou ocean.jpg') no-repeat center center fixed;
+            background-size: cover;
+            image-rendering: auto;
+            color: lightblue; /* Ensures text is readable */
+        }
+
+        /* Transparent content box */
+        .content-box {
+            max-width: 600px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            /* make it a little down */
+            margin-top: 150px;
+            color: white; /* Text remains white */
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8); /* Shadow for readability */
+        }
+
+        .wave-text {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            font-style: italic;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
+        }
+
+        .success {
+            color: #00FF00; /* Bright green */
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main content -->
+    <div class="wave-text">We SEA your kindness</div>
+    <div class="content-box">
+        <h1>Payment Successful</h1>
+        <p class="success">Thank you for your donation!</p>
+        <p><strong>Name:</strong> {{ name }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <p><strong>Amount:</strong> {{ amount }}</p>
+        <p><strong>Payment Method:</strong> {{ method }}</p>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
