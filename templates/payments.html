@@ -46,7 +46,6 @@
     </div>
 
     <script>
-        // Function to fetch URL parameters
         function getQueryParams() {
             const urlParams = new URLSearchParams(window.location.search);
             return {
@@ -56,7 +55,6 @@
             };
         }
 
-        // Display user details on the page
         function displayUserDetails() {
             const { name, email, amount } = getQueryParams();
             document.getElementById('name').textContent = name;
@@ -64,20 +62,18 @@
             document.getElementById('amount').textContent = amount;
         }
 
-        displayUserDetails();  // Call function to display details
+        displayUserDetails();
 
         const paymentFields = document.getElementById('paymentFields');
-        
-        // Add event listener to render payment fields when a payment method is selected
+
         document.querySelectorAll('input[name="paymentMethod"]').forEach((radio) => {
             radio.addEventListener('change', () => {
                 renderFields(radio.value);
             });
         });
 
-        // Function to render the specific payment fields based on selected method
         function renderFields(method) {
-            paymentFields.innerHTML = ''; // Clear the payment fields first
+            paymentFields.innerHTML = '';
             if (method === 'Credit Card' || method === 'Debit Card') {
                 paymentFields.innerHTML = `
                     <label for="cardNumber">Card Number:</label>
@@ -97,12 +93,10 @@
             }
         }
 
-        // Validate form and submit payment details
         function validateAndSubmit() {
             const method = document.querySelector('input[name="paymentMethod"]:checked').value;
             const { name, email, amount } = getQueryParams();
 
-            // Send payment data to backend via POST request
             const form = document.getElementById("paymentForm");
             const data = new FormData(form);
             data.append("name", name);
@@ -114,8 +108,8 @@
                 body: data
             })
             .then(() => {
-                // Redirect to confirmation page
-                window.location.href = `/confirmation?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&amount=${encodeURIComponent(amount)}&method=${encodeURIComponent(method)}`;
+                const message = `Thank you for your donation of ${amount}.`;
+                window.location.href = `/message?message=${encodeURIComponent(message)}`;
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -123,6 +117,7 @@
         }
     </script>
 </body>
+
 </html>
 
 

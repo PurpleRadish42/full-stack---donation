@@ -245,11 +245,11 @@ def payment():
 
 @app.route('/payment-success', methods=['POST'])
 def payment_success():
-    # Fetching the data from the form
-    name = request.form['name']
-    email = request.form['email']
-    amount = request.form['amount']
-    payment_method = request.form['paymentMethod']
+    # Fetch data from the form
+    name = request.form.get['name']
+    email = request.form.get['email']
+    amount = request.form.get['amount']
+    payment_method = request.form.get['paymentMethod']
 
     # Store payment details in the database
     cursor = mysql.connection.cursor()
@@ -259,14 +259,20 @@ def payment_success():
 
     return 'Success', 200
 
-@app.route('/confirmation')
-def confirmation():
-    # Fetching the payment details from the URL parameters
-    name = request.args.get('name')
-    email = request.args.get('email')
-    amount = request.args.get('amount')
-    method = request.args.get('method')
-    return render_template('confirmation.html', name=name, email=email, amount=amount, method=method)
+@app.route('/message')
+def message():
+    message = request.args.get('message', 'Default message')
+    back_url = request.args.get('back_url', url_for('home'))
+    return render_template('message.html', message=message, back_url=back_url)
+
+# @app.route('/confirmation')
+# def confirmation():
+#     # Fetching the payment details from the URL parameters
+#     name = request.args.get('name')
+#     email = request.args.get('email')
+#     amount = request.args.get('amount')
+#     method = request.args.get('method')
+#     return render_template('confirmation.html', name=name, email=email, amount=amount, method=method)
 
 @app.route('/donation',methods=['GET','POST'])
 def donation():

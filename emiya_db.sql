@@ -1,16 +1,6 @@
 CREATE DATABASE emiya_db;
 USE emiya_db;
 
-CREATE TABLE payment(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Display the records in the payments table
-SELECT * FROM payment;
 
 CREATE TABLE login (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -26,16 +16,17 @@ INSERT INTO login(username,password, role) VALUES ('emiya', 'emiya123', 'user');
 ALTER TABLE login
 MODIFY password
 varchar(255);
+ALTER TABLE login ADD COLUMN email VARCHAR(255);
 
 select*from login;
 
 CREATE TABLE payments (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL,
-    payment_method ENUM('Credit Card', 'Debit Card', 'UPI') NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id INT AUTO_INCREMENT PRIMARY KEY,         -- Unique identifier for each payment
+    name VARCHAR(100) NOT NULL,                -- Donor's name
+    email VARCHAR(150) NOT NULL,               -- Donor's email address
+    amount DECIMAL(10, 2) NOT NULL,            -- Donation amount (supports values up to 10 digits with 2 decimals)
+    payment_method VARCHAR(50) NOT NULL,       -- Payment method (e.g., Credit Card, Debit Card, UPI)
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Date and time of the payment
 );
 
 select*from payments;
@@ -50,6 +41,14 @@ CREATE TABLE bookings (
     occasion VARCHAR(100)
 );
 select*from bookings;
+CREATE TABLE contact (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    message TEXT NOT NULL,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+select*from contact;
 
 
 
