@@ -6,6 +6,249 @@
     <link rel="icon" type="image/x-icon" href="static/images/sea logo.jpg">
     <title>SEA</title>
     <link rel="stylesheet" href="/static/styles/index.css">
+    
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        
+           
+            .header {
+            display: flex;
+            justify-content: space-between;
+            align-items:start;
+            background-color: #004080;
+            padding: 5px 15px;
+            color: white;
+            position: relative;
+        }
+        .header-title {
+            position: absolute;
+            left: 20%;
+            transform: translateX(-100%);
+            font-size: 20px; /* Reduced font size */
+            font-weight: bold;
+            color: white;
+            margin: 0;
+            text-align: left; /* Aligns text to the left */
+            margin: 20px 0 0 0;
+        }
+        
+        
+        .logo img {
+            height: 60px;
+        }
+        
+        .donate-button a {
+            text-decoration: none;
+            background-color: beige;
+            color:#000;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px; /* Adjust this value to move the button down */
+            display: inline-block; /* Ensures margin is applied correctly */
+        }
+        
+        .donate-button a:hover {
+            background-color:cadetblue;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #0066cc;
+            padding: 10px 0;
+        }
+        
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .navbar a:hover {
+            background-color: #f0f0f0;
+            color: #000;
+            transition: 0.3s;
+        }
+        
+        /* Main Image Slider */
+        .main-image-container {
+            position: relative;
+            width: 100%;
+            height: 400px; /* Adjust height as needed */
+            overflow: hidden;
+        }
+        
+        .image-slider {
+            display: flex;
+            overflow: hidden; /* Ensures images stay within the slider */
+            width: 100%; /* Make the slider responsive */
+            height: 500px; /* Adjust the height as needed */
+        }
+        
+        .main-image {
+            flex-shrink: 0;
+            transform: scale(1.05);
+            width: 70%;
+            height: 70%;
+            object-fit: cover; /* Maintain aspect ratio and fill container */
+        }
+        .main-image:hover {
+            transform: scale(1.05);
+        }
+        
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .left-arrow {
+            left: 10px;
+        }
+        
+        .right-arrow {
+            right: 10px;
+        }
+        .dialogue {
+            text-align: center;
+            /* General navbar styles */
+        }
+        .navbar {
+            display: flex;
+            justify-content:right;
+            background-color: #0066cc;
+            padding: 10px 0;
+            align-items:center; /* Ensures all items align vertically */
+        }
+        
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+        
+        
+        /* Dropdown container */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* Dropdown button */
+        .dropbtn {
+            text-decoration: none;
+            color: white;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+        
+        /* Dropdown content (hidden by default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        
+        /* Dropdown content links */
+        .dropdown-content a {
+            color: #004080;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+        
+        /* Dropdown content links hover effect */
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        
+        /* Show dropdown on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        /* Style dropdown button on hover */
+        .dropdown:hover .dropbtn {
+            background-color: #004080;
+        }
+        /* General City Table Layout */
+        .city-tables {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .city-table {
+            width: 22%;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .city-name {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .city-image img {
+            width: 100%;
+            height: auto;
+        }
+        
+        /* Maps Grid Layout */
+        .maps-table {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+            gap: 20px;
+            margin: 20px auto;
+            width: 90%;
+        }
+        
+        .map iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        /* Footer */
+        .footer {
+            text-align: center;
+            background-color: #004080;
+            color: white;
+            padding: 10px 0;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            bottom: 0;
+            width: 100%;
+            }
+        </style>
 </head>
 <body>
     <!-- Header -->
@@ -42,11 +285,17 @@
     <div class="main-image-container">
         <button class="arrow left-arrow" onclick="showPreviousImage()">&#10094;</button>
         <div class="image-slider">
-            <img src="static/images/main image.jpeg" alt="Main Image" class="main-image">
+            
+            <img src="static/images/h1donate.jpeg" alt="Main Image" class="main-image">
             <img src="static/images/main image.jpeg" alt="Image 1" class="main-image">
             <img src="static/images/main image.jpeg" alt="Image 2" class="main-image">
         </div>
         <button class="arrow right-arrow" onclick="showNextImage()">&#10095;</button>
+    </div>
+    <div>
+        <div class="dialogue">
+            <h2>"Your support makes a difference! Help us create a better tomorrow by making a donation today."</h2>
+        </div>
     </div>
     <div class="city-tables">
         {% for center in centers %}

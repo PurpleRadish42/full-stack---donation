@@ -60,7 +60,9 @@ body {
 }
 
 .navbar a:hover {
-    background-color: #004080;
+    background-color: #f0f0f0;
+    color: #000;
+    transition: 0.3s;
 }
 
 /* Main Image Slider */
@@ -73,14 +75,20 @@ body {
 
 .image-slider {
     display: flex;
-    transition: transform 0.8s ease-in-out; /* Smoother transition */
-    width: 300%; /* Adjust based on the number of images */
+    overflow: hidden; /* Ensures images stay within the slider */
+    width: 100%; /* Make the slider responsive */
+    height: 300px; /* Adjust the height as needed */
 }
 
 .main-image {
+    flex-shrink: 0;
+    transform: scale(1.05);
     width: 100%;
     height: 100%;
     object-fit: cover; /* Maintain aspect ratio and fill container */
+}
+.main-image:hover {
+    transform: scale(1.05);
 }
 
 .arrow {
@@ -117,6 +125,7 @@ body {
     padding: 10px 20px;
     transition: background-color 0.3s ease;
 }
+
 
 /* Dropdown container */
 .dropdown {
