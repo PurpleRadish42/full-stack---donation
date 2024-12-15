@@ -4,150 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="static/images/sea logo.jpg">
-  <title>{{ center[1]}} Center</title>
+  <link rel="stylesheet" href="static/styles/center.css">
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #e0f7fa;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    .image-section {
-      position: relative;
-      background-image: url('static/images/circle.jpeg'); /* Replace with your image URL */
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      height: 75vh; /* Adjust height for the image section */
-    }
-
-    .fade-overlay {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background: rgba(0, 0, 0, 0.5);
-    }
-
-    .donation-form {
-      position: absolute;
-      top: 85%;
-      right: 10%;
-      transform: translateY(-50%);
-      width: 300px;
-      background-color: #e6f7ff;
-      padding: 17px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      z-index: 2;
-    }
-
-    .donation-form h2 {
-      margin-top: 0;
-      color: #01579b;
-      font-size: 18px;
-      text-align: center;
-    }
-
-    .donation-form label {
-      display: block;
-      margin: 8px 0 5px;
-      color: #0277bd;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    .donation-form input,
-    .donation-form select {
-      width: 100%;
-      padding: 5px;
-      margin-bottom: 8px;
-      border: 1px solid #81d4fa;
-      border-radius: 5px;
-      outline: none;
-      background-color: white;
-      font-size: 14px;
-    }
-
-    .donation-form button {
-      width: 100%;
-      padding: 8px;
-      border: none;
-      border-radius: 5px;
-      background-color: #0288d1;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .donation-form button:hover {
-      background-color: #0277bd;
-    }
-
-    .quantity-input {
-      width: 100%;
-      border: 1px solid #81d4fa;
-      border-radius: 5px;
-      padding: 5px;
-      text-align: center;
-    }
-
-    .text-section {
-      padding: 20px;
-      text-align: left;
-      background-color: #ffffff;
-      font-size: 16px;
-      color: #01579b;
-    }
-
-    .image-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 20px;
-    }
-
-    .image-row img {
-      width: 30%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    /* Footer */
-.footer {
-    text-align: center;
-    background-color: #004080;
-    color: white;
-    padding: 10px 0;
-    margin-top: 20px;
-    font-size: 0.9rem;
-    bottom: 0;
-    width: 100%;
-    }
-
-    @media (max-width: 768px) {
-      .donation-form {
-        width: 90%;
-        right: 5%;
-        top: 50%;
-      }
-
-      .image-row {
-        flex-direction: column;
-      }
-
-      .image-row img {
-        width: 100%;
-      }
-    }
+      .image-section {
+    position: relative;
+    background-image: url('static/images/Circle.jpeg'); /* Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 75vh; /* Adjust height for the image section */
+  }
+  #additional-comments-container textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #81d4fa;
+  border-radius: 5px;
+  outline: none;
+  background-color: white;
+  font-size: 14px;
+  resize: vertical;
+}
   </style>
+  <title>{{ center[1]}} Center</title>
 </head>
 <body>
   <div class="container">
@@ -156,19 +35,19 @@
       <div class="fade-overlay"></div>
       <form class="donation-form" action="/submit_donation" method="POST" onsubmit="return validateForm()">
         <h2>Donate Now</h2>
-
+      
         <label for="donor-type">Who are you:</label>
         <select id="donor-type" name="donor-type">
           <option value="individual">Individual</option>
           <option value="company">Company</option>
         </select>
-
+      
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" placeholder="Enter your name" required>
-
+      
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" placeholder="Enter your email" required>
-
+      
         <!-- Quantity Inputs -->
         <label for="quantities">Items you want to donate</label>
         <label>Clothes:
@@ -183,14 +62,21 @@
         <label>Healthcare Products:
           <input type="number" class="quantity-input" name="quantity_healthcare" placeholder="Qty">
         </label>
-
+      
         <label for="delivery-type">Type of Delivery:</label>
-        <select id="delivery-type" name="delivery-type">
-          <option value="doorstep pick">Doorstep Pick</option>
+        <select id="delivery-type" name="delivery-type" onchange="toggleTextarea(this)">
           <option value="courier service">Courier Service</option>
+          <option value="doorstep pick">Doorstep Pickup</option>
         </select>
+      
+        <!-- Textarea (Hidden by Default) -->
+        <div id="additional-comments-container" style="display: none;">
+          <label for="pickup_address">Pickup Address:</label>
+          <textarea id="pickup_address" name="pickup_address" placeholder="Enter pickup instructions or address"></textarea>
+        </div>
+      
         <input type="hidden" name="city" value="{{ city }}">
-
+      
         <button type="submit">Submit</button>
       </form>
     </div>
@@ -236,6 +122,14 @@
       }
       return true;
     }
+    function toggleTextarea(selectElement) {
+    const textareaContainer = document.getElementById('additional-comments-container');
+    if (selectElement.value === 'doorstep pick') {
+      textareaContainer.style.display = 'block'; // Show the textarea
+    } else {
+      textareaContainer.style.display = 'none'; // Hide the textarea
+    }
+  }
   </script>
 </body>
 </html>

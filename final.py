@@ -28,19 +28,19 @@ app.config['MAIL_USE_SSL'] = False
 
 mail = Mail(app)
 
-@app.route('/send-email')
-def send_email():
-    try:
-        msg = Message(
-            'Hello',                  # Subject
-            sender='verify-otp@sea.org', # Replace with your Mailgun verified sender email
-            recipients=['abhijit.srivathsan@msds.christuniversity.in']  # Replace with the recipient's email
-        )
-        msg.body = 'Hello World!'  # Email body
-        mail.send(msg)
-        return 'Email sent successfully!'
-    except Exception as e:
-        return f'Error: {str(e)}'
+# @app.route('/send-email')
+# def send_email():
+#     try:
+#         msg = Message(
+#             'Hello',                  # Subject
+#             sender='verify-otp@sea.org', # Replace with your Mailgun verified sender email
+#             recipients=['abhijit.srivathsan@msds.christuniversity.in']  # Replace with the recipient's email
+#         )
+#         msg.body = 'Hello World!'  # Email body
+#         mail.send(msg)
+#         return 'Email sent successfully!'
+#     except Exception as e:
+#         return f'Error: {str(e)}'
 
 @app.route('/')
 def home():
@@ -51,61 +51,49 @@ def home():
     return render_template('index.html', centers=centers)
 
 
-
-@app.route('/donate', methods=['POST'])
-def donate():
-    try:
-        # Get form data
-        donor_type = request.form.get('donor-type')
-        name = request.form.get('name')
-        email = request.form.get('email')
-        delivery_type = request.form.get('delivery-type')
-        city = request.form.get('city')  # Fetch city from hidden input
-        center_id = request.form.get('center_id')  # Optional
-
-        # Combine categories and quantities into a single string
-        categories = request.form.getlist('categories[]')
-        donation_details = []
-        if categories:
-            quantities = {
-                'clothes': request.form.get('quantity_clothes', 0),
-                'necessary items': request.form.get('quantity_items', 0),
-                'food': request.form.get('quantity_food', 0),
-                'healthcare products': request.form.get('quantity_healthcare', 0)
-            }
-
-            for category in categories:
-                quantity = int(quantities.get(category, 0))
-                if quantity > 0:
-                    donation_details.append(f"{category}: {quantity}")
-
-        donation_summary = "; ".join(donation_details)
-
-        # Insert the entry into the database
-        cur = mysql.connection.cursor()
-        query = """
-            INSERT INTO donations (donor_type, name, email, donation_details, delivery_type, city)
-            SELECT %s, %s, %s, %s, %s, %s
-            WHERE NOT EXISTS (
-                SELECT 1 FROM donations
-                WHERE name = %s AND email = %s AND donation_details = %s AND delivery_type = %s AND city = %s
-            )
-        """
-        cur.execute(query, (
-            donor_type, name, email, donation_summary, delivery_type, city,
-            name, email, donation_summary, delivery_type, city
-        ))
-
-        mysql.connection.commit()
-        cur.close()
-
-        # Redirect to success message
-        return render_template('message.html', message=f"Thank you for your donation, {name} !")
-
-    except Exception as e:
-        print(f"Error: {e}")
-        return render_template('message.html', message="Some error occurred, please try again later.")
     
+# @app.route('/submit_donation', methods=['POST'])
+# def submit_donation():
+#     if request.method == 'POST':
+#         # Retrieve form data
+#         donor_type = request.form['donor-type']
+#         name = request.form['name']
+#         email = request.form['email']
+#         delivery_type = request.form['delivery-type']
+#         pickup_address = request.form['pickup_address']
+#         city = request.form['city']
+        
+#         # Quantities for each item (default to 0 if input is empty)
+#         clothes = int(request.form.get('quantity_clothes', '0') or '0')
+#         necessary_items = int(request.form.get('quantity_items', '0') or '0')
+#         food = int(request.form.get('quantity_food', '0') or '0')
+#         healthcare_products = int(request.form.get('quantity_healthcare', '0') or '0')
+        
+#         # Validate at least one quantity is non-zero
+#         if not (clothes > 0 or necessary_items > 0 or food > 0 or healthcare_products > 0):
+#             message = "Error: You must donate at least one item."
+#             return render_template('message.html', message=message)
+
+#         try:
+#             # Database Insert Query
+#             cur = mysql.connection.cursor()
+#             query = """
+#                 INSERT INTO donations (donor_type, name, email, delivery_type, city, clothes, necessary_items, food, healthcare_products, pickup_address)
+#                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+#             """
+#             values = (donor_type, name, email, delivery_type, city, clothes, necessary_items, food, healthcare_products, pickup_address)
+#             cur.execute(query, values)
+#             mysql.connection.commit()
+#             cur.close()
+            
+#             # Success message
+#             message = f"Thank you {name}! Your donation has been received successfully. We SEA your kindness :)"
+#             return render_template('message.html', message=message)
+#         except Exception as e:
+#             # Error handling
+#             message = f"Error: {str(e)}"
+#             return render_template('message.html', message=message)
+
 @app.route('/submit_donation', methods=['POST'])
 def submit_donation():
     if request.method == 'POST':
@@ -114,6 +102,7 @@ def submit_donation():
         name = request.form['name']
         email = request.form['email']
         delivery_type = request.form['delivery-type']
+        pickup_address = request.form['pickup_address']
         city = request.form['city']
         
         # Quantities for each item (default to 0 if input is empty)
@@ -131,17 +120,133 @@ def submit_donation():
             # Database Insert Query
             cur = mysql.connection.cursor()
             query = """
-                INSERT INTO donations (donor_type, name, email, delivery_type, city, clothes, necessary_items, food, healthcare_products)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO donations (donor_type, name, email, delivery_type, city, clothes, necessary_items, food, healthcare_products, pickup_address)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
-            values = (donor_type, name, email, delivery_type, city, clothes, necessary_items, food, healthcare_products)
+            values = (donor_type, name, email, delivery_type, city, clothes, necessary_items, food, healthcare_products, pickup_address)
             cur.execute(query, values)
             mysql.connection.commit()
             cur.close()
             
+            # Send Thank You Email
+            subject = "Donation Confirmation - SEA Organisation"
+            msg = Message(subject=subject, sender='donations@sea.org', recipients=[email])
+            
+            # HTML Content for the email
+            if delivery_type == 'doorstep pick':
+                email_body = f"""
+                <html>
+                <head>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            color: #333333;
+                        }}
+                        h2 {{
+                            color: #2c3e50;
+                        }}
+                        .content {{
+                            background-color: #f9f9f9;
+                            border: 1px solid #ddd;
+                            padding: 20px;
+                            border-radius: 5px;
+                        }}
+                        .details {{
+                            margin-top: 10px;
+                            margin-bottom: 20px;
+                        }}
+                        .footer {{
+                            font-size: 0.9em;
+                            color: #888888;
+                            margin-top: 20px;
+                            text-align: center;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class="content">
+                        <h2>Thank You, {name}!</h2>
+                        <p>We <strong>SEA</strong> your kindness and appreciate your generous donation!</p>
+                        <div class="details">
+                            <p><strong>Your donation details are:</strong></p>
+                            <ul>
+                                <li><strong>Clothes:</strong> {clothes}</li>
+                                <li><strong>Necessary Items:</strong> {necessary_items}</li>
+                                <li><strong>Food:</strong> {food}</li>
+                                <li><strong>Healthcare Products:</strong> {healthcare_products}</li>
+                                <li><strong>Pickup Address:</strong> {pickup_address}</li>
+                            </ul>
+                        </div>
+                        <p>Since you have opted for <strong>Doorstep Pickup</strong>, please ensure that your packages are tightly packed for us to pick up easily.</p>
+                    </div>
+                    <div class="footer">
+                        &copy; 2024. SEA Organisation. All Rights Reserved.
+                    </div>
+                </body>
+                </html>
+                """
+            else:
+                email_body = f"""
+                <html>
+                <head>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            line-height: 1.6;
+                            color: #333333;
+                        }}
+                        h2 {{
+                            color: #2c3e50;
+                        }}
+                        .content {{
+                            background-color: #f9f9f9;
+                            border: 1px solid #ddd;
+                            padding: 20px;
+                            border-radius: 5px;
+                        }}
+                        .details {{
+                            margin-top: 10px;
+                            margin-bottom: 20px;
+                        }}
+                        .footer {{
+                            font-size: 0.9em;
+                            color: #888888;
+                            margin-top: 20px;
+                            text-align: center;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class="content">
+                        <h2>Thank You, {name}!</h2>
+                        <p>We <strong>SEA</strong> your kindness and appreciate your generous donation!</p>
+                        <div class="details">
+                            <p><strong>Your donation details are:</strong></p>
+                            <ul>
+                                <li><strong>Clothes:</strong> {clothes}</li>
+                                <li><strong>Necessary Items:</strong> {necessary_items}</li>
+                                <li><strong>Food:</strong> {food}</li>
+                                <li><strong>Healthcare Products:</strong> {healthcare_products}</li>
+                            </ul>
+                        </div>
+                        <p>Since you have opted for <strong>Courier Service</strong>, please ensure that your packages are tightly packed. We hope to receive your donations at the earliest :)</p>
+                    </div>
+                    <div class="footer">
+                        &copy; 2024. SEA Organisation. All Rights Reserved.
+                    </div>
+                </body>
+                </html>
+                """
+            
+            # Send the email
+            msg.html = email_body
+            mail.send(msg)
+            
             # Success message
             message = f"Thank you {name}! Your donation has been received successfully. We SEA your kindness :)"
             return render_template('message.html', message=message)
+        
         except Exception as e:
             # Error handling
             message = f"Error: {str(e)}"
