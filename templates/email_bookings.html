@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #27ae60;
+        }
+        p {
+            margin: 10px 0;
+        }
+        .details {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #2980b9;
+        }
+        .emoji {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Booking Confirmed! 🎉</h1>
+        <p>Hi <span class="highlight">{{ name }}</span>,</p>
+        <p>We are delighted to confirm your booking at our <span class="highlight">{{ center }}</span> center.</p>
+        <div class="details">
+            <p>📅 <strong>Date:</strong> {{ date }}</p>
+            <p>⏰ <strong>Time:</strong> {{ time }}</p>
+            <p>🎈 <strong>Occasion:</strong> {{ occasion }}</p>
+            <p>🏷️ <strong>Type:</strong> {{ type_ }}</p>
+        </div>
+        <p>💌 We look forward to hosting you!</p>
+        <div class="footer">
+            <p>&copy; SEA Organisation. All Rights Reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

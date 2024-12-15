@@ -110,6 +110,52 @@
             bottom: 0;
             width: 100%;
             }
+            .slot-machine {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0;
+    padding: 20px;
+    background: #f5f5f5;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.slot {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #004b6d;
+    background: #fff;
+    border: 2px solid #004b6d;
+    border-radius: 5px;
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: spin 3s ease-in-out infinite;
+}
+
+.slot-value {
+    animation: fadeIn 2s;
+}
+
+@keyframes spin {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
     </style>
 </head>
 <body>
@@ -123,6 +169,13 @@
         <h1 class="header-title">SEA Organization</h1>
     </div>
     <h1>Donation Data by City</h1>
+
+    <h2>Total Donations (Slot Machine Style)</h2>
+<div class="slot-machine">
+    <div class="slot">
+        Total Monetary Donations: ₹<span class="slot-value">{{ total_donation_amount }}</span>
+    </div>
+</div>
 
     <!-- Pie Charts Section -->
     <h2>Donation Breakdown (Pie Charts)</h2>

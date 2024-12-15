@@ -18,7 +18,7 @@ app.secret_key = 'Dustbin'
 # Database configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '@Bhijit6151'
+app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'finaldb'
 
 mysql = MySQL(app)
@@ -221,12 +221,24 @@ def payment_success():
                        (name, email, amount, payment_method))
         mysql.connection.commit()
 
-        # Redirect to the message page on success with a custom message
-        message = f"Thank you {name}, We appre-sea-ite your kindness"
+        # Send confirmation email
+        subject = "Thank You for Your Donation"
+        message_body = render_template('email_payment.html', 
+                                       name=name, 
+                                       payment_method=payment_method, 
+                                       amount=amount)
+        msg = Message(subject=subject, 
+                      sender='payments@sea.org', 
+                      recipients=[email])
+        msg.html = message_body
+        mail.send(msg)
+
+        # Redirect to the message page on success with updated message
+        message = f"Thank you {name}, We appre-sea-ate your kindness, please check {email} for your payment details"
         return redirect(url_for('message', message=message))
-    
+
     except Exception as e:
-        # If there's a failure, flash a failure message and stay on the same page
+        print(f"Error: {e}")  # Log error
         flash('Payment failure')
         return redirect(url_for('payment'))
 
@@ -248,26 +260,51 @@ def book_slot():
     center = request.form['center']
     type_ = request.form['type']
     name = request.form['name']
+    email = request.form['email']
     date = request.form['date']
     time = request.form['time']
     occasion = request.form['occasion']
 
-    # Check if the slot is already booked
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM bookings WHERE date = %s AND time = %s AND center = %s", (date, time, center))
-    existing_booking = cur.fetchone()
+    try:
+        # Check if the slot is already booked
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM bookings WHERE date = %s AND time = %s AND center = %s", (date, time, center))
+        existing_booking = cur.fetchone()
 
-    if existing_booking:
+        if existing_booking:
+            cur.close()
+            return "<script>alert('Sorry, the slot is already booked.'); window.location.href = '/';</script>"
+
+        # Insert booking into the database
+        cur.execute(
+            "INSERT INTO bookings (center, type, name, email, date, time, occasion) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (center, type_, name, email, date, time, occasion))
+        mysql.connection.commit()
         cur.close()
-        return "<script>alert('Sorry, the slot is already booked.'); window.location.href = '/';</script>"
 
-    # Insert booking into the database
-    cur.execute("INSERT INTO bookings (center, type, name, date, time, occasion) VALUES (%s, %s, %s, %s, %s, %s)",
-                (center, type_, name, date, time, occasion))
-    mysql.connection.commit()
-    cur.close()
+        # Send confirmation email
+        subject = "Booking Confirmation"
+        message_body = render_template('email_bookings.html',
+                                       name=name,
+                                       center=center,
+                                       type_=type_,
+                                       date=date,
+                                       time=time,
+                                       occasion=occasion)
+        msg = Message(subject=subject, 
+                      sender='bookings@sea.org',
+                      recipients=[email])
+        msg.html = message_body
+        mail.send(msg)
 
-    return "<script>alert('Booking successful!'); window.location.href = '/';</script>"
+        # Redirect to message.html on success
+        message = f"Thank you {name}, your booking is successful, please check {email} for the confirmation"
+        return render_template('message.html', message=message)
+
+    except Exception as e:
+        print(f"Error: {e}")  # Log error
+        return "<script>alert('Booking was not successful. Please try again later.'); window.location.href = '/';</script>"
+
 
 @app.route('/available-slots', methods=['GET'])
 def available_slots():
@@ -320,30 +357,39 @@ def submit_application():
     # Get data from the form
     name = request.form['name']
     email = request.form['email']
-    interest = request.form['interest']
+    message = request.form['interest']
     
-    # Insert data into the database
     try:
+        # Insert data into the database
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO volunteers (name, email, interest) VALUES (%s, %s, %s)", (name, email, interest))
+        cur.execute("INSERT INTO volunteers (name, email, message) VALUES (%s, %s, %s)", (name, email, message))
         mysql.connection.commit()
         cur.close()
 
-        # Pass the success message to the message.html template
-        success_message = "Thank you for applying! We appreciate your interest and will contact you soon."
+        # Send confirmation email
+        subject = "Volunteer Application"
+        email_body = render_template('email_applications.html', name=name)
+        msg = Message(subject=subject, 
+                      sender='volunteer@sea.org', 
+                      recipients=[email])
+        msg.html = email_body
+        mail.send(msg)
+
+        # Render the success message
+        success_message = f"Thank you {name} for applying! We appreciate your interest and will contact you soon."
         return render_template('message.html', 
                                title="Application Status", 
                                message=success_message, 
                                back_url=url_for('volunteer'))
 
     except Exception as e:
-        # Log the error and return an error message
+        # Log the error
         print("Error: ", e)
-        error_message = "Something went wrong. Please try again later."
-        return render_template('message.html', 
-                               title="Error", 
-                               message=error_message, 
-                               back_url=url_for('volunteer'))
+        
+        # Show flash message on error
+        flash("Error occurred, please try again later.")
+        return redirect(url_for('volunteer'))
+
     
 @app.route('/submit_donation', methods=['POST'])
 def submit_donation():
@@ -409,18 +455,18 @@ def dashboard():
     cur = mysql.connection.cursor()
 
     # Monetary donations
-    cur.execute("SELECT * FROM monetary")
-    monetary_data = cur.fetchall()
+    cur.execute("SELECT * FROM bookings")
+    bookings_data = cur.fetchall()
     # monetary_columns = [desc[0] for desc in cur.description]
 
     # Special occasions
-    cur.execute("SELECT * FROM special")
-    special_data = cur.fetchall()
+    cur.execute("SELECT * FROM contact")
+    contact_data = cur.fetchall()
     # special_columns = [desc[0] for desc in cur.description]
 
     # People who've joined
-    cur.execute("SELECT * FROM joiners")
-    joiners_data = cur.fetchall()
+    cur.execute("SELECT * FROM payments")
+    payments_data = cur.fetchall()
     # joiners_columns = [desc[0] for desc in cur.description]
 
     cur.execute("SELECT * FROM donations")
@@ -431,9 +477,9 @@ def dashboard():
     # Render data into the HTML template
     return render_template(
         'dashboard.html',
-        monetary_data=monetary_data,
-        special_data=special_data,
-        joiners_data=joiners_data,
+        bookings_data=bookings_data,
+        contact_data = contact_data,
+        payments_data=payments_data,
         donations_data=donations_data
     )
 
@@ -566,9 +612,12 @@ def show_charts():
                 'bar_delivery_chart_base64': f"data:image/png;base64,{bar_delivery_chart_base64}",
                 'bar_donor_chart_base64': f"data:image/png;base64,{bar_donor_chart_base64}"
             })
+         # Fetch total donation amount from the payments table
+        cur.execute("SELECT SUM(amount) FROM payments")
+        total_donation_amount = cur.fetchone()[0] or 0  # Handle null case
 
         cur.close()
-        return render_template('charts.html', charts=charts)
+        return render_template('charts.html', charts=charts, total_donation_amount=total_donation_amount)
 
     except Exception as e:
         # Error handling
@@ -616,6 +665,65 @@ def top_donors():
         # Error handling
         message = f"Error: {str(e)}"
         return render_template('message.html', message=message)
+    
+@app.route('/get-details', methods=['GET', 'POST'])
+def get_details():
+    if request.method == 'GET':
+        # Render the form for the user to input their email
+        return render_template('get-details.html')
+    
+    if request.method == 'POST':
+        email = request.form['email']
+        action = request.form['action']
+
+        try:
+            cur = mysql.connection.cursor()
+
+            # Check if the email exists in either table
+            cur.execute("SELECT COUNT(*) FROM donations WHERE email = %s", (email,))
+            email_in_donations = cur.fetchone()[0]
+
+            cur.execute("SELECT COUNT(*) FROM payments WHERE email = %s", (email,))
+            email_in_payments = cur.fetchone()[0]
+
+            if not email_in_donations and not email_in_payments:
+                flash("Invalid email, please input the correct email and try again.")
+                return redirect(url_for('get_details'))
+
+            # Handle the action
+            if action == 'item':  # Item donation details
+                cur.execute("SELECT * FROM donations WHERE email = %s", (email,))
+                donation_data = cur.fetchall()
+
+                # Render the email_donation_details template
+                rendered_html = render_template('email_donation_details.html', donations=donation_data)
+                send_email(email, "Your Item Donation Details", rendered_html)
+
+            elif action == 'monetary':  # Monetary donation details
+                cur.execute("SELECT * FROM payments WHERE email = %s", (email,))
+                payment_data = cur.fetchall()
+
+                # Render the email_monetary_details template
+                rendered_html = render_template('email_monetary_details.html', payments=payment_data)
+                send_email(email, "Your Monetary Donation Details", rendered_html)
+
+            cur.close()
+
+            # Redirect to message.html with success message
+            success_message = f"Your donation details have been securely sent to {email}."
+            return render_template('message.html', title="Success", message=success_message, back_url=url_for('get_details'))
+
+        except Exception as e:
+            print("Error:", e)
+            flash("Something went wrong. Please try again later.")
+            return redirect(url_for('get_details'))
+
+
+
+def send_email(to, subject, body):
+    """Sends an email using Flask-Mail or another SMTP service."""
+    msg = Message(subject=subject, recipients=[to], html=body, sender="admin@sea.org")
+    mail.send(msg)
 
 
 if __name__ == '__main__':

@@ -24,76 +24,78 @@
     <body>
     <!-- Tables -->
     <div class="table-container">
-        <div class="table-title">Monetary Donations</div>
+        <div class="table-title">Bookings</div>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Center</th>
+                    <th>Type</th>
                     <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody id="monetary-table">
-                {% for row in monetary_data %}
-                <tr>
-                    {% for i in range(0,5) %}
-                    <td>{{ row[i] }}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <div class="table-container">
-        <div class="table-title">Special Occasions</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Individual</th>
+                    <th>Date</th>
+                    <th>Time</th>
                     <th>Occasion</th>
                     <th>Email</th>
-                    <th>Phone</th>
-                </tr>
-            </thead>
-            <tbody id="special-table">
-                {% for row in special_data %}
-                <tr>
-                    {% for i in range(0,5) %}
-                    <td>{{ row[i] }}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <div class="table-container">
-        <div class="table-title">People Who've Joined</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
                 </tr>
             </thead>
             <tbody id="joiners-table">
-                {% for row in joiners_data %}
+                {% for row in bookings_data %}
+                <tr>
+                    {% for i in range(0,8) %}
+                    <td>{{ row[i] }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+        </table>
+    </div>
+
+    <div class="table-container">
+        <div class="table-title">Contact</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Message</th>
+                    <th>Submitted At</th>
+                </tr>
+            </thead>
+            <tbody id="joiners-table">
+                {% for row in contact_data %}
                 <tr>
                     {% for i in range(0,5) %}
                     <td>{{ row[i] }}</td>
                     {% endfor %}
                 </tr>
                 {% endfor %}
-            </tbody>
         </table>
     </div>
-    
+
+    <div class="table-container">
+        <div class="table-title">Payments</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Amount</th>
+                    <th>Payment Method</th>
+                    <th>Payment Date</th>
+                </tr>
+            </thead>
+            <tbody id="joiners-table">
+                {% for row in payments_data %}
+                <tr>
+                    {% for i in range(0,6) %}
+                    <td>{{ row[i] }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+        </table>
+    </div>
+
     <div class="table-container">
         <div class="table-title">Donations</div>
         <table>

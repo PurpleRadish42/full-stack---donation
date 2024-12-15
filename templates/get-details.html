@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Donation Details</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f7fc;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #004b6d;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        input[type="email"] {
+            padding: 10px;
+            font-size: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            background: #004b6d;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #0069a0;
+        }
+        header {
+    background-color: #004b6d;
+    color: white;
+    padding: 20px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    max-height: 60px; /* Adjust the logo size if needed */
+    display: block;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    text-align: center;
+    flex-grow: 1; /* Ensures the h1 takes space without overlapping */
+}
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <div class="logo">
+            <a href="/">
+                <img src="static/images/sea logo.jpg" alt="SEA Logo">
+            </a>
+        </div>
+        <h1>Volunteer with Us</h1>
+    </div>
+    <div class="container">
+        <h1>Get Donation Details</h1>
+        <form method="POST" action="/get-details">
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <div class="button-container">
+                <button type="submit" name="action" value="item">Get Item Donation Details</button>
+                <button type="submit" name="action" value="monetary">Get Monetary Donation Details</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
