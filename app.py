@@ -18,7 +18,7 @@ app.secret_key = 'Dustbin'
 # Database configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '@Bhijit6151'
+app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'finaldb'
 
 mysql = MySQL(app)
@@ -38,6 +38,30 @@ app.secret_key = 'Dustbin'
 # Temporary storage for OTP and user data
 temp_user_data = {}
 
+def login_required(role=None):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            print(f"Session data: {session}")  # Debugging session data
+            if 'username' not in session:
+                flash("You need to log in first.", "error")
+                return redirect(url_for('login'))
+            
+            if role:
+                user_role = session.get('role')
+                if isinstance(role, list):
+                    if user_role not in role:
+                        flash("You are not authorized to access this page.", "error")
+                        return redirect(url_for('login'))
+                elif user_role != role:
+                    flash("You are not authorized to access this page.", "error")
+                    return redirect(url_for('login'))
+            
+            return f(*args, **kwargs)
+        return wrapper
+    return decorator
+
+
 @app.route('/')
 def home():
     cur = mysql.connection.cursor()
@@ -47,27 +71,10 @@ def home():
     return render_template('index.html', centers=centers)
 
 @app.route('/donation')
+@login_required(role='user')
 def donation():
     return render_template('donation.html')
 
-# Decorators for role-based access control
-def admin_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'admin_id' not in session:
-            flash('Admin login required.', 'error')
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
-
-def user_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'user_id' not in session:
-            flash('User login required.', 'error')
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return decorated_function
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -195,6 +202,7 @@ def login():
 
 
 @app.route('/logout')
+@login_required(role=['admin', 'user'])
 def logout():
     session.clear()
     flash('You have been logged out.')
@@ -202,11 +210,13 @@ def logout():
 
 
 @app.route('/payment', methods=['GET', 'POST'])
+@login_required(role= 'user')
 def payment():
     return render_template('payments.html')
 
 
 @app.route('/payment-success', methods=['POST'])
+@login_required(role='user')
 def payment_success():
     # Fetch data from the POST form
     name = request.form.get('name')
@@ -240,10 +250,12 @@ def message():
 
 
 @app.route('/special')
+@login_required(role= 'user')
 def special():
     return render_template('special.html')
 
 @app.route('/book-slot', methods=['POST'])
+@login_required(role='user')
 def book_slot():
     center = request.form['center']
     type_ = request.form['type']
@@ -270,6 +282,7 @@ def book_slot():
     return "<script>alert('Booking successful!'); window.location.href = '/';</script>"
 
 @app.route('/available-slots', methods=['GET'])
+@login_required(role= 'user')
 def available_slots():
     cur = mysql.connection.cursor()
     cur.execute("SELECT date, time FROM bookings")
@@ -281,6 +294,7 @@ def available_slots():
     return jsonify(booked_slots_list)
 
 @app.route('/contact', methods=['GET', 'POST'])
+@login_required(role='user')
 def contact():
     if request.method == 'POST':
         name = request.form['name']
@@ -312,10 +326,12 @@ def contact():
     return render_template('contactus.html')
 
 @app.route('/volunteer', methods=['GET', 'POST'])
+@login_required(role='user')
 def volunteer():
     return render_template('volunteer.html')
 
 @app.route('/submit_application', methods=['POST'])
+@login_required(role='user')
 def submit_application():
     # Get data from the form
     name = request.form['name']
@@ -346,6 +362,7 @@ def submit_application():
                                back_url=url_for('volunteer'))
     
 @app.route('/submit_donation', methods=['POST'])
+@login_required(role= 'user')
 def submit_donation():
     if request.method == 'POST':
         # Retrieve form data
@@ -404,6 +421,7 @@ def submit_donation():
             return render_template('message.html', message=message)
     
 @app.route('/dashboard', methods=['GET'])
+@login_required(role='admin')
 def dashboard():
     # Fetch data from all tables
     cur = mysql.connection.cursor()
@@ -438,6 +456,7 @@ def dashboard():
     )
 
 @app.route('/center')
+@login_required(role='user')
 def center():
     center_id = request.args.get('id')
 
@@ -464,6 +483,7 @@ def center():
 
 
 @app.route('/charts')
+@login_required(role='admin')
 def show_charts():
     try:
         cur = mysql.connection.cursor()
@@ -576,6 +596,7 @@ def show_charts():
         return render_template('message.html', message=message)
 
 @app.route('/halloffame')
+@login_required(role='admin')
 def top_donors():
     try:
         cur = mysql.connection.cursor()
@@ -616,6 +637,10 @@ def top_donors():
         # Error handling
         message = f"Error: {str(e)}"
         return render_template('message.html', message=message)
+@app.route('/about')
+# @login_required(role=['admin','user'])
+def about():
+    return render_template('aboutus.html')
 
 
 if __name__ == '__main__':
