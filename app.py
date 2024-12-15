@@ -687,6 +687,10 @@ def top_donors():
         message = f"Error: {str(e)}"
         return render_template('message.html', message=message)
 
+@app.route('/aboutus')
+def aboutus():
+    return render_template('aboutus.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
