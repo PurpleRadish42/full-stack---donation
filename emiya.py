@@ -352,6 +352,39 @@ def contact():
                                    back_url=url_for('contact'))
     return render_template('contactus.html')
 
+@app.route('/volunteer', methods=['GET', 'POST'])
+def volunteer():
+    return render_template('volunteer.html')
+
+@app.route('/submit_application', methods=['POST'])
+def submit_application():
+    # Get data from the form
+    name = request.form['name']
+    email = request.form['email']
+    interest = request.form['interest']
+    
+    # Insert data into the database
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO volunteers (name, email, interest) VALUES (%s, %s, %s)", (name, email, interest))
+        mysql.connection.commit()
+        cur.close()
+
+        # Pass the success message to the message.html template
+        success_message = "Thank you for applying! We appreciate your interest and will contact you soon."
+        return render_template('message.html', 
+                               title="Application Status", 
+                               message=success_message, 
+                               back_url=url_for('volunteer'))
+
+    except Exception as e:
+        # Log the error and return an error message
+        print("Error: ", e)
+        error_message = "Something went wrong. Please try again later."
+        return render_template('message.html', 
+                               title="Error", 
+                               message=error_message, 
+                               back_url=url_for('volunteer'))
 
 if __name__ == '__main__':
     app.run(debug=True)

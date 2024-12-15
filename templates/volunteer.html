@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer with Us</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f4f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            background-color: #004b6d;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #004b6d;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .intro-text {
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .cta-button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 25px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            text-decoration: none;
+            margin-top: 20px;
+            margin-left: 20px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+            
+        }
+
+        .cta-button:hover {
+            background-color: #0056b3;
+        }
+
+        .benefits {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .benefit-item {
+            text-align: center;
+            width: 30%;
+        }
+
+        .benefit-item img {
+            width: 300px;
+            height: 200px;
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+
+        .benefit-item img:hover {
+            transform: scale(1.1);
+        }
+
+        .testimonials {
+            background-color: #e9f7fc;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .testimonial-card {
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            width: 45%;
+            margin: 10px auto;
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .testimonial-card span {
+            display: block;
+            margin-top: 10px;
+            color: #004b6d;
+            font-weight: bold;
+        }
+
+        .footer {
+            background-color: #004b6d;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 40px;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 1.1em;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Volunteer with Us</h1>
+    </header>
+
+    <div class="container">
+        <section class="intro">
+            <h2>Join Our Volunteer Program</h2>
+            <p class="intro-text">
+                Our mission is to create a positive impact in our community, and we can’t do it without the help of dedicated volunteers like you. Whether you're looking to give back to your community, gain new skills, or simply make a difference, volunteering with us is an experience you won’t forget.
+            </p>
+            <center><a href="#sign-up-form" class="cta-button">Sign Up to Volunteer</a></center>
+        </section>
+
+        <section class="benefits">
+            <div class="benefit-item">
+                <img src="static/images/vol1.jpg" alt="Skill Development">
+                <h3>Develop New Skills</h3>
+                <p>Gain valuable experience that will benefit your career and personal growth.</p>
+            </div>
+            <div class="benefit-item">
+                <img src="static/images/vol2.jpg" alt="Community">
+                <h3>Make an Impact</h3>
+                <p>Help build a stronger, more connected community through meaningful work.</p>
+            </div>
+            <div class="benefit-item">
+                <img src="static/images/vol3.jpg" alt="Meet New People">
+                <h3>Meet New People</h3>
+                <p>Collaborate with like-minded individuals who share your passion for change.</p>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <h2>What Our Volunteers Say</h2>
+            <div class="testimonial-card">
+                <p>"Volunteering with this organization has been one of the most rewarding experiences of my life. I’ve learned so much and met so many incredible people!"</p>
+                <span>- Sarah M.</span>
+            </div>
+            <div class="testimonial-card">
+                <p>"It’s great to see the direct impact of our efforts. Volunteering has given me a new perspective on community engagement and personal fulfillment."</p>
+                <span>- John D.</span>
+            </div>
+        </section>
+
+        <section id="sign-up-form" class="sign-up">
+            <h2>Get Started Today!</h2>
+            <p class="intro-text">Ready to make a difference? Fill out the form below to become a volunteer with us!</p>
+            <!-- Form that submits to the correct route -->
+            <form method="POST" action="/submit_application">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="interest">Why do you want to volunteer?</label>
+                <textarea id="interest" name="interest" rows="4" required></textarea>
+
+                <button type="submit" class="cta-button">Submit Application</button>
+            </form>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Volunteer Program | All Rights Reserved</p>
+    </footer>
+</body>
+
+    
+</html>
