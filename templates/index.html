@@ -189,6 +189,50 @@
         .dropdown:hover .dropbtn {
             background-color: #004080;
         }
+
+    .imagebox {
+      position: relative;
+      width: 1550px;
+      height: 700px;
+      overflow: hidden; /* Ensure the overlay doesn't go outside the container */
+    }
+
+    .imagebox img {
+      width: 100%;
+      height: 90%;
+      object-fit: cover;
+      transition: opacity 0.5s ease; /* Fade transition on hover */
+    }
+
+    .imagebox::after {
+      content: "";
+      position: absolute;
+      top: 90;
+      left: 0;
+      width: 100%;
+      height: 90%;
+      background: rgba(0, 0, 0, 0.7); /* Semi-transparent black overlay */
+       /* Initially hidden */
+      transition: opacity 0.5s ease; /* Fade in/out effect */
+      z-index: 1;
+    }
+    .image-overlay {
+    position: relative; /* To position the text absolutely within the image container */
+    width: 100%; /* Match the image width */
+}
+
+.right-aligned-text {
+    position: absolute;
+    bottom: 400px; /* Moves text slightly upward */
+    right: 50px; /* Aligns text to the right */
+    color: white; /* Ensures visibility over image */
+    font-size: 2rem; /* Matches h2 size */
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Adds contrast for visibility */
+    text-align: right;
+}
+
+
         /* General City Table Layout */
         .city-tables {
             display: flex;
@@ -283,22 +327,25 @@
         <a href="/login">Login</a>
     </div>
 
-    <!-- Main Content -->
+    <!-- Main Content 
     <div class="main-image-container">
         <button class="arrow left-arrow" onclick="showPreviousImage()">&#10094;</button>
         <div class="image-slider">
+            <video autoplay loop muted width="640" height="360">
+                <source src="example.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
             
-            <img src="static/images/h1donate.jpeg" alt="Main Image" class="main-image">
+            <img src="static/videos/donation.mp4" alt="Main Image" class="main-image">
             <img src="static/images/main image.jpeg" alt="Image 1" class="main-image">
             <img src="static/images/main image.jpeg" alt="Image 2" class="main-image">
         </div>
         <button class="arrow right-arrow" onclick="showNextImage()">&#10095;</button>
-    </div>
-    <div>
-        <div class="dialogue">
-            <h2>"Your support makes a difference! Help us create a better tomorrow by making a donation today."</h2>
+    </div>-->
+    <div class="imagebox"><img src="static/images/center.jpeg" height="700" width="1550">
+            <h1 class="right-aligned-text">Together, we can create lasting change<br> and make a real difference.</h1>
         </div>
-    </div>
+    
     <div class="city-tables">
         {% for center in centers %}
             <div class="city-table">

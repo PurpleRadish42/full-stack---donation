@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - SEA Organization</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="/static/styles/index.css">
     <style>
         /* General Styles */
         body {
@@ -117,10 +118,37 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="logo">SEA Organization</div>
-    </nav>
+         <!-- Header -->
+         <div class="header">
+            <div class="logo">
+                <a href="/">
+                    <img src="static/images/sea logo.jpg" alt="SEA Logo">
+                </a>
+            </div>
+            <h1 class="header-title">SEA Organization</h1>
+            <div class="donate-button">
+                <a href="/donation">Donate Now</a>
+            </div>
+        </div>
+    
+        <!-- Navigation Bar -->
+        <div class="navbar">
+            <div class="dropdown">
+                <a href="#centers" class="dropbtn">Centers</a>
+                <div class="dropdown-content">
+                    <a href="/center?id=1">Bangalore</a>
+                    <a href="/center?id=2">Chennai</a>
+                    <a href="/center?id=3">Hyderabad</a>
+                    <a href="/center?id=4">Cochin</a>
+                </div>
+            </div>
+            <a href="/special">Special Occasions</a>
+            <a href="/about">About Us</a>
+            <a href="/contact">Contact Us</a>
+            <a href="/halloffame">Top Donors</a>
+            <a href="/volunteer">Volunteer with us</a>
+            <a href="/login">Login</a>
+        </div>
 
     <!-- Main Container -->
     <div class="container">
