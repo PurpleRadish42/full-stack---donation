@@ -28,19 +28,6 @@ app.config['MAIL_USE_SSL'] = False
 
 mail = Mail(app)
 
-# @app.route('/send-email')
-# def send_email():
-#     try:
-#         msg = Message(
-#             'Hello',                  # Subject
-#             sender='verify-otp@sea.org', # Replace with your Mailgun verified sender email
-#             recipients=['abhijit.srivathsan@msds.christuniversity.in']  # Replace with the recipient's email
-#         )
-#         msg.body = 'Hello World!'  # Email body
-#         mail.send(msg)
-#         return 'Email sent successfully!'
-#     except Exception as e:
-#         return f'Error: {str(e)}'
 
 @app.route('/')
 def home():
@@ -51,7 +38,6 @@ def home():
     return render_template('index.html', centers=centers)
 
 
-    
 # @app.route('/submit_donation', methods=['POST'])
 # def submit_donation():
 #     if request.method == 'POST':
@@ -86,9 +72,125 @@ def home():
 #             mysql.connection.commit()
 #             cur.close()
             
+#             # Send Thank You Email
+#             subject = "Donation Confirmation - SEA Organisation"
+#             msg = Message(subject=subject, sender='donations@sea.org', recipients=[email])
+            
+#             # HTML Content for the email
+#             if delivery_type == 'doorstep pick':
+#                 email_body = f"""
+#                 <html>
+#                 <head>
+#                     <style>
+#                         body {{
+#                             font-family: Arial, sans-serif;
+#                             line-height: 1.6;
+#                             color: #333333;
+#                         }}
+#                         h2 {{
+#                             color: #2c3e50;
+#                         }}
+#                         .content {{
+#                             background-color: #f9f9f9;
+#                             border: 1px solid #ddd;
+#                             padding: 20px;
+#                             border-radius: 5px;
+#                         }}
+#                         .details {{
+#                             margin-top: 10px;
+#                             margin-bottom: 20px;
+#                         }}
+#                         .footer {{
+#                             font-size: 0.9em;
+#                             color: #888888;
+#                             margin-top: 20px;
+#                             text-align: center;
+#                         }}
+#                     </style>
+#                 </head>
+#                 <body>
+#                     <div class="content">
+#                         <h2>Thank You, {name}!</h2>
+#                         <p>We <strong>SEA</strong> your kindness and appreciate your generous donation!</p>
+#                         <div class="details">
+#                             <p><strong>Your donation details are:</strong></p>
+#                             <ul>
+#                                 <li><strong>Clothes:</strong> {clothes}</li>
+#                                 <li><strong>Necessary Items:</strong> {necessary_items}</li>
+#                                 <li><strong>Food:</strong> {food}</li>
+#                                 <li><strong>Healthcare Products:</strong> {healthcare_products}</li>
+#                                 <li><strong>Pickup Address:</strong> {pickup_address}</li>
+#                             </ul>
+#                         </div>
+#                         <p>Since you have opted for <strong>Doorstep Pickup</strong>, please ensure that your packages are tightly packed for us to pick up easily.</p>
+#                     </div>
+#                     <div class="footer">
+#                         &copy; 2024. SEA Organisation. All Rights Reserved.
+#                     </div>
+#                 </body>
+#                 </html>
+#                 """
+#             else:
+#                 email_body = f"""
+#                 <html>
+#                 <head>
+#                     <style>
+#                         body {{
+#                             font-family: Arial, sans-serif;
+#                             line-height: 1.6;
+#                             color: #333333;
+#                         }}
+#                         h2 {{
+#                             color: #2c3e50;
+#                         }}
+#                         .content {{
+#                             background-color: #f9f9f9;
+#                             border: 1px solid #ddd;
+#                             padding: 20px;
+#                             border-radius: 5px;
+#                         }}
+#                         .details {{
+#                             margin-top: 10px;
+#                             margin-bottom: 20px;
+#                         }}
+#                         .footer {{
+#                             font-size: 0.9em;
+#                             color: #888888;
+#                             margin-top: 20px;
+#                             text-align: center;
+#                         }}
+#                     </style>
+#                 </head>
+#                 <body>
+#                     <div class="content">
+#                         <h2>Thank You, {name}!</h2>
+#                         <p>We <strong>SEA</strong> your kindness and appreciate your generous donation!</p>
+#                         <div class="details">
+#                             <p><strong>Your donation details are:</strong></p>
+#                             <ul>
+#                                 <li><strong>Clothes:</strong> {clothes}</li>
+#                                 <li><strong>Necessary Items:</strong> {necessary_items}</li>
+#                                 <li><strong>Food:</strong> {food}</li>
+#                                 <li><strong>Healthcare Products:</strong> {healthcare_products}</li>
+#                             </ul>
+#                         </div>
+#                         <p>Since you have opted for <strong>Courier Service</strong>, please ensure that your packages are tightly packed. We hope to receive your donations at the earliest :)</p>
+#                     </div>
+#                     <div class="footer">
+#                         &copy; 2024. SEA Organisation. All Rights Reserved.
+#                     </div>
+#                 </body>
+#                 </html>
+#                 """
+            
+#             # Send the email
+#             msg.html = email_body
+#             mail.send(msg)
+            
 #             # Success message
 #             message = f"Thank you {name}! Your donation has been received successfully. We SEA your kindness :)"
 #             return render_template('message.html', message=message)
+        
 #         except Exception as e:
 #             # Error handling
 #             message = f"Error: {str(e)}"
@@ -104,6 +206,7 @@ def submit_donation():
         delivery_type = request.form['delivery-type']
         pickup_address = request.form['pickup_address']
         city = request.form['city']
+        address = request.form['address']
         
         # Quantities for each item (default to 0 if input is empty)
         clothes = int(request.form.get('quantity_clothes', '0') or '0')
@@ -128,118 +231,17 @@ def submit_donation():
             mysql.connection.commit()
             cur.close()
             
-            # Send Thank You Email
+            # Prepare the email
             subject = "Donation Confirmation - SEA Organisation"
             msg = Message(subject=subject, sender='donations@sea.org', recipients=[email])
             
-            # HTML Content for the email
+            # Render the appropriate HTML template for the email
             if delivery_type == 'doorstep pick':
-                email_body = f"""
-                <html>
-                <head>
-                    <style>
-                        body {{
-                            font-family: Arial, sans-serif;
-                            line-height: 1.6;
-                            color: #333333;
-                        }}
-                        h2 {{
-                            color: #2c3e50;
-                        }}
-                        .content {{
-                            background-color: #f9f9f9;
-                            border: 1px solid #ddd;
-                            padding: 20px;
-                            border-radius: 5px;
-                        }}
-                        .details {{
-                            margin-top: 10px;
-                            margin-bottom: 20px;
-                        }}
-                        .footer {{
-                            font-size: 0.9em;
-                            color: #888888;
-                            margin-top: 20px;
-                            text-align: center;
-                        }}
-                    </style>
-                </head>
-                <body>
-                    <div class="content">
-                        <h2>Thank You, {name}!</h2>
-                        <p>We <strong>SEA</strong> your kindness and appreciate your generous donation!</p>
-                        <div class="details">
-                            <p><strong>Your donation details are:</strong></p>
-                            <ul>
-                                <li><strong>Clothes:</strong> {clothes}</li>
-                                <li><strong>Necessary Items:</strong> {necessary_items}</li>
-                                <li><strong>Food:</strong> {food}</li>
-                                <li><strong>Healthcare Products:</strong> {healthcare_products}</li>
-                                <li><strong>Pickup Address:</strong> {pickup_address}</li>
-                            </ul>
-                        </div>
-                        <p>Since you have opted for <strong>Doorstep Pickup</strong>, please ensure that your packages are tightly packed for us to pick up easily.</p>
-                    </div>
-                    <div class="footer">
-                        &copy; 2024. SEA Organisation. All Rights Reserved.
-                    </div>
-                </body>
-                </html>
-                """
+                email_body = render_template('email_doorstep.html', name=name, clothes=clothes, necessary_items=necessary_items, food=food, healthcare_products=healthcare_products, pickup_address=pickup_address)
             else:
-                email_body = f"""
-                <html>
-                <head>
-                    <style>
-                        body {{
-                            font-family: Arial, sans-serif;
-                            line-height: 1.6;
-                            color: #333333;
-                        }}
-                        h2 {{
-                            color: #2c3e50;
-                        }}
-                        .content {{
-                            background-color: #f9f9f9;
-                            border: 1px solid #ddd;
-                            padding: 20px;
-                            border-radius: 5px;
-                        }}
-                        .details {{
-                            margin-top: 10px;
-                            margin-bottom: 20px;
-                        }}
-                        .footer {{
-                            font-size: 0.9em;
-                            color: #888888;
-                            margin-top: 20px;
-                            text-align: center;
-                        }}
-                    </style>
-                </head>
-                <body>
-                    <div class="content">
-                        <h2>Thank You, {name}!</h2>
-                        <p>We <strong>SEA</strong> your kindness and appreciate your generous donation!</p>
-                        <div class="details">
-                            <p><strong>Your donation details are:</strong></p>
-                            <ul>
-                                <li><strong>Clothes:</strong> {clothes}</li>
-                                <li><strong>Necessary Items:</strong> {necessary_items}</li>
-                                <li><strong>Food:</strong> {food}</li>
-                                <li><strong>Healthcare Products:</strong> {healthcare_products}</li>
-                            </ul>
-                        </div>
-                        <p>Since you have opted for <strong>Courier Service</strong>, please ensure that your packages are tightly packed. We hope to receive your donations at the earliest :)</p>
-                    </div>
-                    <div class="footer">
-                        &copy; 2024. SEA Organisation. All Rights Reserved.
-                    </div>
-                </body>
-                </html>
-                """
+                email_body = render_template('email_courier.html', name=name, clothes=clothes, necessary_items=necessary_items, food=food, healthcare_products=healthcare_products, address=address)
             
-            # Send the email
+            # Attach the email body
             msg.html = email_body
             mail.send(msg)
             
@@ -251,7 +253,6 @@ def submit_donation():
             # Error handling
             message = f"Error: {str(e)}"
             return render_template('message.html', message=message)
-
     
 @app.route('/dashboard', methods=['GET'])
 def dashboard():
@@ -305,8 +306,9 @@ def center():
 
     if center:
         city = center[1]
+        address = center[9]
         print(city)
-        return render_template('center.html', city=city,center=center)  # Pass a single center object
+        return render_template('center.html', city=city,address=address,center=center)  # Pass a single center object
     else:
         return render_template('message.html', message="Center not found.")
     
