@@ -34,7 +34,7 @@ mysql = MySQL(app)
 #         msg = Message(
 #             'Hello',                  # Subject
 #             sender='admin@emiyasusan.me', # Replace with your Mailgun verified sender email
-#             recipients=['abhijit.7472@gmail.com']  # Replace with the recipient's email
+#             recipients=['abhijit.srivathsan@msds.christuniversity.in']  # Replace with the recipient's email
 #         )
 #         msg.body = 'Hello World!'  # Email body
 #         mail.send(msg)
