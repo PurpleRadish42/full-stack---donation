@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 from flask_mail import Mail, Message
 import random
+# import requests
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
@@ -16,19 +17,21 @@ app.config['MYSQL_DB'] = 'emiya_db'
 
 mysql = MySQL(app)
 
-# # Mail configuration
-# app.config['MAIL_SERVER'] = 'smtp.mailgun.org'  # Replace with your email provider
-# app.config['MAIL_PORT'] = 587
-# app.config['MAIL_USE_TLS'] = True
-# app.config['MAIL_USERNAME'] = 'postmaster@emiyasusan.me'
-# app.config['MAIL_PASSWORD'] = 'dc6954c76690ddc07dca25af1ca634ca-da554c25-47e4a873'
+# Mail configuration
+app.config['MAIL_SERVER'] = 'smtp.mailgun.org'  # Replace with your email provider
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'postmaster@mg.emiyasusan.me'
+app.config['MAIL_PASSWORD'] = '3a30746c967057d0d41781a842653921-da554c25-373e8430'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
 
-# mail = Mail(app)
+mail = Mail(app)
 
-# # Temporary storage for OTP and user data
-# temp_user_data = {}
+# Temporary storage for OTP and user data
+temp_user_data = {}
 
-# import requests
+
 
 # def send_otp_email(email, otp):
 #     # Mailgun API URL for sending messages
@@ -66,40 +69,40 @@ mysql = MySQL(app)
 #         print("Failed to send OTP:", response.text)
 
 
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     if request.method == 'POST':
-#         username = request.form['username']
-#         password = request.form['password']
-#         confirm_password = request.form['confirm_password']
-#         email = request.form['email']
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+        email = request.form['email']
 
-#         if password != confirm_password:
-#             flash("Passwords do not match.")
-#             return redirect(url_for('register'))
+        if password != confirm_password:
+            flash("Passwords do not match.")
+            return redirect(url_for('register'))
 
-#         # Generate OTP and store user data temporarily
-#         otp = random.randint(100000, 999999)
-#         temp_user_data[email] = {
-#             'username': username,
-#             'password': generate_password_hash(password),
-#             'role': 'user',
-#             'otp': otp
-#         }
+        # Generate OTP and store user data temporarily
+        otp = random.randint(100000, 999999)
+        temp_user_data[email] = {
+            'username': username,
+            'password': generate_password_hash(password),
+            'role': 'user',
+            'otp': otp
+        }
 
-#         # Send OTP to the user's email
-#         try:
-#             msg = Message('OTP Verification', sender='postmaster@emiyasusan.me', recipients=[email])
-#             msg.body = f'Your OTP for registration is: {otp}'
-#             mail.send(msg)
-#             flash('OTP sent to your email. Please verify.')
-#             return redirect(url_for('otp_verification', email=email))
-#         except Exception as e:
-#             print(f"Error: {str(e)}")
-#             flash(f"Error sending email: {str(e)}")
-#             return redirect(url_for('register'))
+        # Send OTP to the user's email
+        try:
+            msg = Message('OTP Verification', sender='verify-otp@sea.org', recipients=[email])
+            msg.body = f'Your OTP for registration is: {otp}'
+            mail.send(msg)
+            flash('OTP sent to your email. Please verify.')
+            return redirect(url_for('otp_verification', email=email))
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            flash(f"Error sending email: {str(e)}")
+            return redirect(url_for('register'))
 
-#     return render_template('register.html')
+    return render_template('register.html')
 
 # @app.route('/register', methods=['GET', 'POST'])
 # def register():
@@ -134,26 +137,26 @@ mysql = MySQL(app)
 #     return render_template('register.html')
 
 
-# @app.route('/otp-verification/<email>', methods=['GET', 'POST'])
-# def otp_verification(email):
-#     if request.method == 'POST':
-#         entered_otp = request.form['otp']
+@app.route('/otp-verification/<email>', methods=['GET', 'POST'])
+def otp_verification(email):
+    if request.method == 'POST':
+        entered_otp = request.form['otp']
 
-#         # Validate OTP
-#         if email in temp_user_data and temp_user_data[email]['otp'] == int(entered_otp):
-#             user_data = temp_user_data.pop(email)
-#             cur = mysql.connection.cursor()
-#             cur.execute("INSERT INTO login (username, password, role, email) VALUES (%s, %s, %s, %s)",
-#                         (user_data['username'], user_data['password'], user_data['role'], email))
-#             mysql.connection.commit()
-#             cur.close()
-#             flash('Registration successful. Please log in.')
-#             return redirect(url_for('login'))
-#         else:
-#             flash('Invalid OTP. Please try again.')
-#             return redirect(url_for('otp_verification', email=email))
+        # Validate OTP
+        if email in temp_user_data and temp_user_data[email]['otp'] == int(entered_otp):
+            user_data = temp_user_data.pop(email)
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO login (username, password, role, email) VALUES (%s, %s, %s, %s)",
+                        (user_data['username'], user_data['password'], user_data['role'], email))
+            mysql.connection.commit()
+            cur.close()
+            flash('Registration successful. Please log in.')
+            return redirect(url_for('login'))
+        else:
+            flash('Invalid OTP. Please try again.')
+            return redirect(url_for('otp_verification', email=email))
 
-#     return render_template('otp_verification.html', email=email)
+    return render_template('otp_verification.html', email=email)
 
 @app.route('/')
 def home():
@@ -202,22 +205,22 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = generate_password_hash(request.form['password'])
-        role = 'user'  # Default role for new users
+# @app.route('/register', methods=['GET', 'POST'])
+# def register():
+#     if request.method == 'POST':
+#         username = request.form['username']
+#         password = generate_password_hash(request.form['password'])
+#         role = 'user'  # Default role for new users
 
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO login (username, password, role) VALUES (%s, %s, %s)", (username, password, role))
-        mysql.connection.commit()
-        cur.close()
+#         cur = mysql.connection.cursor()
+#         cur.execute("INSERT INTO login (username, password, role) VALUES (%s, %s, %s)", (username, password, role))
+#         mysql.connection.commit()
+#         cur.close()
 
-        flash('Registration successful. Please log in.', 'success')
-        return redirect(url_for('login'))
+#         flash('Registration successful. Please log in.', 'success')
+#         return redirect(url_for('login'))
 
-    return render_template('register.html')
+#     return render_template('register.html')
 
 
 
