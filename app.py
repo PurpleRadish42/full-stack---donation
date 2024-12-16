@@ -18,7 +18,7 @@ app.secret_key = 'Dustbin'
 # Database configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '@Bhijit6151'
+app.config['MYSQL_PASSWORD'] = 'your_password'
 app.config['MYSQL_DB'] = 'finaldb'
 
 mysql = MySQL(app)
@@ -27,8 +27,8 @@ mysql = MySQL(app)
 app.config['MAIL_SERVER'] = 'smtp.mailgun.org'  # Replace with your email provider
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'postmaster@mg.emiyasusan.me'    # Replace with your username from your SMTP Server
-app.config['MAIL_PASSWORD'] = '3a30746c967057d0d41781a842653921-da554c25-373e8430' # Replace with your password from your SMTP Server
+app.config['MAIL_USERNAME'] = 'postmaster@mg.your_domain'    # Replace with your username from your SMTP Server
+app.config['MAIL_PASSWORD'] = 'your_password' # Replace with your password from your SMTP Server
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 
