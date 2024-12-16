@@ -1,47 +1,5 @@
 # 🌟 Donation Website for 4 Cities 🌍
 
-Welcome to our **Donation Website**! This project is a platform designed to connect donors with meaningful causes across **4 cities**. With robust backend support, seamless email integrations, and user-friendly features, this project showcases the power of Flask, MySQL. 🚀
-
----
-
-## ✨ Features
-
-### 🔒 User Authentication
-- Secure **login** and **logout** sessions.  
-- **OTP-based verification** for password changes and other sensitive actions.  
-
-### 📧 Email Notifications
-- Automated **booking confirmations** and **OTP emails** using:
-  - **Flask-Mail** for SMTP-based email functionality.  
-  - **Mailgun** for reliable and scalable email delivery.  
-
-### 📊 City-specific Donation Management
-- Covers **4 cities**, each with its own donation database and tracking.  
-- Backend powered by **MySQL**, with efficient table structures for managing donors, donations, and user data.
-
-### 🛠️ Backend Architecture
-- Built with **Flask** and **Flask-MySQLdb** for database integration.  
-- Email functionalities powered by **Flask-Mail** and **Mailgun SMTP**.
-
----
-
-## 🗂️ Database Overview
-
-The backend is designed with **MySQL**, featuring well-structured tables for:
-
-- **Users**: Storing user login credentials and profiles.  
-- **Donations**: Tracking donation records for the 4 cities.  
-- **OTP Requests**: Managing OTPs for password resets and verification.  
-- **Bookings**: Storing and confirming donation bookings.  
-
----
-
-Here’s the entire content formatted for your README.md. You can copy and paste it directly:
-
-markdown
-Copy code
-# 🌟 Donation Website for 4 Cities 🌍
-
 Welcome to our **Donation Website**! This project is a platform designed to connect donors with meaningful causes across **4 cities**. With robust backend support, seamless email integrations, and user-friendly features, this project showcases the power of Flask, MySQL, and modern APIs. 🚀
 
 ---
