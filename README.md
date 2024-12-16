@@ -59,9 +59,9 @@ app.config['MYSQL_HOST'] = 'localhost'
 ### 3️⃣ Set Up Mailgun and Flask-Mail
 Add your Mailgun API Key and domain to the environment variables or directly in the app:
 
-MAILGUN_API_KEY = 'your-api-key'
-MAILGUN_DOMAIN = 'your-domain.com'
-Configure your SMTP settings for Flask-Mail.
+MAILGUN_API_KEY = 'your-api-key'<br>
+MAILGUN_DOMAIN = 'your-domain.com'<br>
+Configure your SMTP settings for Flask-Mail.<br>
 
 ### 4️⃣ Run the Application
 Run the app.py file <br>
