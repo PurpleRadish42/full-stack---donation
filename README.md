@@ -1,6 +1,6 @@
 # 🌟 Donation Website for 4 Cities 🌍
 
-Welcome to our **Donation Website**! This project is a platform designed to connect donors with meaningful causes across **4 cities**. With robust backend support, seamless email integrations, and user-friendly features, this project showcases the power of Flask, MySQL, and modern APIs. 🚀
+Welcome to our **Donation Website**! This project is a platform designed to connect donors with meaningful causes across **4 cities**. With robust backend support, seamless email integrations, and user-friendly features, this project showcases the power of Flask, MySQL. 🚀
 
 ---
 
@@ -13,7 +13,7 @@ Welcome to our **Donation Website**! This project is a platform designed to conn
 ### 📧 Email Notifications
 - Automated **booking confirmations** and **OTP emails** using:
   - **Flask-Mail** for SMTP-based email functionality.  
-  - **Mailgun** API for reliable and scalable email delivery.  
+  - **Mailgun** for reliable and scalable email delivery.  
 
 ### 📊 City-specific Donation Management
 - Covers **4 cities**, each with its own donation database and tracking.  
