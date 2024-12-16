@@ -16,7 +16,7 @@ ALTER TABLE login ADD COLUMN email VARCHAR(255);
 
 select*from login;
 
-insert into login(username,password,role,email) values ('admin','admin123','admin','emiyasusanjuby2002@gmail.com');
+insert into login(username,password,role,email) values ('admin','admin123','admin','your_email');
 
 
 CREATE TABLE payments (
