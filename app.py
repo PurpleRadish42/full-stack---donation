@@ -71,7 +71,7 @@ def home():
     return render_template('index.html', centers=centers)
 
 @app.route('/donation')
-@login_required(role='user')
+@login_required(role=['user','admin'])
 def donation():
     return render_template('donation.html')
 
@@ -219,13 +219,13 @@ def logout():
 
 
 @app.route('/payment', methods=['GET', 'POST'])
-@login_required(role= 'user')
+@login_required(role=['user','admin'])
 def payment():
     return render_template('payments.html')
 
 
 @app.route('/payment-success', methods=['POST'])
-@login_required(role='user')
+@login_required(role=['user','admin'])
 def payment_success():
     # Fetch data from the POST form
     name = request.form.get('name')
@@ -271,12 +271,12 @@ def message():
 
 
 @app.route('/special')
-@login_required(role= 'user')
+@login_required(role=['user','admin'])
 def special():
     return render_template('special.html')
 
 @app.route('/book-slot', methods=['POST'])
-@login_required(role='user')
+@login_required(role=['user','admin'])
 def book_slot():
     center = request.form['center']
     type_ = request.form['type']
@@ -328,7 +328,7 @@ def book_slot():
 
 
 @app.route('/available-slots', methods=['GET'])
-@login_required(role= 'user')
+@login_required(role=['user','admin'])
 def available_slots():
     cur = mysql.connection.cursor()
     cur.execute("SELECT date, time FROM bookings")
@@ -340,7 +340,7 @@ def available_slots():
     return jsonify(booked_slots_list)
 
 @app.route('/contact', methods=['GET', 'POST'])
-@login_required(role='user')
+@login_required(role=['user','admin'])
 def contact():
     if request.method == 'POST':
         name = request.form['name']
@@ -372,12 +372,12 @@ def contact():
     return render_template('contactus.html')
 
 @app.route('/volunteer', methods=['GET', 'POST'])
-@login_required(role='user')
+@login_required(role=['user','admin'])
 def volunteer():
     return render_template('volunteer.html')
 
 @app.route('/submit_application', methods=['POST'])
-@login_required(role='user')
+@login_required(role=['user','admin'])
 def submit_application():
     # Get data from the form
     name = request.form['name']
@@ -417,7 +417,7 @@ def submit_application():
 
     
 @app.route('/submit_donation', methods=['POST'])
-@login_required(role= 'user')
+@login_required(role=['user','admin'])
 def submit_donation():
     if request.method == 'POST':
         # Retrieve form data
@@ -511,7 +511,7 @@ def dashboard():
     )
 
 @app.route('/center')
-@login_required(role='user')
+@login_required(role=['user','admin'])
 def center():
     center_id = request.args.get('id')
 
