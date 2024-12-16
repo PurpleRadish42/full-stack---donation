@@ -13,7 +13,7 @@ Welcome to our **Donation Website**! This project is a platform designed to conn
 ### 📧 Email Notifications
 - Automated **booking confirmations** and **OTP emails** using:
   - **Flask-Mail** for SMTP-based email functionality.  
-  - **Mailgun** API for reliable and scalable email delivery.  
+  - **Mailgun** for reliable and scalable email delivery.  
 
 ### 📊 City-specific Donation Management
 - Covers **4 cities**, each with its own donation database and tracking.  
@@ -47,36 +47,27 @@ Follow these steps to set up the project locally:
 
 
 
-4️⃣ Configure MySQL Database
-Create a MySQL database and import the schema provided in database/finaldb.sql.
-Update your database credentials in app.py:
-python
-Copy code
-app.config['MYSQL_USER'] = 'your-username'
-app.config['MYSQL_PASSWORD'] = 'your-password'
-app.config['MYSQL_DB'] = 'your-database-name'
+### 2️⃣ Configure MySQL Database
+Create a MySQL database and import the schema provided in finaldb.sql file.<br>
+Update your database credentials in app.py:<br>
+app.config['MYSQL_USER'] = 'your-username'<br>
+app.config['MYSQL_PASSWORD'] = 'your-password'<br>
+app.config['MYSQL_DB'] = 'your-database-name'<br>
 app.config['MYSQL_HOST'] = 'localhost'
 
 
-5️⃣ Set Up Mailgun and Flask-Mail
+### 3️⃣ Set Up Mailgun and Flask-Mail
 Add your Mailgun API Key and domain to the environment variables or directly in the app:
-python
-Copy code
+
 MAILGUN_API_KEY = 'your-api-key'
 MAILGUN_DOMAIN = 'your-domain.com'
 Configure your SMTP settings for Flask-Mail.
 
-6️⃣ Run the Application
-bash
-Copy code
-python app.py
+### 4️⃣ Run the Application
+Run the app.py file <br>
 Visit http://127.0.0.1:5000 to access the website.
 
-🎨 Screenshots
-Homepage	Login Page
-Donation Confirmation	OTP Email
-
-🌟 Why This Project is Awesome
+### 🌟 Why This Project is Awesome
 1. Full-stack integration with Flask and MySQL.
 2. Demonstrates secure user authentication and session management.
 3. Real-world implementation of email automation using Flask-Mail and Mailgun.
