@@ -49,7 +49,9 @@ Follow these steps to set up the project locally:
 
 ### 2️⃣ Configure MySQL Database
 Create a MySQL database and import the schema provided in finaldb.sql file.<br>
+
 Update your database credentials in app.py:<br>
+
 app.config['MYSQL_USER'] = 'your-username'<br>
 app.config['MYSQL_PASSWORD'] = 'your-password'<br>
 app.config['MYSQL_DB'] = 'your-database-name'<br>
