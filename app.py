@@ -18,7 +18,7 @@ app.secret_key = 'Dustbin'
 # Database configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'lets@do3it07'
+app.config['MYSQL_PASSWORD'] = '@Bhijit6151'
 app.config['MYSQL_DB'] = 'finaldb'
 
 mysql = MySQL(app)
@@ -753,10 +753,89 @@ def get_details():
             return redirect(url_for('get_details'))
         
 def send_email(to, subject, body):
-    """Sends an email using Flask-Mail or another SMTP service."""
-    from flask_mail import Message
     msg = Message(subject=subject, recipients=[to], html=body, sender="admin@sea.org")
     mail.send(msg)
+
+
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+    if request.method == 'POST':
+        email = request.form['email']
+
+        # Check if email exists in database
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT id FROM login WHERE email=%s", [email])
+        user = cur.fetchone()
+        cur.close()
+
+        if user:
+            session['reset_email'] = email  # Store email in session for later use
+            reset_otp = random.randint(100000, 999999)  # Generate a 6-digit OTP
+            session['reset_otp'] = reset_otp
+
+            # Send OTP via email using Flask-Mail
+            subject = "Password Reset OTP"
+            message_body = render_template('reset_otp_email.html', otp=reset_otp)
+            msg = Message(subject=subject, 
+                        sender='no-reply@sea.org',  # Personalized sender email
+                        recipients=[email])
+            msg.html = message_body
+            mail.send(msg)
+
+
+            flash('An OTP has been sent to your email for password reset.', 'success')
+            return redirect(url_for('verify_reset_otp'))
+        else:
+            flash('Email not found in the system. Please try again.', 'error')
+    return render_template('reset_password_request.html')
+
+@app.route('/verify_reset_otp', methods=['GET', 'POST'])
+def verify_reset_otp():
+    if request.method == 'POST':
+        entered_otp = request.form['reset_otp']
+        if 'reset_otp' in session and int(entered_otp) == session['reset_otp']:
+            flash('OTP verified successfully!', 'success')
+            return redirect(url_for('update_password'))
+        else:
+            flash('Incorrect OTP. Please try again.', 'error')
+    return render_template('verify_reset_otp.html')
+
+@app.route('/update_password', methods=['GET', 'POST'])
+def update_password():
+    if request.method == 'POST':
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+
+        if new_password != confirm_password:
+            flash('Passwords do not match. Please re-enter.', 'error')
+        else:
+            email = session.get('reset_email')
+            if not email:
+                flash('Session expired. Please restart the process.', 'error')
+                return redirect(url_for('reset_password_request'))
+
+            # Update the password in database
+            cur = mysql.connection.cursor()
+            hashed_password = generate_password_hash(new_password)
+            cur.execute("UPDATE login SET password=%s WHERE email=%s", (hashed_password, email))
+            mysql.connection.commit()
+            cur.close()
+
+            # Send confirmation email with plain text password
+            subject = "Password Successfully Reset"
+            message_body = render_template('password_reset_confirmation.html', password=new_password)
+            msg = Message(subject=subject, 
+                        sender='admin@sea.org',  # Personalized sender email
+                        recipients=[email])
+            msg.html = message_body
+            mail.send(msg)
+
+
+            flash('Your password has been reset successfully. Check your email for confirmation.', 'success')
+            session.pop('reset_otp', None)
+            session.pop('reset_email', None)
+            return redirect(url_for('login'))
+    return render_template('update_password.html')
 
 
 if __name__ == '__main__':
