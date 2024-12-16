@@ -12,6 +12,133 @@
             padding: 0;
             background: #f4f7fc;
         }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items:start;
+            background-color: #004080;
+            padding: 5px 15px;
+            color: white;
+            position: relative;
+        }
+        .header-title {
+            position: absolute;
+            left: 20%;
+            transform: translateX(-100%);
+            font-size: 20px; /* Reduced font size */
+            font-weight: bold;
+            color: white;
+            margin: 0;
+            text-align: left; /* Aligns text to the left */
+            margin: 20px 0 0 0;
+        }
+        
+        
+        .logo img {
+            height: 60px;
+        }
+        
+        .donate-button a {
+            text-decoration: none;
+            background-color: beige;
+            color:#000;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px; /* Adjust this value to move the button down */
+            display: inline-block; /* Ensures margin is applied correctly */
+        }
+        
+        .donate-button a:hover {
+            background-color:cadetblue;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #0066cc;
+            padding: 10px 0;
+        }
+        
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .navbar a:hover {
+            background-color: #f0f0f0;
+            color: #000;
+            transition: 0.3s;
+        }
+        .navbar {
+            display: flex;
+            justify-content:right;
+            background-color: #0066cc;
+            padding: 10px 0;
+            align-items:center; /* Ensures all items align vertically */
+        }
+        
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+        
+        
+        /* Dropdown container */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* Dropdown button */
+        .dropbtn {
+            text-decoration: none;
+            color: white;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+            
+        }
+  
+        
+        /* Dropdown content (hidden by default) */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        
+        /* Dropdown content links */
+        .dropdown-content a {
+            color: #004080;
+            padding: 10px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+        
+        /* Dropdown content links hover effect */
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        
+        /* Show dropdown on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        /* Style dropdown button on hover */
+        .dropdown:hover .dropbtn {
+            background-color: #004080;
+        }
+        
         .container {
             max-width: 500px;
             margin: 50px auto;
@@ -76,15 +203,51 @@ header h1 {
     text-align: center;
     flex-grow: 1; /* Ensures the h1 takes space without overlapping */
 }
+
+.footer {
+            text-align: center;
+            background-color: #004080;
+            color: white;
+            padding: 10px 0;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            bottom: 0;
+            width: 100%;
+            }
     </style>
 </head>
-<body>
-    <div class="header-container">
+<body><!-- Header -->
+    <div class="header">
         <div class="logo">
             <a href="/">
                 <img src="static/images/sea logo.jpg" alt="SEA Logo">
             </a>
         </div>
+        <h1 class="header-title">SEA Organization</h1>
+        <div class="donate-button">
+            <a href="/donation">Donate Now</a>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div class="dropdown">
+            <a href="#centers" class="dropbtn">Centers</a>
+            <div class="dropdown-content">
+                <a href="/center?id=1">Bangalore</a>
+                <a href="/center?id=2">Chennai</a>
+                <a href="/center?id=3">Hyderabad</a>
+                <a href="/center?id=4">Cochin</a>
+            </div>
+        </div>
+        <a href="/special">Special Occasions</a>
+        <a href="#about-us">About Us</a>
+        <a href="/halloffame">Top Donors</a>
+        <a href="/get-details">Get Donation Details</a>
+        <a href="/volunteer">Join Us</a>
+        <a href="/login">Login</a>
+        <a href="/logout">Logout</a>
+    </div>
         <h1>Volunteer with Us</h1>
     </div>
     <div class="container">
@@ -96,6 +259,9 @@ header h1 {
                 <button type="submit" name="action" value="monetary">Get Monetary Donation Details</button>
             </div>
         </form>
+    </div>
+    <div class="footer">
+        &copy; 2024. SEA private ltd. All rights reserved.
     </div>
 </body>
 </html>

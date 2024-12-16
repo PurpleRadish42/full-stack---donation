@@ -18,7 +18,7 @@ app.secret_key = 'Dustbin'
 # Database configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '@Bhijit6151'
+app.config['MYSQL_PASSWORD'] = 'lets@do3it07'
 app.config['MYSQL_DB'] = 'finaldb'
 
 mysql = MySQL(app)
