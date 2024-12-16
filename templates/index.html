@@ -77,28 +77,10 @@
             transition: 0.3s;
         }
         
-        /* Main Image Slider */
-        .main-image-container {
-            position: relative;
-            width: 100%;
-            height: 400px; /* Adjust height as needed */
-            overflow: hidden;
-        }
+     
         
-        .image-slider {
-            display: flex;
-            overflow: hidden; /* Ensures images stay within the slider */
-            width: 100%; /* Make the slider responsive */
-            height: 500px; /* Adjust the height as needed */
-        }
+      
         
-        .main-image {
-            flex-shrink: 0;
-            transform: scale(1.05);
-            width: 70%;
-            height: 70%;
-            object-fit: cover; /* Maintain aspect ratio and fill container */
-        }
         .main-image:hover {
             transform: scale(1.05);
         }
@@ -156,18 +138,7 @@
             transition: background-color 0.3s ease;
             
         }
-        .dropbtn::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
-  opacity: 0; /* Initially hidden */
-  transition: opacity 0.3s ease; /* Fade-in effect */
-  z-index: 1; /* Place the overlay above the button text */
-}
+  
         
         /* Dropdown content (hidden by default) */
         .dropdown-content {
@@ -333,7 +304,7 @@
             </div>
         </div>
         <a href="/special">Special Occasions</a>
-        <a href="#about-us">About Us</a>
+        <a href="aboutus">About Us</a>
         <a href="/halloffame">Top Donors</a>
         <a href="/get-details">Get Donation Details</a>
         <a href="/volunteer">Join Us</a>
@@ -341,21 +312,7 @@
         <a href="/logout">Logout</a>
     </div>
 
-    <!-- Main Content 
-    <div class="main-image-container">
-        <button class="arrow left-arrow" onclick="showPreviousImage()">&#10094;</button>
-        <div class="image-slider">
-            <video autoplay loop muted width="640" height="360">
-                <source src="example.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
-            
-            <img src="static/videos/donation.mp4" alt="Main Image" class="main-image">
-            <img src="static/images/main image.jpeg" alt="Image 1" class="main-image">
-            <img src="static/images/main image.jpeg" alt="Image 2" class="main-image">
-        </div>
-        <button class="arrow right-arrow" onclick="showNextImage()">&#10095;</button>
-    </div>-->
+    </div>
     <div class="imagebox"><img src="static/images/center.jpeg" height="700" width="1550">
             <h1 class="right-aligned-text">Together, we can create lasting change<br> and make a real difference.</h1>
         </div>
