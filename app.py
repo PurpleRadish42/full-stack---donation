@@ -24,10 +24,10 @@ app.config['MYSQL_DB'] = 'finaldb'
 mysql = MySQL(app)
 
 # Mail configuration
-app.config['MAIL_SERVER'] = 'smtp.mailgun.org'  # Replace with your email provider
-app.config['MAIL_PORT'] = 587
+app.config['MAIL_SERVER'] = 'mail.smtp2go.com'  # Replace with your email provider
+app.config['MAIL_PORT'] = 2525
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'postmaster@mg.your_domain'    # Replace with your username from your SMTP Server
+app.config['MAIL_USERNAME'] = 'username'    # Replace with your username from your SMTP Server
 app.config['MAIL_PASSWORD'] = 'your_password' # Replace with your password from your SMTP Server
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
@@ -116,7 +116,7 @@ def register():
 
         try:
             # Send OTP via email
-            msg = Message('Your OTP for Registration', sender='verify-otp@sea.org', recipients=[email])
+            msg = Message('Your OTP for Registration', sender='verify-otp@emiyasusan.me', recipients=[email])
             msg.body = f"Your OTP is {generated_otp}. It is valid for 5 minutes."
             mail.send(msg)
             return render_template('otp-verification.html', email=email, message=f"OTP sent to your email: {email}")
@@ -143,7 +143,7 @@ def otp_verification(email):
 
             # Send a confirmation email after successful registration
             try:
-                msg = Message('Registration Successful', sender='registrations@sea.org', recipients=[email])
+                msg = Message('Registration Successful', sender='registrations@emiyasusan.me', recipients=[email])
                 msg.html = render_template('email_template.html', username=user_data['username'])
                 mail.send(msg)
             except Exception as e:
@@ -247,7 +247,7 @@ def payment_success():
                                        payment_method=payment_method, 
                                        amount=amount)
         msg = Message(subject=subject, 
-                      sender='payments@sea.org', 
+                      sender='payments@emiyasusan.me', 
                       recipients=[email])
         msg.html = message_body
         mail.send(msg)
@@ -313,7 +313,7 @@ def book_slot():
                                        time=time,
                                        occasion=occasion)
         msg = Message(subject=subject, 
-                      sender='bookings@sea.org',
+                      sender='bookings@emiyasusan.me',
                       recipients=[email])
         msg.html = message_body
         mail.send(msg)
@@ -395,7 +395,7 @@ def submit_application():
         subject = "Volunteer Application"
         email_body = render_template('email_applications.html', name=name)
         msg = Message(subject=subject, 
-                      sender='volunteer@sea.org', 
+                      sender='volunteer@emiyasusan.me', 
                       recipients=[email])
         msg.html = email_body
         mail.send(msg)
@@ -454,7 +454,7 @@ def submit_donation():
             
             # Prepare the email
             subject = "Donation Confirmation - SEA Organisation"
-            msg = Message(subject=subject, sender='donations@sea.org', recipients=[email])
+            msg = Message(subject=subject, sender='donations@emiyasusan.me', recipients=[email])
             
             # Render the appropriate HTML template for the email
             if delivery_type == 'doorstep pick':
@@ -753,7 +753,7 @@ def get_details():
             return redirect(url_for('get_details'))
         
 def send_email(to, subject, body):
-    msg = Message(subject=subject, recipients=[to], html=body, sender="admin@sea.org")
+    msg = Message(subject=subject, recipients=[to], html=body, sender="admin@emiyasusan.me")
     mail.send(msg)
 
 
@@ -777,7 +777,7 @@ def reset_password_request():
             subject = "Password Reset OTP"
             message_body = render_template('reset_otp_email.html', otp=reset_otp)
             msg = Message(subject=subject, 
-                        sender='no-reply@sea.org',  # Personalized sender email
+                        sender='no-reply@emiyasusan.me',  # Personalized sender email
                         recipients=[email])
             msg.html = message_body
             mail.send(msg)
@@ -825,7 +825,7 @@ def update_password():
             subject = "Password Successfully Reset"
             message_body = render_template('password_reset_confirmation.html', password=new_password)
             msg = Message(subject=subject, 
-                        sender='admin@sea.org',  # Personalized sender email
+                        sender='admin@emiyasusan.me',  # Personalized sender email
                         recipients=[email])
             msg.html = message_body
             mail.send(msg)
