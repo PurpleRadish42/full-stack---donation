@@ -13,7 +13,7 @@ Welcome to our **Donation Website**! This project is a platform designed to conn
 ### 📧 Email Notifications
 - Automated **booking confirmations** and **OTP emails** using:
   - **Flask-Mail** for SMTP-based email functionality.  
-  - **Mailgun** for reliable and scalable email delivery.  
+  - **SMTP2GO** for reliable and scalable email delivery.  
 
 ### 📊 City-specific Donation Management
 - Covers **4 cities**, each with its own donation database and tracking.  
@@ -21,7 +21,7 @@ Welcome to our **Donation Website**! This project is a platform designed to conn
 
 ### 🛠️ Backend Architecture
 - Built with **Flask** and **Flask-MySQLdb** for database integration.  
-- Email functionalities powered by **Flask-Mail** and **Mailgun SMTP**.
+- Email functionalities powered by **Flask-Mail** and **SMTP2GO SMTP**.
 
 ---
 
@@ -58,11 +58,11 @@ app.config['MYSQL_DB'] = 'your-database-name'<br>
 app.config['MYSQL_HOST'] = 'localhost'
 
 
-### 3️⃣ Set Up Mailgun and Flask-Mail
-Add your Mailgun API Key and domain to the environment variables or directly in the app:
+### 3️⃣ Set Up SMTP2GO and Flask-Mail
+Add your SMTP2GO API Key and domain to the environment variables or directly in the app:
 
-MAILGUN_API_KEY = 'your-api-key'<br>
-MAILGUN_DOMAIN = 'your-domain.com'<br>
+SMTP2GO_API_KEY = 'your-api-key'<br>
+SMTP2GO_DOMAIN = 'your-domain.com'<br>
 Configure your SMTP settings for Flask-Mail.<br>
 
 ### 4️⃣ Run the Application
@@ -72,5 +72,5 @@ Visit http://127.0.0.1:5000 to access the website.
 ### 🌟 Why This Project is Awesome
 1. Full-stack integration with Flask and MySQL.
 2. Demonstrates secure user authentication and session management.
-3. Real-world implementation of email automation using Flask-Mail and Mailgun.
+3. Real-world implementation of email automation using Flask-Mail and SMTP2GO.
 4. A scalable database design tailored for real-world applications.
