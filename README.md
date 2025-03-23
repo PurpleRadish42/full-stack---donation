@@ -1,4 +1,4 @@
-# 🌟 Donation Website for 4 Cities 🌍
+# 🌟 Simple Donation website using Flask 🌍
 
 Welcome to our **Donation Website**! This project is a platform designed to connect donors with meaningful causes across **4 cities**. With robust backend support, seamless email integrations, and user-friendly features, this project showcases the power of Flask, MySQL 🚀
 
