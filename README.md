@@ -74,3 +74,45 @@ Visit http://127.0.0.1:5000 to access the website.
 2. Demonstrates secure user authentication and session management.
 3. Real-world implementation of email automation using Flask-Mail and SMTP2GO.
 4. A scalable database design tailored for real-world applications.
+
+### 📁 Environment Variables Setup (`.env`)
+
+To keep sensitive information secure and the codebase clean, this project uses a `.env` file for configuration.
+
+## 📝 Step 1: Create a `.env` file in the root directory of your project with the following content:
+
+```env
+# Flask secret key
+SECRET_KEY=Dustbin
+
+# MySQL Database Configuration
+MYSQL_HOST=localhost
+MYSQL_USER=your-mysql-username
+MYSQL_PASSWORD=your-mysql-password
+MYSQL_DB=finaldb
+
+# SMTP (SMTP2GO) Mail Configuration
+MAIL_SERVER=mail.smtp2go.com
+MAIL_PORT=2525
+MAIL_USE_TLS=True
+MAIL_USE_SSL=False
+MAIL_USERNAME=your-smtp2go-username
+MAIL_PASSWORD=your-smtp2go-password
+
+```
+
+## ✅ Step 2: Load Environment Variables in `app.py`
+
+### Install `python-dotenv` if you haven't already:
+
+```python
+pip install python-dotenv
+```
+
+## 🔒 Step 3: Add `.env` to `.gitignore`
+
+### To ensure your credentials are not pushed to GitHub, add the following line to your `.gitignore` file
+
+```gitignore
+.env
+```

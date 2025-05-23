@@ -1,39 +1,43 @@
 from flask import *
 from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
-import datetime
 from flask_mail import Mail, Message
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import datetime
 import random
 from functools import wraps
-import matplotlib
-matplotlib.use('Agg')  # Set backend to Agg (non-interactive)
-import matplotlib.pyplot as plt
 import io
 import base64
-# import requests
+from dotenv import load_dotenv
+import os
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'Dustbin'
 
-# Database configuration
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'your_password'
-app.config['MYSQL_DB'] = 'finaldb'
+# Secret key
+app.secret_key = os.getenv("SECRET_KEY")
+
+# MySQL configuration
+app.config['MYSQL_HOST'] = os.getenv("MYSQL_HOST")
+app.config['MYSQL_USER'] = os.getenv("MYSQL_USER")
+app.config['MYSQL_PASSWORD'] = os.getenv("MYSQL_PASSWORD")
+app.config['MYSQL_DB'] = os.getenv("MYSQL_DB")
 
 mysql = MySQL(app)
 
 # Mail configuration
-app.config['MAIL_SERVER'] = 'mail.smtp2go.com'  # Replace with your email provider
-app.config['MAIL_PORT'] = 2525
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'username'    # Replace with your username from your SMTP Server
-app.config['MAIL_PASSWORD'] = 'your_password' # Replace with your password from your SMTP Server
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_SERVER'] = os.getenv("MAIL_SERVER")
+app.config['MAIL_PORT'] = int(os.getenv("MAIL_PORT"))
+app.config['MAIL_USE_TLS'] = os.getenv("MAIL_USE_TLS") == 'True'
+app.config['MAIL_USE_SSL'] = os.getenv("MAIL_USE_SSL") == 'True'
+app.config['MAIL_USERNAME'] = os.getenv("MAIL_USERNAME")
+app.config['MAIL_PASSWORD'] = os.getenv("MAIL_PASSWORD")
 
 mail = Mail(app)
-app.secret_key = 'Dustbin'  # Replace with your own secret key
 
 # Temporary storage for OTP and user data
 temp_user_data = {}
